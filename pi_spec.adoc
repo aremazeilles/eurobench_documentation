@@ -66,6 +66,7 @@ To reach that structure, a PI code repository must have the following structure:
 README.md
 src/
 test_data
+compile.sh
 DockerFile
 install.sh
 run_pi
@@ -77,6 +78,7 @@ with:
 - `src` should gather all the code of the PI algorithm.
    If the code organization is let to the PI algorithm developer, we strongly advice following good software practices.
 - `test_data`: folder containing reference input data and associated expected output result that can be used for making code testing.
+- `compile.sh`: shell script containing the command to build the program
 - `DockerFile`: file indicating how to create the Docker image for that code.
 - `install.sh`: shell program indicating how to install all dependencies on a fresh ubuntu machine.
 - `run_pi`: script that will be the docker container entry point, and that should launch the PI computation, given an input folder (with all input processing files) and an output folder (to store result files).
