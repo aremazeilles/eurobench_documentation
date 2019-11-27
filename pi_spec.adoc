@@ -1,0 +1,83 @@
+= Performance Indicator Specification
+:source-highlighter: pygments
+:pygments-style: emacs
+:icons: font
+#:toc: right
+:linkattrs:
+:sectnums:
+
+== Introduction
+
+The Performance Indicator (or `PI`) refers to the algorithms used to compute the metrics to benchmark a given experiment.
+The `PIs` computed depend on the protocol to which is associated the experiment to benchmark.
+
+=== A bit of context: the PI Manager
+
+A key component of the Benchmarking Software is the `PI Manager`.
+The `PI Manager` is called every time a new experiment has to be benchmarked.
+
+The overall interaction scheme is described on the following figure.
+
+The successive operations are the following:
+
+1. From the Experiment ID,  the PI Manager gets access from the database to the Protocol this experiment is related to.
+2. From the Protocol ID, the PI Manager gets the list of PI algorithms associated to it.
+3. For each PI, the PI Manager gets access to the PI Docker identifier
+4. From the Experiment ID, the PI Manager locates in the datafile system the folder related to that experiment.
+   It contains all the _Pre-Processed files_ uploaded by the experimenter.
+5. From the Datafile system, the PI Manager can access to all the experiment file.
+
+[[fig:pim_interact]]
+.Global interaction of the PI Manager with the database to collect the experimental data
+image::img/pi_manager_interaction.png[align=center, title-align=center]
+
+NOTE: As mentioned, each of the PI routines are encapsulated within a docker image.
+      It enables avoiding any dependency conflicts in between the different PI code implementation, and isolating the PI Manager machine from the PI computation effort.
+
+The PI Manager has somehow (to be clarified) a local copy of the experiment files, which can be organized on the left picture of the following figure.
+
+[[fig:pim_loop]]
+.Overall PI Manager processing loop
+image::img/pi_manager_loop.png[align=center, title-align=center]
+
+We assume that each run (iteration of the experiment with similar conditions or independent variables), is described by a set of _Pre-processed files_.
+
+Then PI Manager loops on each run and docker:
+
+* For each run
+** For each PI docker,
+*** gather all run files
+*** run the PI docker with current run files
+*** store each PI score, related to a unique run PI evaluation
+** Once each run has been evaluated, the PI Manager compute the global PI score, given the computed PI per run.
+** All results are uploaded to the database
+
+=== Message to take away
+
+* All PI algorithms have to be encapsulated into a docker image
+* All PI algorithm should be able to launch computation given the _Pre-Processed files_ associated to a single run.
+
+== PI repository structure
+
+To reach that structure, a PI code repository must have the following structure:
+
+[source, sh]
+----
+README.md
+src/
+test_data
+DockerFile
+install.sh
+run_pi
+----
+
+with:
+
+- `README.md` (or any rich text format): should contain common indications about the repository content, purposes, maintainer, ...
+- `src` should gather all the code of the PI algorithm.
+   If the code organization is let to the PI algorithm developer, we strongly advice following good software practices.
+- `test_data`: folder containing reference input data and associated expected output result that can be used for making code testing.
+- `DockerFile`: file indicating how to create the Docker image for that code.
+- `install.sh`: shell program indicating how to install all dependencies on a fresh ubuntu machine.
+- `run_pi`: script that will be the docker container entry point, and that should launch the PI computation, given an input folder (with all input processing files) and an output folder (to store result files).
+
