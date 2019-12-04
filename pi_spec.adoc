@@ -59,8 +59,8 @@ We assume that each run (iteration of the experiment with similar conditions or 
 Then The PI Manager loops on each run and docker:
 
 * For each run
+** gather all pre-processed files associated to that run, together to ny condition files describing the experimental condition.
 ** For each PI docker,
-*** gather all run files
 *** run the PI docker with current run files
 *** store each PI score, related to a unique run PI evaluation
 ** Once each run has been evaluated, the PI Manager compute the global PI score, given the computed PI per run.
