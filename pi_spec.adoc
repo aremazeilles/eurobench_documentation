@@ -156,6 +156,8 @@ Looking at the two options:
 *** convert `subject_N_run_R_jointAngles.csv` into `jointAngles.csv`
 *** convert `subject_N_anthropometric.yaml` into `anthropometry.yaml`
 
+Right now the first option is implemented.
+
 === Output data
 
 To be again generic, we are proposing the following output format:
@@ -184,7 +186,9 @@ pi_name: velocity
    value: 0.2
 ----
 
-Note that providing several PI through a unique source code is an option provided to the developer.
+Right now, the first option is implemented, i.e. one file per PI score.
+
+Note that providing several PI through a unique source code or algorithm is an option provided to the developer.
 A protocol can have various PI associated to it, each of them being associated to different algorithm or code.
 
 The scoring is performed **per run**.
