@@ -8,13 +8,26 @@
 
 == Introduction
 
-The Performance Indicator (or `PI`) refers to the algorithms used to compute the metrics to benchmark a given experiment.
-The `PIs` computed depend on the protocol to which is associated the experiment to benchmark.
+Performance Indicators (or `PIs`) refer to the algorithms used to compute performance metrics for a given experiment and following pre-defined protocol.
+In the context of Eurobench, `PIs` are the bases for later performance comparisons between different wearable robotic devices (or humanoids) which have performed comparable experiments.
+
+There exists:
+
+* General PIs related to system ability:
+** _Motion ability_: Successful task time, Maximum cadence, Mechanical energy, ...
+** _Human Robot Interaction_: Comfort, Muscle fatigue, Metabolic cost, ...
+** _Adaptability_: Versatility, Task adaptability,
+** _Cognitive_: Intention decoding, Cognitive effort
+
+* Scenario specific PIs
+** Scenario _Walking on slopes_: Slope angle the subject can walk up, Maximum velocity the subject can walk up, ...
+** Scenario _Walking on stairs_: Step height that the subject can walk up, Maximum number of successive stairs the subject can walk up, ...
+** Scenario _Overcoming obstacles_: maximum height of an obstacle the subject can walk over, ...
+** Scenario _Picking and carrying objects_: Weight of the object which can be picked up and carried, Walking speed while carrying an object, ...
 
 === A bit of context: the PI Manager
 
-A key component of the Benchmarking Software is the `PI Manager`.
-The `PI Manager` is called every time a new experiment has to be benchmarked.
+A key component of the Benchmarking Software is the `PI Manager`. It is called every time a new experiment has to be benchmarked.
 
 The overall interaction scheme is described on the following figure.
 
@@ -32,7 +45,7 @@ The successive operations are the following:
 image::img/pi_manager_interaction.png[align=center, title-align=center]
 
 NOTE: As mentioned, each of the PI routines are encapsulated within a docker image.
-      It enables avoiding any dependency conflicts in between the different PI code implementation, and isolating the PI Manager machine from the PI computation effort.
+      It avoides any dependency conflicts in between the different PI code implementation, and isolates the PI Manager machine from the PI computation effort.
 
 The PI Manager has somehow (to be clarified) a local copy of the experiment files, which can be organized on the left picture of the following figure.
 
@@ -117,7 +130,7 @@ run_pi subject_N_run_R_jointAngles.csv subject_N_anthropometric.yaml testbed.yam
 ----
 
 
-* Option 2: placing all datafile inside a folder, and gives that folder as input parameter:
+* Option 2: placing all datafile inside a folder (e.g. _data_input_), and gives that folder as input parameter:
 
 [source, sh]
 ----
