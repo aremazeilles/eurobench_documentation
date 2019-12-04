@@ -28,13 +28,16 @@ There exists:
 === A bit of context: the PI Manager
 
 A key component of the Benchmarking Software is the `PI Manager`.
-It is called every time a new experiment has to be benchmarked.
+It is called every time a new experiment is uploaded to the Benchmarking System.
+The objective of the `PI Manager` is to orchestrate the computation of the performance metrics for that experiment.
 
 The overall interaction scheme is described on the following figure.
+We assume here that an experiment has just been uploaded to the Benchmarking Software, i.e. all experimental data are already uploaded and stored into the database.
 
-The successive operations are the following:
+The remaining operation is the scoring of the experiment, which is for what is triggered the PI Mananger.
+The successive operations conducted by the PI Manager are the followings:
 
-1. From the Experiment ID,  the PI Manager gets access from the database to the Protocol this experiment is related to.
+1. From the Experiment ID, the PI Manager gets access from the database to the Protocol this experiment is related to.
 2. From the Protocol ID, the PI Manager gets the list of PI algorithms associated to it, along with the PIs calculated by each of theses algorithms.
 3. For each algorithm, the PI Manager gets access to the Algorithm Docker identifier
 4. From the Experiment ID, the PI Manager locates in the datafile system the folder related to that experiment.
@@ -65,6 +68,9 @@ Then The PI Manager loops on each run and docker:
 *** store each PI score, related to a unique run PI evaluation
 ** Once each run has been evaluated, the PI Manager compute the global PI score, given the computed PI per run.
 ** All results are uploaded to the database
+
+Once this loop is achived, the PI scores of that experiment are uploaded into the database.
+That way, a future comparison of this experiment with another only consists in consulting the data stored into the database.
 
 **Message to take away**:
 
