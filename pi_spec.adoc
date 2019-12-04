@@ -27,18 +27,19 @@ There exists:
 
 === A bit of context: the PI Manager
 
-A key component of the Benchmarking Software is the `PI Manager`. It is called every time a new experiment has to be benchmarked.
+A key component of the Benchmarking Software is the `PI Manager`.
+It is called every time a new experiment has to be benchmarked.
 
 The overall interaction scheme is described on the following figure.
 
 The successive operations are the following:
 
 1. From the Experiment ID,  the PI Manager gets access from the database to the Protocol this experiment is related to.
-2. From the Protocol ID, the PI Manager gets the list of PI algorithms associated to it.
-3. For each PI, the PI Manager gets access to the PI Docker identifier
+2. From the Protocol ID, the PI Manager gets the list of PI algorithms associated to it, along with the PIs calculated by each of theses algorithms.
+3. For each algorithm, the PI Manager gets access to the Algorithm Docker identifier
 4. From the Experiment ID, the PI Manager locates in the datafile system the folder related to that experiment.
    It contains all the _Pre-Processed files_ uploaded by the experimenter.
-5. From the Datafile system, the PI Manager can access to all the experiment files.
+5. From the Datafile system, the PI Manager can access to all the experiment files required as parameters / input files to run the algorithm.
 
 [[fig:pim_interact]]
 .Global interaction of the PI Manager with the database to collect the experimental data
