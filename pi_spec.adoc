@@ -49,9 +49,9 @@ The successive operations conducted by the PI Manager are the followings:
 image::img/pi_manager_interaction.png[align=center, title-align=center]
 
 NOTE: As mentioned, each of the PI routines are encapsulated within a docker image.
-      It avoides any dependency conflicts in between the different PI code implementation, and isolates the PI Manager machine from the PI computation effort.
+      It avoids any dependency conflicts in between the different PI code implementation, and isolates the PI Manager machine from the PI computation effort.
 
-The PI Manager has somehow (to be clarified) a local copy of the experiment files, which can be organized on the left picture of the following figure.
+The PI Manager has somehow (to be clarified) a local copy of the experiment files, which can be organized as on the left picture of the following figure.
 
 [[fig:pim_loop]]
 .Overall PI Manager processing loop
@@ -62,7 +62,7 @@ We assume that each run (iteration of the experiment with similar conditions or 
 Then The PI Manager loops on each run and docker:
 
 * For each run
-** gather all pre-processed files associated to that run, together to ny condition files describing the experimental condition.
+** gather all pre-processed files associated to that run, together to any condition files describing the experimental condition.
 ** For each PI docker,
 *** run the PI docker with current run files
 *** store each PI score, related to a unique run PI evaluation
@@ -98,7 +98,7 @@ with:
 
 - `README.md` (or any rich text format): should contain common indications about the repository content, purposes, maintainer, ...
 - `src` should gather all the code of the PI algorithm.
-   If the code organization is let to the PI algorithm developer, we strongly advice following good software practices.
+   If the code organization is left to the PI algorithm developer preferences, we strongly advice following good software practices.
 - `test_data`: folder containing reference input data and associated expected output result that can be used for making code testing.
 - `compile.sh`: shell script containing the command to build the program
 - `DockerFile`: file indicating how to create the Docker image for that code.
