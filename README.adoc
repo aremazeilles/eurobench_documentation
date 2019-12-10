@@ -1,0 +1,6 @@
+# Eurobench Software documentation
+
+To gather documentation on software aspects.
+
+* link:pi_spec.adoc[Performance Indicator Algorithm specification]
+
