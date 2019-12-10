@@ -1,3 +1,5 @@
-# software_documentation
+# Eurobench Software documentation
 
-To gather documentation on software aspects
+To gather documentation on software aspects.
+
+* <<pi_spec.adoc,Performance Indicator Algorithm specification>> 
