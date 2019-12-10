@@ -189,7 +189,8 @@ pi_name: velocity
 Right now, the first option is implemented, i.e. one file per PI score.
 
 Note that providing several PI through a unique source code or algorithm is an option provided to the developer.
-A protocol can have various PI associated to it, each of them being associated to different algorithm or code.
+But in any case, we should have as many files generated as PI computed.
+Indeed, a protocol can have various PI associated to it, each of them being associated to different algorithm or code.
 
 The scoring is performed **per run**.
 It is assumed that at the definition of the PI in the database it has been also provided information for:
