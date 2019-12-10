@@ -2,6 +2,5 @@
 
 To gather documentation on software aspects.
 
-* <<pi_spec.adoc,Performance Indicator Algorithm specification>> 
-* link:pi_spec.adoc[Docs]
-* link:pi_spec[Docs2]
+* link:pi_spec.adoc[Performance Indicator Algorithm specification]
+
