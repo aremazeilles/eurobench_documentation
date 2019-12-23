@@ -1,0 +1,611 @@
+= Eurobench Data Format
+:source-highlighter: pygments
+:pygments-style: emacs
+:icons: font
+:toc: right
+:linkattrs:
+:sectnums:
+
+
+== Instructions:
+
+This is a draft version of Data Format to be preliminary shared with all Third Parties of the EUROBENCH project.
+The goal is to have a comprehensive and flexible data structure for the EUROBENCH Database.
+Please:
+
+1. Read carefully the document.
+2. Provide any comment, directly on this document
+
+According to your comments, we will release a final version of Data Structure.
+Afterwards, we will ask you to provide a “Beta dataset” (e.g. data from only one subject) that meet this Data Structure (send to: anthony.remazeilles@tecnalia.com Leader of WP6: Software Development).
+We will use these data confidentially to test the first Beta version of the Database, in order to prepare in advance for the integration phase.
+
+Thank you for your collaboration!
+
+The EUROBENCH Team
+
+== Motivation
+
+The experimental datasets expected to populate the EUROBENCH database will engage data coming from a lot of different sensing devices, from different laboratories and will be designed for different benchmarking scenarios and algorithms.
+In order to store these experiments in a consistent way, a common, comprehensive and flexible data format is necessary.
+Other motivations for the specification of a unique data format and conventions are:
+
+* Ensuring automatic computation of Performance Indicators (PIs) based on recorded data.
+* Maximising compatibility between PIs that are common to several protocols (e.g. step length can be calculated in many ways and under many different conditions).
+* Allowing data collection and PI computation to happen independently in different times and location (e.g. enabling any remote user to benchmark an experiment performed in a specific laboratory setting).
+
+== Data files and format
+
+In this section we propose a common format for the set of files collected during an experiment.
+An experiment should correspond to a set of files per run footnote:[Each repetition of an experiment. Synonym of trial (e.g. One experiment has 10 subjects and each subject executes 5 runs).].
+This set of files  will be taken as input by a benchmarking routine that, after processing these data, will return a set of benchmarking score(s) (see Figure 1).
+
+[[fig:df_processing_chain]]
+.Main elements of the data processing chain
+image::img/df_processing_chain.png[align=center, title-align=center]
+
+
+
+The following types of data are considered:
+
+* Raw Data: Data directly collected by the sensors (e.g. marker trajectory).
+* Pre-processed Data: Data ready to be used as input by the benchmarking routine (e.g. joint angles).
+* Other kinds of data (e.g. Unified Robot Description Format, or URDF)
+
+In the following sections, each of these types of data will be defined and detailed.
+
+.Pre-processed files format
+[options="header"]
+|================
+| File name | Format | Content
+| subject_N_jointAngles_R  | csv | Joint Angles
+| subject_N_jointTorques_R | csv | Joint Torques
+| subject_N_jointTrajectories_R | csv | Joint Trajectories
+| subject_N_grf_R | csv | Ground reaction Forces
+| subject_N_emg_R | csv | Electromyography
+| WR_N_config_M_segments | yaml | Segments descriptions files
+| Subject_N_Anthropometry | yaml | Anthropometry description
+| Humanoid_N_Anthropometry | yaml | Humanoid description
+| subject_N_gaitEvents_R | yaml | Gait Events
+| subject_N_testbedLabel_R | yaml | testbed specifics
+|================
+
+=== Raw Data Files
+
+**Description**: This set of files should contain all data collected directly from the sensory system/s present in the benchmarking scenario (i.e. 3D marker positions, IMUs signals, forces from platforms, etc...).
+
+**Number of files**: One file per run and sensory system should be provided. One file with data description in .txt.
+
+**File format**: These files are not supposed to be processed automatically by the EUROBENCH Benchmarking routines, so that a specific format is not defined. Data can be provided as the device drivers provide  them  (e.g. c3d, rosbag, .txt, .csv, ...). However, a description of the file content and acquisition frequency should be provided in a .txt file to help the user open and use these files.
+
+=== Unified Robot Description Format (URDF) file
+
+**Description**: It is the standard file (written in XML) used in ROS to describe a robot’s model (kinematics, dynamics and sensors).
+This file must be provided if the experiments enroll a humanoid robot.
+From this file, the number of joints, its labels and the degrees of freedom can be extracted in order to construct the pre-processed joint angles file, and for the definition of the anthropometric file in humanoids.
+
+**Number of files**: all necessary files to describe the complete robotic structure. 
+
+**File format**: .urdf.
+The use of .urdf files also has shortcomings such as the lack of friction (important for e.g. walking steeper slope angles).
+In order to resolve these issues, EUROBENCH will use Gazebo as a simulator.
+This allows to enhance the .urdf with <gazebo/> tags, permitting the injection of features from the gazebo file format (.sdf) while retaining the most common file format, .urdf.
+
+== Pre-Processed Data Files
+
+This set of files should contain all the data processed from the raw data and needed for running a specific benchmarking routine.
+As described in each of the following sub-sections, we envision one format per type of information.
+These files should be preferably agnostic of the specific sensor used to capture it, so that the benchmarking routines can be launched independently of the acquisition devices. All time-series files should contain timestamped information, since timestamp reference will be shared by all files describing a same experiment run.
+
+An experiment can provide one or more of the following file types.
+If a  testbed or a benchmarking routine requires a data type not included in this document, please contact the EUROBENCH Team.
+We will work together with you to create the required data file type. 
+
+=== Joint angles file
+
+**Description**: This file shall contain the time-series of all measured joint angles, expressed in YXZ Cardan Angles, as defined in the “Angle Definition” section.
+
+**Name of the file**: `subject_N_jointAngles_R`  where N = subject’s number and R = run number. Use appropriate leading zeros for R and N to ensure proper ordering of files.
+
+**File format**: `.csv`
+
+**File structure**:
+
+* 1st column: time-stamp (units: milliseconds).
+* 1st row: header with M+1 labels  were  M = number of angles considered.
+* From 2nd row: angle values, each corresponding to one time sample.
+
+**Header labels**: 1st-column label: “time”.
+All other labels: see ‘Angle definition’ section. 
+
+**Units**: Degrees
+
+=== Joint torques file
+
+**Description**: This file shall contain all the measured joint torques.
+
+**Name of the file**: subject_N_jointTorques_R  where  N = subject’s number and R = run number.
+Use appropriate leading zeros for R and N to ensure proper ordering of files.
+
+**File format**: .csv
+
+**File structure**:
+
+* 1st column: time-stamp (units: milliseconds).
+* 1st row: header with (3*M)+1 labels  were  M = number of joints.
+* From 2nd row: torque values, each corresponding to one time sample.
+
+**Header labels**: 1st-column label: “time”.
+All other labels: see the ‘Angle definition’ section.
+
+**Units**: Nm
+
+=== Joint centers 3D trajectories file
+
+**Description**: This file shall contain all the measured trajectories of the joints.
+
+**Name of the file**: subject_N_jointTrajectories_R  where  N = subject’s number and R = run number.
+Use appropriate leading zeros for R and N to ensure proper ordering of files.
+
+**File format**: .csv
+
+**File structure**:
+
+* 1st column: time-stamp (units: milliseconds).
+* 1st row: header with (3*M)+1 labels  were  M = number of joints.
+* From 2nd row: 3D trajectories, each corresponding to one time sample.
+
+**Header labels**: 1st-column label: “time”.
+All other labels: see the Figure 2.
+
+**Units**: Millimeters
+
+[[fig:df_joint_center_label]]
+.Labels of Joints centers
+image::img/df_joint_center_label.png[align=center, title-align=center]
+
+=== Ground Reaction Forces file
+
+**Description**: This file shall contain forces measured by force platforms.
+
+**Name of the file**: subject_N_grf_R where N = subject’s number and R = run number.
+Use appropriate leading zeros for R and N to ensure proper ordering of files.
+
+**File format**: .csv
+
+**File structure**:
+
+* 1st column: time-stamp (units: milliseconds).
+* 1st row: 9+1 labels.
+* From 2nd row: GRF, each corresponding to one time sample.
+
+**Header labels**: 1st-column label: “time”.
+Other labels:
+
+* force: `F_x` , `F_y` ,  `F_z`
+* centre of pressure: `P_x`, `P_y`, `P_z`
+* moment: `T_x` , `T_y` , `T_z`
+
+**Units**: Newtons, meters and Nm
+
+=== Electromyography file
+
+**Description**: This file shall contain all the recorded EMG signals from the human subject.
+
+**Name of the file**: subject_N_emg_R, where N = subject’s number and R = run number.
+Use appropriate leading zeros for R and N to ensure proper ordering of files.
+
+**File format**: .csv
+
+**File structure**:
+
+* 1st column: time-stamp (units: milliseconds).
+* 1st row: k+1 labels, with K = number of muscles.
+* From 2nd row: EMG, each corresponding to one time sample.
+
+**Header labels**: 1st-column label: “time”.
+All other labels: see the Figure 2.
+
+.List of EMG muscles and labels considered.
+[options="header"]
+|================
+| Muscle | Label
+| Abductor Longus | AbLo
+| Biceps Femoris | BiFe
+| Gastrocnemious Lateralis |GaLa
+| Gastrocnemious Medialis | GaMe
+| Gluteus Maximus | GlMa
+| Gluteus Medialis | GlMe
+| Gracilis | Gra
+| Peroneus Longus | PeLo
+| Rectus Femoris | ReFe
+| Sartorius | Sar
+| Semimembranosus | SeMe
+| Semitendinosus | SeTe
+| Serratus Anterior | SeAn
+| Soleus | Sol
+| Tensor Fascia Latae | TeFa
+| Tibialis Anterior | TiAn
+| Extensor Digitorum | ExDi
+| Vastus Lateralis | VaLa
+| Vastus Medialis  |  VaMe
+|================
+
+Units: Millivolts.
+
+=== WR segments description (URDF) file
+
+**Description**: Standard file used in robotics in XML format to describe the dimensions, the physics properties (COM, mass, friction) and inertial properties of each one of the segments of the worn robot.
+All these segments are linked by joints (fixed, prismatic, rotational) forming a single tree.
+Moreover, it allows to use a wide variety of simulators commonly used in robotics such as Gazebo.
+
+**Number of files**: Usually each segment, sensor, or set of segments such as a leg are described in a single file. Finally the whole robot includes all these files in a single file which is the one loaded.
+
+**File Format**: .urdf. This format file allows to include Gazebo simulation tags, such as friction properties, or visualization properties that allow to simulate more realistic behaviours.
+This file shall contain the dimensions and inertial properties of each segment of the worn robot with respect to the reference system of the human body segment connected to it.
+This is needed to enable dynamic simulators to model the human-WR system.
+
+**name of the file**: WR_N_config_M_segments, where N is the WR number and M is the configuration number (for resizable robots this could be useful).
+
+**file format**: .yaml
+
+=== Human anthropometric measures file
+
+**Description**: This file shall contain all the anthropometric measurements presented in Table 1 (Winter, 2009) and Figure 3.
+
+**Name of the file**: Subject_N_Anthropometry, where N = subject’s number.
+Use appropriate leading zeros for R and N to ensure proper ordering of files.
+
+**File format**: .yaml
+
+**File structure**:Set of lines containing key: value where the key is provided in Table 2.
+
+.List of body segments ang joints considered in our kinematic model proposed.
+[options="header"]
+|================
+| Group | Segments | Delimiting Joints | key label
+.4+| **Upper limb**
+  | Hand | wrist axis / 2nd knuckle middle finger | hand
+  | Forearm | elbow axis / ulnar styloid | forearm
+  | Upper Arm | glenhumeral axis / elbow axis | upper_arm
+  | Shoulder| sternoclaviar joint / glenhumeral axis | shoulder
+.5+| **Lower limb**
+  | Foot | lateral malleolus / head 2nd metatarsal | foot
+  | Shank | femoral condyles / medial malleolus | shank
+  | Thigh | greater trochanter / femoral condyles | thigh
+  | Pelvis | L4-L5 / greater trochanter | pelvis
+  | Pelvis width| From hip to hip | pelwis_w
+2+| **Head** | C7-T1 & first rip / ear canal | head
+2+| **Trunk** | C7-T1 / T12-L1 & diaphragm | trunk
+2+| **abdomen** | T12-L1 / L4-L5 | abdomen
+|================
+
+Units: Meters
+
+[[fig:df_segment_label]]
+.Segments Labels
+image::img/df_segment_label.png[align=center, title-align=center]
+
+
+=== Humanoid anthropometric measures file
+
+**Description**: This file shall contain all the anthropometric measurements from the humanoid robot mapped to the above proposed human segments (see Table 2 and Figure 3).
+
+**Name of the file**: Humanoid_N_Anthropometry, where N = humanoid’s identifier. Use appropriate leading zeros for R and N to ensure proper ordering of files.
+
+**File format**: .yaml
+
+**File structure**:Set of lines containing key: value where the key must contain the corresponding robot segment name.
+
+**Units**: Meters.
+
+=== Gait events file
+
+**Description**: This file shall include all detected (or calculated) heel strike and toe off gait events.
+
+**Name of the file**: subject_N_gaitEvents_R  where  N = subject’s number and R= run number.
+Use appropriate leading zeros for R and N to ensure proper ordering of files.
+
+**File format**: .yaml
+
+**File structure**:Set of lines containing key: vector of values. Where the key is provided on the last column of Table 3.
+
+**File content**: See Table 3
+
+.List of gait events and its considered labelling
+[options="header"]
+|====================
+| Gait Event  | Label
+| Right Heel Strike | r_heel_strike
+| Left Heel Strike | l_heel_strike
+| Right Toe Off | r_toe_off
+| Left Toe Off | l_toe_off
+|====================
+
+**Units**: Seconds
+
+=== Testbed-related data file
+
+**Description**: This file shall contain all the data that describes the configuration of the specific testbed (e.g. for slope: slope angle; for stairs: step height; etc…). 
+
+**File format**: .yaml
+
+**File name**: subject_N_testbedLabel_R where  N = subject’s number, R = run number and testbedLabel is shown in Table 4.
+Use appropriate leading zeros for R and N to ensure proper ordering of files.
+New testbedLabel can be added in the future, depending on new testbeds available.
+
+
+.List of labels for testbeds
+[options="header"]
+|=======================
+| Testbed | testbedLabel
+| Walking on flat ground | flat
+| Walking on slopes | slope
+| Walking on stairs | stairs
+| Overcoming obstacles | obstacles
+| Walking on irregular hard terrains | irregular
+| Walking on treadmill | treadmill
+| Walking/standing on moving surfaces | moving
+| Walking/standing during pushes | pushes
+| Standing during manipulation skills | manipulation
+| Picking and carrying objects | pickAndCarry
+| Chair sitting and standing | chair
+| Walking on laterally inclined surfaces | lateral
+| Walking on virtual terrains | virtual
+| Walking on soft terrains | soft
+| Opening/closing doors | door
+| Moving in narrow spaces | narrow
+| Pushing a shopping trolley | trolley
+|=======================
+
+
+**File structure**: Set of lines containing key: values.
+Where each key is one testbed-related data.
+keys must be self-explicative.
+different words on the same key must be separated by underscore.
+keys must be written in lowercase.
+
+=== Human Factor metrics
+
+To be completed.
+
+== Angles definition
+
+All the angle definitions here presented are based on the Plug-in Gait model from Vicon.
+Joint angles are represented by the YXZ Cardan angles derived by comparing the relative orientations of the proximal (parent) and distal (child) segments around each joint (see Figure 4).
+
+[[fig:df_angle_convention]]
+.Representation of the lower limb angle convention. Figure taken from https://docs.vicon.com/display/Nexus25/About+the+Plug-in+Gait+model#AboutthePlug-inGaitmodel-PIGRefs[Vicon Documents: Plugin Gait kinematic variables]
+image::img/df_angle_convention.png[align=center, title-align=center]
+
+
+Figure 4. 
+
+=== Hip
+
+* **Hip ab/adduction (Relative) (Label: hip_adduction)** Hip adduction is measured in the plane of the hip flexion axis and the knee joint centre.
+  The angle is calculated between the long axis of the thigh and the frontal axis of the pelvis projected into this plane.
+  A positive number corresponds to an adducted (inwardly moved) leg.
+
+* **Hip flexion/extension (Relative) (Label: hip_flexion)** Hip flexion is calculated about an axis parallel to the pelvic transverse axis which passes through the hip joint centre.
+  The sagittal thigh axis is projected onto the plane perpendicular to the hip flexion axis.
+  Hip flexion is then the angle between the projected sagittal thigh axis and the sagittal pelvic axis.
+  A positive (Flexion) angle value corresponds to the situation in which the knee is in front of the body.
+
+* **Hip rotation (Relative) (Label: hip_rotation)** Hip rotation is measured about the long axis of the thigh segment and is calculated between the sagittal axis of the thigh and the sagittal axis of the pelvis projected into the plane perpendicular to the long axis of the thigh.
+  The sign is such that a positive hip rotation corresponds to an internally rotated thigh.
+
+=== Knee
+
+Knee angles are derived from the femur and the untorsioned tibia segments.
+
+* **Knee ab/adduction (Knee valgus/varus) (Relative) (Label: knee_adduction)** This is measured in the plane of the knee flexion axis and the ankle center, and is the angle between the long axis of the shank and the long axis of the thigh projected into this plane.
+  A positive number corresponds to varus (outward bend of the knee).
+
+* **Knee flexion/extension (Relative) (Label: knee_flexion)** The sagittal shank axis is projected into the plane perpendicular to the knee flexion axis.
+  Knee flexion is the angle in that plane between this projection and the sagittal thigh axis.
+  The sign is such that a positive angle corresponds to a flexed knee.
+
+* **Knee rotation (Relative) (Label: knee_rotation)** Knee rotation is measured about the long axis of the shank.
+  It is measured as the angle between the sagittal axis of the shank and the sagittal axis of the thigh, projected into a plane perpendicular to the long axis of the shank. 
+  The sign is such that a positive angle corresponds to internal rotation.
+  If a tibial torsion value is present in the Session form, it is subtracted from the calculated knee rotation value.
+  A positive tibial torsion value therefore has the effect of providing a constant external offset to knee rotation.
+
+=== Ankle
+
+Ankle angles are derived from the torsioned tibia and the foot segment.
+
+* **Ankle dorsi/plantar flexion (Relative) (Label: ankle_flexion)** The foot vector is projected into the foot sagittal plane.
+  The angle between the foot vector and the sagittal axis of the shank is the foot dorsi/plantar flexion.
+  A positive number corresponds to dorsiflexion.
+
+=== Foot
+
+In the case of the feet, because they are defined in a different orientation to the tibia segments, an offset of 90 degrees is added to the flexion angle. This does not affect the Cardan angle calculation of the other angles because the flexion angle is the first in the rotation sequence.
+
+* **Foot progression (Absolute) (Label: foot_progression)** This is the angle between the foot vector (projected into the laboratory's transverse plane) and the sagittal laboratory axis. A positive number corresponds to an internally rotated foot.
+
+* **Foot rotation (Relative) (Label: foot_rotation)** This is measured about an axis perpendicular to the foot vector and the ankle flexion axis.
+  It is the angle between the foot vector and the sagittal axis of the shank, projected into the foot transverse plane.
+  A positive number corresponds to an internal rotation.
+
+=== Shoulder
+
+* **Shoulder ab/adduction (Relative) (Label: shoulder_adduction)** The angle is calculated between the transverse axis of the humerus and the transverse axis of the thorax around a floating sagittal axis.
+  A negative number corresponds to an abducted (outwardly moved) arm.
+
+* **Shoulder flexion/extension (Relative) (Label: shoulder_flexion)** Shoulder flexion is calculated about an axis parallel to the thorax transverse axis.
+  Shoulder flexion is the angle between the projected sagittal-humerus axis and the sagittal-thorax axis around the fixed transverse axis of the thorax.
+  A positive (flexion) angle value corresponds to the situation in which the arm is in front of the body.
+
+* **Shoulder rotation (Relative) (Label: shoulder_rotation)** Shoulder rotation is measured about the long axis of the humerus segment and is calculated between the sagittal axis of the humerus and the sagittal axis of the thorax around a floating frontal axis.
+  The sign is such that a positive shoulder rotation corresponds to an internally rotated humerus.
+
+=== Elbow
+
+* **Elbow flexion/extension (Relative) (Label: elbow_flexion)** Elbow flexion is calculated between the sagittal radius axis and the sagittal humerus axis around the fixed transverse axis of the humerus.
+  A positive number indicates a flexion angle.
+
+=== Wrist
+
+* **Wrist ab/adduction (Relative) (Label: wrist_adduction)** The angle is calculated between the transverse axis of the hand and the transverse axis of the radius around a floating sagittal axis.
+  A positive number corresponds to the hand abducting toward the thumb.
+
+* Wrist flexion/extension (Relative) (Label: wrist_flexion) Wrist flexion is the angle between the sagittal hand axis and the sagittal radius axis around the fixed transverse axis of the radius.
+  A positive (flexion) angle value corresponds to the situation in which the wrist bends toward the palm.
+
+* **Wrist rotation (Relative) (Label: wrist_rotation)** Wrist rotation is measured about the long axis of the hand segment and is calculated between the sagittal axis of the hand and the sagittal axis of the radius around a floating frontal axis.
+  The sign is such that a positive wrist rotation corresponds to the hand rotating in the direction of the thumb.
+
+=== Waist
+
+* **Pelvic obliquity (Absolute) (Label: pelvis_obliquity)** Pelvic obliquity is measured about an axis of rotation perpendicular to the axes of the other two rotations.
+  This axis does not necessarily correspond with any of the laboratory or pelvic axes. Pelvic obliquity is measured in the plane of the laboratory transverse axis and the pelvic frontal axis.
+  The angle is measured between the projection into the plane of the transverse pelvic axis and projection into the plane of the laboratory transverse axis (the horizontal axis perpendicular to the subject's axis of progression).
+  A negative pelvic obliquity value (down) relates to the situation in which the opposite side of the pelvis is lower.
+
+* **Pelvic rotation (Absolute) (Label: pelvis_rotation)** Pelvic rotation is calculated about the frontal axis of the pelvic coordinate system.
+  It is the angle measured between the sagittal axis of the pelvis and the sagittal laboratory axis (axis closest to subject's direction of progression) projected into the pelvis transverse plane.
+  A negative (external) pelvic rotation value means the opposite side is in front.
+
+* **Pelvic tilt (Absolute) (Label: pelvis_tilt)** Pelvic tilt is normally calculated about the laboratory's transverse axis.
+  If the subject's direction of forward progression is closer to the laboratory's sagittal axis, however, then pelvic tilt is measured about this axis.
+  The sagittal pelvic axis, which lies in the pelvis transverse plane, is normally projected into the laboratory sagittal plane.
+  Pelvic tilt is measured as the angle in this plane between the projected sagittal pelvic axis and the sagittal laboratory axis.
+  A positive value (up) corresponds to the normal situation in which the PSIS is higher than the ASIS.
+
+=== Spine
+
+* **Spine flexion/extension (Relative) (Label: spine_flexion)** Spine flexion is the angle between the sagittal thorax axis and the sagittal pelvis axis around the fixed transverse axis of the pelvis. A positive (flexion) angle value corresponds to the situation in which the thorax is tilted forward.
+
+* **Spine lateral flexion (Relative) (Label: spine_lateralFlexion)** The angle between the long axis of the thorax and the long axis of the pelvis, around a floating transverse axis.
+
+* **Spine rotation (Relative) (Label: spine_rotation)** It is measured as the angle between the sagittal axis of the thorax and the sagittal axis of the pelvis, around a floating frontal axis.
+  As the thorax frontal axis points downward while the pelvis frontal axis points upward, a positive angle therefore refers to rotation of the thorax toward the opposite side.
+
+* **Thorax obliquity (Absolute) (Label: thorax_obliquity)** Thorax obliquity is measured about an axis of rotation perpendicular to the axes of the other two rotations.
+  This axis does not necessarily correspond with any of the laboratory or thorax axes. Thorax obliquity is measured in the plane of the laboratory transverse axis and the Thorax frontal axis.
+  The angle is measured between the projection into the plane of the transverse thorax axis and projection into the plane of the laboratory transverse axis (the horizontal axis perpendicular to the subject's axis of progression.
+  As the thorax segment is defined with the frontal Z axis point downward a positive (up) thorax obliquity angle relates to the situation in which the opposite side of the thorax is lower.
+
+* **Thorax rotation (Absolute) (Label: thorax_rotation)** Thorax rotation is calculated about the frontal axis of the thorax coordinate system.
+  It is the angle measured between the sagittal axis of the thorax and the sagittal laboratory axis (axis closest to subject's direction of progression) projected into the thorax transverse plane.
+  As the thorax segment is defined with the frontal Z axis point downward a positive (internal) thorax rotation value means the opposite side is in front.
+
+* **Thorax tilt (Absolute) (Label: thorax_tilt)** Thorax tilt is normally calculated about the laboratory's transverse axis.
+  If the subject's direction of forward progression is closer to the laboratory's sagittal axis, however, then thorax tilt is measured about this axis.
+  The sagittal thorax axis is normally projected into the laboratory sagittal plane. Thorax tilt is measured as the angle in this plane between the projected sagittal thorax axis and the sagittal laboratory axis.
+  A positive value (up) corresponds to forward thorax tilt.
+
+=== Neck
+
+* **Head obliquity (Absolute) (Label: head_obliquity)** Head lateral tilt is measured about an axis of rotation perpendicular to the axes of the other two rotations.
+  This axis does not necessarily correspond with any of the laboratory or head axes.
+  Head lateral tilt is measured in the plane of the laboratory transverse axis and the head frontal axis.
+  The angle is measured between the projection into the plane of the transverse head axis and projection into the plane of the laboratory transverse axis (the horizontal axis perpendicular to the subject's axis of progression).
+  A negative head obliquity value (down) relates to the situation in which the opposite side of the head is lower.
+
+* **Head rotation (Absolute) (Label: head_rotation)** Head rotation is calculated about the frontal axis of the head coordinate system.
+  It is the angle measured between the sagittal axis of the head and the sagittal laboratory axis (axis closest to subject's direction of progression) projected into the head transverse plane.
+  A negative (external) head rotation value means the opposite side is in front.
+
+* **Head tilt (Absolute) (Label: head_tilt)** Head tilt is normally calculated about the laboratory's transverse axis.
+  If the subject's direction of forward progression is closer to the laboratory's sagittal axis, however, then head tilt is measured about this axis.
+  The sagittal head axis is normally projected into the laboratory sagittal plane.
+  Head tilt is measured as the angle in this plane between the projected sagittal head axis and the sagittal laboratory axis.
+  A positive value (up) corresponds to forward head tilt.
+
+* **Neck flexion/extension (Relative) (Label: neck_flexion)** The sagittal head axis is projected onto the plane perpendicular to the thorax sagittal axis.
+  Neck flexion is then the angle between the projected sagittal head axis and the sagittal thorax axis around the fixed transverse axis of the thorax.
+  A positive (flexion) angle value corresponds to the situation in which the head is tilted forward.
+
+* **Neck lateral flexion (Relative) (Label: neck_lateral_flexion)** The angle between the long axis of the head and the long axis of the thorax around a floating transverse axis.
+
+* **Neck rotation (Relative) (Label: neck_rotation)** Neck rotation is measured about the long axis of the head.
+It is measured as the angle between the sagittal axis of the head and the sagittal axis of the thorax, around a floating frontal axis.
+As the thorax frontal axis points downward while the head frontal axis points upward, a positive angle therefore refers to rotation of the head toward the opposite side.
+
+== Examples
+
+This section is still under construction. Our intention is to provide a complete set of examples for three fields: human, humanoids, and wearable robots locomotion dataset.
+
+=== Example 1
+
+The Laboratory HumanLab has done a study on Parkinson’s patients and recorded two subjects during overground walking, with inertial sensors. Three runs were recorded per subject. These are the files that they have produced to be compatible with the EUROBENCH Database.
+
+* Raw Files
+** raw_data.txt
+** subject_01_imu_raw_01.cappa
+** subject_01_imu_raw_02.cappa
+** subject_01_imu_raw_03.cappa
+** subject_02_imu_raw_01.cappa
+** subject_02_imu_raw_02.cappa
+** subject_02_imu_raw_03.cappa
+* Anthropometric Files
+** subject_01_anthropometry.yaml
+** subject_02_anthropometry.yaml
+* Electromyography Files
+** subject_01_emg_01.csv
+** subject_01_emg_02.csv
+** subject_01_emg_03.csv
+** subject_02_emg_01.csv
+** subject_02_emg_02.csv
+** subject_02_emg_03.csv
+* Gait Events Files
+** subject_01_gaitEvents_01.csv
+** subject_01_gaitEvents_02.csv
+** subject_01_gaitEvents_03.csv
+** subject_02_gaitEvents_01.csv
+** subject_02_gaitEvents_02.csv
+** subject_02_gaitEvents_03.csv
+* Testbed related data file
+** subject_01_flat_01.yaml
+** subject_01_flat_02.yaml
+** subject_01_flat_03.yaml
+** subject_02_flat_01.yaml
+** subject_02_flat_02.yaml
+** subject_02_flat_03.yaml
+
+=== Example 2
+The Laboratory ExoLab has done a study on healthy people wearing an H2 exoskeleton and recorded one subject during slope ascending, with optical markers. Two runs were recorded. These are the files that they have produced to be compatible with the EUROBENCH Database.
+
+* Raw Files
+** raw_data.txt
+** subject_01_markers_raw_01.cappa
+** subject_01_markers_raw_02.cappa
+* Anthropometric Files
+** subject_01_anthropometry.yaml
+* Gait Events Files
+** subject_01_gaitEvents_01.csv
+** subject_01_gaitEvents_02.csv
+* Testbed related data file
+** subject_01_slope_01.yaml
+** subject_01_slope_02.yaml
+
+=== Example 3
+
+The Laboratory HumanoidLab has done a study on the new walking pattern generator and recorded the robot during flat ground walking. Two runs were recorded. These are the files that they submit to be compatible with the EUROBENCH Database.
+
+* Raw Files
+** rosbag_01.bag (containing /tf topic)
+** rosbag_02.bag (containing /tf topic)
+** humanoid_markers_raw_01.cappa
+** humanoid_markers_raw_02.cappa
+* .urdf File
+** humanoid_lower_body.urdf
+** humanoid_upper_body.urdf
+** humanoid_feet.urdf
+** humanoid_hands.urdf
+* Gait Events Files
+** humanoid_01_gaitEvents_01.csv
+** humanoid_01_gaitEvents_02.csv
+* Testbed related data file
+** humanoid_01_flat_01.yaml
+** humanoid_01_flat_02.yaml
+
+== References
+
+* David A. Winter. Biomechanics and Motor Control of Human Movement, 4th Edition. Willey (2009)
+* https://docs.vicon.com/display/Nexus25/Plug-in+Gait+kinematic+variables[Vicon Documentation: Plug-in Gait kinematics variables]
+* https://docs.vicon.com/display/Nexus25/About+the+Plug-in+Gait+model#AboutthePlug-inGaitmodel-PIGRefs[Vison Documentation: About the Plug-in Gait model]

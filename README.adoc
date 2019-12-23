@@ -4,3 +4,12 @@ To gather documentation on software aspects.
 
 * link:pi_spec.adoc[Performance Indicator Algorithm specification]
 
+* link:data_format.adoc[Eurobench Data Format]
+
+## Additional Tools
+
+To generate locally the documentation (under Linux), use:
+
+```bash
+asciidoctor README.adoc
+```
