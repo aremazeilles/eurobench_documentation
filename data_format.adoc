@@ -245,7 +245,7 @@ Moreover, it allows to use a wide variety of simulators commonly used in robotic
 This file shall contain the dimensions and inertial properties of each segment of the worn robot with respect to the reference system of the human body segment connected to it.
 This is needed to enable dynamic simulators to model the human-WR system.
 
-**name of the file**: WR_N_config_M_segments, where N is the WR number and M is the configuration number (for resizable robots this could be useful).
+**name of the file**: `WR_N_config_M_segments`, where `N` is the WR number and `M` is the configuration number (for resizable robots this could be useful).
 
 **file format**: .yaml
 
