@@ -2,7 +2,7 @@
 :source-highlighter: pygments
 :pygments-style: emacs
 :icons: font
-:toc: right
+#:toc: right
 :linkattrs:
 :sectnums:
 
@@ -43,8 +43,6 @@ This set of files  will be taken as input by a benchmarking routine that, after 
 [[fig:df_processing_chain]]
 .Main elements of the data processing chain
 image::img/df_processing_chain.png[align=center, title-align=center]
-
-
 
 The following types of data are considered:
 
@@ -358,7 +356,6 @@ New testbedLabel can be added in the future, depending on new testbeds available
 | Pushing a shopping trolley | trolley
 |=======================
 
-
 **File structure**: Set of lines containing key: values.
 Where each key is one testbed-related data.
 keys must be self-explicative.
@@ -367,7 +364,83 @@ keys must be written in lowercase.
 
 === Human Factor metrics
 
-To be completed.
+We propose a common format for the set of files containing data regarding the user subjective evaluations of the experience of using an exoskeleton.
+We describe here all questionnaire-like output of an experimentation.
+These questionnaires can be filled by an operator observing the experimentation, or by the human subject taking part of the experimentation. This is defined by the related protocol.
+Here we focus on the representation of the questionnaires and related answers.
+
+The representation of any questionnaire is divided into two components:
+
+* The description of the questionnaire itself: `Factor Meta Data File`
+* The representation of the questionnaire answer: `Factor Data File`
+
+We propose using `csv` format for both.
+
+==== Factor Meta Data File
+
+**Description**: This file contains the specification of each question of the questionnaire. That file should be part of the protocol itself. It should not vary from an experimentation to another.
+
+**Name of the file**: `questionnaire_topic.csv`
+
+**File format**: `.csv`
+
+**File structure**: a table-like structure with the following content:
+
+
+.Meta Data File structure sample
+[options="header"]
+|=======================
+| itemID | type | options | text | answer_unit
+| 0 | | | This is the title of the questionnaire? |
+| 1	| value	| float > 0	| Time required to donning the exoskeleton | sec
+| 2	| value	| int>0	| Number of steps climbed and down | number
+| 3	| boolean	|	| Did the user stumble when ascending stairs | boolean
+| X |	likert |	[[0, “Totally disagree”], [1, “Totally agree”]] | The use of the device was very easy. |
+| Y	| text | | How is perceived the system by the user |
+| Z	| multiselect	| [“Left knee”, “left ankle”, “right knee”, “right ankle”, “none”] |	Were you perceiving unexpected pressure on some limbs? |
+| W | select | [“Left knee”, “left ankle”, “right knee”, “right ankle”, “none”]	| Which limb was receiving most pressure? |
+|=======================
+
+With:
+
+* `itemID`: unique identifier (in the file) of the item.
+  It can be a string, and contain any complex structure.
+  The only constraint is that it has to be unique for the given questionnaire.
+* `type`: definition of the type of answer expected
+** Possible values: `value`, `text`, `boolean`, `likert`, `select`, `multi_select`
+* `options`: additional information to represent the answer options (if needed)
+* `text`: item text
+* `unit`: answer unit indication (if any)
+
+==== Factor Data File
+
+**Description**: This file only contains the answers to each of the question asked.
+
+**Filename** : `questionnaire_topic_subject_N.csv`
+
+**File format**: `.csv`
+
+**File structure**: a table structure with the following content:
+
+
+.Meta Data File structure sample
+[options="header"]
+|================
+| itemID | answer
+| 2 | 4
+| 1 | 4.8
+| Y | "The installation was complex"
+| X | 2
+| 3 | True
+| Z | [0, 3]
+| W | 3
+|================
+
+With:
+
+* `itemID`: the ID of the question answered, in relation with the questionnaire description file
+* `answer`: the response of the person interviewed
+* The administration order being implicitely encoded in the row order (i.e first question: 2, 2nd: 1, 3rd: Y, ….
 
 == Angles definition
 
@@ -377,9 +450,6 @@ Joint angles are represented by the YXZ Cardan angles derived by comparing the r
 [[fig:df_angle_convention]]
 .Representation of the lower limb angle convention. Figure taken from https://docs.vicon.com/display/Nexus25/About+the+Plug-in+Gait+model#AboutthePlug-inGaitmodel-PIGRefs[Vicon Documents: Plugin Gait kinematic variables]
 image::img/df_angle_convention.png[align=center, title-align=center]
-
-
-Figure 4. 
 
 === Hip
 
