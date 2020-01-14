@@ -395,7 +395,7 @@ We propose using `csv` format for both.
 | 1	| value	| float > 0	| Time required to donning the exoskeleton | sec
 | 2	| value	| int>0	| Number of steps climbed and down | number
 | 3	| boolean	|	| Did the user stumble when ascending stairs | boolean
-| X |	likert |	[[0, “Totally disagree”], [1, “Totally agree”]] | The use of the device was very easy. |
+| X |	likert |	[[1, "I strongly disagree”, [2, "I disagree”], [3, "I slightly disagree”], [4, "Neutral”], [5, "I slightly agree”], [6. "I agree”], [7, "I strongly agree”]] | The use of the device was very easy. |
 | Y	| text | | How is perceived the system by the user |
 | Z	| multiselect	| [“Left knee”, “left ankle”, “right knee”, “right ankle”, “none”] |	Were you perceiving unexpected pressure on some limbs? |
 | W | select | [“Left knee”, “left ankle”, “right knee”, “right ankle”, “none”]	| Which limb was receiving most pressure? |
