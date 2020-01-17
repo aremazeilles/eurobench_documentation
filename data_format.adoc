@@ -7,7 +7,7 @@
 :sectnums:
 
 
-== Instructions:
+== Instructions
 
 This is a draft version of Data Format to be preliminary shared with all Third Parties of the EUROBENCH project.
 The goal is to have a comprehensive and flexible data structure for the EUROBENCH Database.
