@@ -4,7 +4,7 @@ To gather documentation on software aspects.
 
 * <<pi_spec.adoc#Introduction, Performance Indicator Algorithm specification>>
 
-* <<data_format.adoc#Instructions, Eurobench Data Format>>
+* <<data_format.adoc#Modification Instructions, Eurobench Data Format>>
 
 ## Additional Tools
 

@@ -2,7 +2,7 @@
 :source-highlighter: pygments
 :pygments-style: emacs
 :icons: font
-#:toc: right
+:toc: right
 :linkattrs:
 :sectnums:
 
