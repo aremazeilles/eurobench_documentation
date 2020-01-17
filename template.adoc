@@ -1,0 +1,280 @@
+= Eurobench template
+:source-highlighter: pygments
+:pygments-style: emacs
+:icons: font
+:toc: right
+:linkattrs:
+:sectnums:
+
+== Introduction
+
+The addition of new material to the Eurobench Benchmarking Software requires providing a set of information for filling the database.
+This is what we describe here.
+
+All tables are followed by an explanation of each of the fields that deserve it.
+
+
+== Scenario sheet
+
+.Scenario Template sheet
+[options="header"]
+|=================
+| Item | Template designer description
+| short name |
+| Description |
+| Image |
+| Assessed System Abilities |
+|=================
+
+* `short name`: single sentence scenario description.
+   Likely to be used for filtering purposes in the front-end to help the user find the appropriate protocol.
+* `description`: extended description of the scenario.
+  Considering structured text (markdown or adoc), possibly accepting latex equations.
+* `image`: single image that can be provided to visually illustrate the scenario
+  Logo are accepted.
+
+== Protocol sheet
+
+The table is described per block just for easing the description of it.
+
+.Protocol Template sheet - Generalities
+[options="header"]
+|=================
+| Item | Template designer description
+| name |
+| Definition |
+| Image |
+| Keywords |
+| Suitable Bipedal systems |
+| Associated PI Algo |
+|=================
+
+* `Name`: single sentence protocol description
+* `Definition`: General description of the protocol (like a sentence).
+  Considering structured text (markdown or adoc), possibly accepting latex equations.
+* `Image`: illustrative image
+* `keywords`: filtering terms that can be associated to that protocol.
+  Can be related to the action asked to the subject or testbed characteristics...
+* `Suitable bipedal systems`: definition of the subjects for which the protocol is designed.
+  Can only contain values like [`humanoid`, `prosthesis`, `exoskeleton`, `human`], where `human` stands for a human subject not using any robotic device.
+* `Associated PI algo`: List of software routines that are to be used to score any experiment following this protocol.
+  Several can be provided (considering that a PI algo can compute several PI scores).
+  Should be related to the short name provided within the <<PI Algo sheet>>.
+
+.Protocol Template sheet - Controlled variables
+[options="header"]
+|=================
+| name | Definition | type | range | unit
+| ... | | | |
+| ... | | | |
+|=================
+
+
+Controlled variables are conditional settings that should be filled by an experimenter, to describe their experimentation conditions.
+These variables are not likely to be changed during an experiment trial execution.
+As an example, for a walking on slope protocol, the controlled variables could be the slope angle and the slope length.
+
+* `Name`: single word.
+  If needed `under_scored` like name can be used.
+* `Definition`: text description of the protocol.
+* `type`: string, integer, float...
+* `range`: [minimum, maximum] value the variable can have
+* `unit`: if any, variable unit (preferably using the https://en.wikipedia.org/wiki/International_System_of_Units[International System of Units convention]).
+
+
+.Protocol Template sheet - Testbed
+[options="header"]
+|=================
+| Sensor | Type | Technical file sheet
+| ... | |
+| ... | |
+| Actuator | Type | Technical file sheet
+| ... | |
+| ... | |
+| Other equipment | Type | Technical file sheet
+| ... | |
+| ... | |
+|=================
+
+
+For each of the 3 families, we expect:
+
+* `sensor` or `Actuator` or `Other`: Name and brand of the device used
+* `Type`: Classification of the type of device.
+  The classification still to be defined.
+  A first approximation for the sensor could be the one used by ROS on http://wiki.ros.org/Sensors[this page].
+  For the other groups, it will be defined based on the contribution received.
+* `Technical file sheet`: Link to a document providing any additional information about the device that you consider necessary for enabling another person to reproduce the testbed with it.
+
+.Protocol Template sheet - Protocol Description
+[options="header"]
+|=================
+| Step | Description
+| 1 | ...|
+| 2 | ...|
+|=================
+
+As a recipe, the Protocol description should provide all the successive operations should conduct the experimenter to conduct an experimentation, from the system preparation, subject preparation to the execution and data collection.
+
+== PI Sheet
+First we start reminding two concepts (this should be brought to a dedicated page):
+
+* A `Performance Indicator` (PI) can be associated to an outcome parameter obtained used to score an experimentation.
+  It can be related to a physical dimension we want to characterize, or to a subjective (based on human scoring) evaluation of a system.
+  A PI can be computed from different input information (motion capture, IMU …), and thus be related to different types of code (or PI Algo)..
+* A `Performance Indicator Algorithm` (PI Algo, also referred to as benchmarking algorithm, or software routine, or processing routines) corresponds to a specific code implementation that is able to compute one or several PIs.
+ The PI Algo is naturally associated to specific input information that is needed for making the computation (or run the algorithm).
+
+.Performance Indicator sheet
+[options="header"]
+|=================
+|Item |	Template designer description
+|name|
+|Description|
+|Unit|
+|output_type|
+|intra_run aggregation|
+|inter_run aggregation|
+|=================
+
+* `name`: descriptive short name (using underscore).
+  This name should be use the PI Algo for storing the corresponding the outcome parameter when executed.
+* `Description`: Extended description of the PI (should explain what it is about)
+* `Unit`: If any
+* `output_type`: Related to the output file containing the PI score.
+   Selection in default type defined: `[scalar, vector, matrix]`.
+* `intra_run aggregation`: How to compress the PI obtained in one run into a more compact representation.
+   Selection in default type defined.
+* `inter_run aggregation`: How to compress several PIs obtained across different runs into one  representative PI of the entire experiment.
+   Selection in default type defined.
+
+Some item deserves more detailed explanation:
+
+=== output type field
+
+The objective type is to define the expected structure of the PI.
+Ideally a unique value would ease everything, but we can envision several cases where we prefer keeping several values.
+A PI value is a https://fr.wikipedia.org/wiki/YAML[YAML] file with a structure like this one:
+
+```yaml
+type: 'vector'
+value: [0.96867, 1.01667, 0.98843, 0.95168, 0.87936, 0.94576, 0.87802, 0.87571, 0.81802, 0.82336]
+```
+
+The PI type is in that case a vector.
+We envision for now outputs of type `scalar`, `vector` and `matrix`.
+Possibly, we may extend these types to more options that could encode also the best visualisation tool.
+
+=== intra-run aggregation
+
+In the previous example, we see that the output is represented by a possibly long vector.
+The Intra-run aggregation information provides the system with an operator tool for “compressing” that vector into an (hopefully) more digest information.
+If the `mean` operator is selected the PI Manager will adjust the previous file to contain the following extended information:
+
+```yaml
+type: 'vector'
+value: [0.96867, 1.01667, 0.98843, 0.95168, 0.87936, 0.94576, 0.87802, 0.87571, 0.81802, 0.82336]
+aggregations: [[0, 'mean', 0.9145679999999998]]
+```
+
+The `0` indicates that the operation is applied on all values.
+
+That compressed information can now be presented to the user on the Front-End.
+The currently available operators are related to panda operators, i.e : `[mean, median, mode, std, min, max, var, sum, abs, none]`.
+Note that we can define various operators for one PI (like mean and standard deviation).
+
+The intra-run aggregation is thus using the following pattern: `[ [number, operator] ]`.
+Obviously it does not need to be filled for scalar output.
+
+=== Inter-run aggregation
+
+A similar operation is needed for combining the scores obtained for each run, to generate a PI for the whole experiment.
+Similar operators are proposed, but they will be computed on all the values obtained for all runs.
+For instance, if the experiment contains 3 runs, characterized with the PI `step_length_left`, we would have after executing the PI Algo 3-run PI files:
+
+* `Subject_10_trial_01_pi_step_length_left.yaml`,
+* `Subject_10_trial_02_pi_step_length_left.yaml`,
+* `Subject_10_trial_03_pi_step_length_left.yaml`.
+
+The Inter-run aggregation will enable to generate a PI score for the whole experiment associated to the left step length:
+
+```yaml
+aggregations: [[0, 'mean', 1.0224573076923078]]
+```
+
+Assuming that the operator `mean` was indicated in the Inter-run aggregation field.
+That score could be presented to the user on the front-end, to summarize the score obtained by the experimentation on that concrete PI.
+
+The inter-run aggregation is thus using the following pattern: `[ [number, operator] ]`.
+It has to be filled for all output format, even scalar (since we still have to aggregate the scalar value of each run).
+
+== PI Algo Sheet
+
+.Performance Indicator sheet
+[#pi-table]
+[options="header"]
+|=================
+|Item |	Template designer description
+|name|
+|Description|
+|Url paper|
+|Url code|
+|Associated PI|
+|Input files|
+|Input command|
+|=================
+
+* `name`: descriptive name
+* `description`: description of the algorithm used for making the computation
+* `url paper`: link to a paper describing the algorithm used or closely related (if available)
+* `url_code`: link to repository code.
+   Could be public or private (additional field?).
+* `associated PI`: Selection of the different PIs that the algorithm will compute
+* `input files`: List of input files expected (according to the <<data_format.adoc#Eurobench Data Format, Eurobench Data Format>>)
+* `input command`: Name directly connected to the input files + dependant variables info
+
+
+=== Input command
+
+At this moment it contains the entry point and the parameters the entry point is expecting. 
+The format for the string is the following one.
+
+```
+entry_point;param_1;param_2;param_N
+```
+
+Example: `pi_csic: ./run_pi;jointAngles.csv;anthropometry.yaml`:
+
+* entry point = `./run_pi`
+* param_1 = `jointAngles.csv` (it will look for a csv file containing jointAngles in its name)
+* param_2 = `anthropometry.yaml` (it will look for a https://fr.wikipedia.org/wiki/YAML[YAML] which contains anthropometry in the filename)
+
+The system will use that pattern to find appropriate files within the experimental data files made available by the experimenter.
+
+[NOTE]
+====
+Note that the PI algorithm is expected to generate as many files as the number of PI associated to it.
+Furthermore, the name of each result file should be the name of the PI it represents (as defined in the field name of the <<pi-table, PI table>>).
+====
+
+With an example: `pi_csic` algorithm scores 6 PIs for a single run:
+
+* `step_lengh_right`,
+* `step_length_left`,
+* `stride_time_left`,
+* `stride_time_right`,
+* `step_time_left`,
+* `step_time_right`.
+
+So that after executing the `pi_csic` algorithm on one run, we expect to get 6 files generated:
+
+* `step_lengh_right.yaml`,
+* `step_length_left.yaml`,
+* `stride_time_left.yaml`,
+* `stride_time_right.yaml`,
+* `step_time_left.yaml`,
+* `step_time_right.yaml`.
+
+All files should have a https://fr.wikipedia.org/wiki/YAML[YAML] structure, following the structure associated to each PI (as defined in the related field output_type of the <<pi-table, PI table>>).
+
+
