@@ -7,7 +7,7 @@
 :sectnums:
 
 
-== Modification Instructions:
+== Modification Instructions
 
 This document gathers the agreed data format in EUROBENCH.
 Please:
