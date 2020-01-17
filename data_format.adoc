@@ -7,18 +7,20 @@
 :sectnums:
 
 
-== Instructions:
+== Modification Instructions:
 
-This is a draft version of Data Format to be preliminary shared with all Third Parties of the EUROBENCH project.
-The goal is to have a comprehensive and flexible data structure for the EUROBENCH Database.
+This document gathers the agreed data format in EUROBENCH.
 Please:
 
 1. Read carefully the document.
-2. Provide any comment, directly on this document
+2. Provide any comment
 
-According to your comments, we will release a final version of Data Structure.
-Afterwards, we will ask you to provide a “Beta dataset” (e.g. data from only one subject) that meet this Data Structure (send to: anthony.remazeilles@tecnalia.com Leader of WP6: Software Development).
-We will use these data confidentially to test the first Beta version of the Database, in order to prepare in advance for the integration phase.
+To provide comments, one can:
+
+* Create an issue through the https://help.github.com/en/github/managing-your-work-on-github/creating-an-issue[Git Hub Interface]
+** please indicate the specific section you are referring to.
+* Create an issue from the code file through the https://help.github.com/en/github/managing-your-work-on-github/opening-an-issue-from-code[Git Hub interface]
+* Send an email to us (anthony.remazeilles@tecnalia.com Leader of WP6: Software Development).
 
 Thank you for your collaboration!
 
