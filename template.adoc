@@ -110,8 +110,8 @@ For each of the 3 families, we expect:
 [options="header"]
 |=================
 | Step | Description
-| 1 | ...|
-| 2 | ...|
+| 1 | ...
+| 2 | ...
 |=================
 
 As a recipe, the Protocol description should provide all the successive operations should conduct the experimenter to conduct an experimentation, from the system preparation, subject preparation to the execution and data collection.
@@ -177,7 +177,13 @@ value: [0.96867, 1.01667, 0.98843, 0.95168, 0.87936, 0.94576, 0.87802, 0.87571, 
 aggregations: [[0, 'mean', 0.9145679999999998]]
 ```
 
-The `0` indicates that the operation is applied on all values.
+The `0` indicates the row/column to which the aggregation has been applied. Several rows/columns could be specified in the case of an ouput of the type `matrix`:
+
+```yaml
+type: 'matrix'
+value: [[0.96867, 1.01667, 0.98843, 0.95168, 0.87936, 0.94576, 0.87802, 0.87571, 0.81802, 0.82336],[0.96867, 1.01667, 0.98843, 0.95168, 0.87936, 0.94576, 0.87802, 0.87571, 0.81802, 0.82336], [0.96867, 1.01667, 0.98843, 0.95168, 0.87936, 0.94576, 0.87802, 0.87571, 0.81802, 0.82336]]
+aggregations: [[0, 'mean', 0.9145679999999998], [2, 'mean', 0.9145679999999998]]
+```
 
 That compressed information can now be presented to the user on the Front-End.
 The currently available operators are related to panda operators, i.e : `[mean, median, mode, std, min, max, var, sum, abs, none]`.
