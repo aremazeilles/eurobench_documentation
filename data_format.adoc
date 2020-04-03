@@ -186,7 +186,7 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 .Wrench file structure
 [options="header"]
 |================
-| time | force_x | force_y | force_z | torque_x | torque_y | torque_y
+| time | force_x | force_y | force_z | torque_x | torque_y | torque_z
 | ... | ... | ... | ... | ... | ... | ...
 | ... | ... | ... | ... | ... | ... | ...
 |================
@@ -195,7 +195,7 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 .Wrench file unit
 [options="header"]
 |================
-| time | force_x | force_y | force_z | torque_x | torque_y | torque_y
+| time | force_x | force_y | force_z | torque_x | torque_y | torque_z
 | `sec` | `N` | `N` | `N` | `N.m` | `N.m` | `N.m`
 |================
 
