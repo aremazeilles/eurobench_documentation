@@ -2,11 +2,10 @@
 
 To gather documentation on software aspects.
 
-* <<pi_spec.adoc#Performance Indicator Specification, Performance Indicator Algorithm specification>>
-
+* <<model.adoc#Human model, Human model>>
 * <<data_format.adoc#Eurobench Data Format, Eurobench Data Format>>
-
-* <<template.adoc#Eurobench template, Eurobench template>>
+* <<template.adoc#Eurobench template, Eurobench protocol templates>>
+* <<pi_spec.adoc#Performance Indicator Specification, Performance Indicator Algorithm specification>>
 
 ## Additional Tools
 

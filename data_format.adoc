@@ -268,7 +268,7 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 **File structure**: Set of lines containing key: value where the key is provided in Table 2.
 
-.List of body segments ang joints considered in our kinematic model proposed.
+.List of body segments and joints considered in our kinematic model proposed.
 [options="header"]
 |================
 | Group | Segments | Delimiting Joints | key label
