@@ -466,16 +466,19 @@ Here we focus on the representation of the questionnaires and related answers.
 
 The representation of any questionnaire is divided into two components:
 
-* The description of the questionnaire itself: `Factor Meta Data File`
-* The representation of the questionnaire answer: `Factor Data File`
+* The description of the questionnaire itself: <<Factor Meta Data File>>
+* The representation of the questionnaire answer: <<Factor Data File>>
 
 We propose using `csv` format for both.
 
 ==== Factor Meta Data File
 
-**Description**: This file contains the specification of each question of the questionnaire. That file should be part of the protocol itself. It should not vary from an experimentation to another.
+**Description**: This file contains the specification of each question of the questionnaire.
+That file should be part of the protocol itself.
+It should not vary from an experimentation to another.
 
-**Name of the file**: `questionnaire_topic.csv`
+**Name of the file**: `questionnaire_name.csv`, where `name` should be a unique identifier given to that questionnaire model.
+
 
 **File format**: `.csv`
 
@@ -511,12 +514,11 @@ With:
 
 **Description**: This file only contains the answers to each of the question asked.
 
-**Filename** : `questionnaire_topic_subject_N.csv`
+**Filename** : `subject_N_questionnaire_name.csv`, where `name` refers to the Factor Meta Data File this questionnaire answer is related to.
 
 **File format**: `.csv`
 
 **File structure**: a table structure with the following content:
-
 
 .Meta Data File structure sample
 [options="header"]
