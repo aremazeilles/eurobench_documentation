@@ -479,7 +479,7 @@ With:
 
 **Description**: This file only contains the answers to each of the question asked.
 
-**Filename** : `questionnaire_name_subject_N.csv`, where `name` refers to the Factor Meta Data File this questionnaire answer is related to.
+**Filename** : `subject_N_questionnaire_name.csv`, where `name` refers to the Factor Meta Data File this questionnaire answer is related to.
 
 **File format**: `.csv`
 
