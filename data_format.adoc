@@ -140,14 +140,21 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 **File structure**:
 
-* 1st column: time-stamp (units: milliseconds).
-* 1st row: header with M+1 labels  were  M = number of angles considered.
-* From 2nd row: angle values, each corresponding to one time sample.
+.Joint angle file structure
+[options="header"]
+|================
+| time | r_hip_y | r_hip_x | r_hip_z | r_knee_y | r_knee_x | r_knee_z | ... | ... | ...
+| ... | ... | ... | ... | ... | ... | ... | ... | ... | ...
+| ... | ... | ... | ... | ... | ... | ... | ... | ... | ...
+|================
 
-**Header labels**: 1st-column label: “time”.
-All other labels: see ‘Angle definition’ section.
 
-**Units**: Degrees
+.Joint angle file unit
+[options="header"]
+|================
+| time | r_hip_y | r_hip_x | r_hip_z | r_knee_y | r_knee_x | r_knee_z | ... | ... | ...
+| `msec` | `deg` | `deg` | `deg` | `deg` | `deg` | `deg` | ... | ... | ...
+|================
 
 === Joint torques file
 
@@ -160,14 +167,20 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 **File structure**:
 
-* 1st column: time-stamp (units: milliseconds).
-* 1st row: header with (3*M)+1 labels  were  M = number of joints.
-* From 2nd row: torque values, each corresponding to one time sample.
+.Joint torque file structure
+[options="header"]
+|================
+| time | r_hip_x | r_hip_y | r_hip_z | r_knee_x | r_knee_y | r_knee_z | ... | ... | ...
+| ... | ... | ... | ... | ... | ... | ... | ... | ... | ...
+| ... | ... | ... | ... | ... | ... | ... | ... | ... | ...
+|================
 
-**Header labels**: 1st-column label: “time”.
-All other labels: see the ‘Angle definition’ section.
-
-**Units**: Nm
+.Wrench file unit
+[options="header"]
+|================
+| time | r_hip_x | r_hip_y | r_hip_z | r_knee_x | r_knee_y | r_knee_z | ... | ... | ...
+| `msec` | `Nm` | `Nm` | `Nm` | `Nm` | `Nm` | `Nm` | ... | ... | ...
+|================
 
 === Joint centers 3D trajectories file
 
@@ -180,14 +193,23 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 **File structure**:
 
-* 1st column: time-stamp (units: milliseconds).
-* 1st row: header with (3*M)+1 labels  were  M = number of joints.
-* From 2nd row: 3D trajectories, each corresponding to one time sample.
 
-**Header labels**: 1st-column label: “time”.
-All other labels: see the Figure 2.
+.3D joint center file structure
+[options="header"]
+|================
+| time | r_ankle_x | r_ankle_y | r_ankle_z | r_knee_x | r_knee_y | r_knee_z | ... | ... | ...
+| ... | ... | ... | ... | ... | ... | ... | ... | ... | ...
+| ... | ... | ... | ... | ... | ... | ... | ... | ... | ...
+|================
 
-**Units**: Millimeters
+.3D joint center unit
+[options="header"]
+|================
+| time | r_ankle_x | r_ankle_y | r_ankle_z | r_knee_x | r_knee_y | r_knee_z | ..
+| `msec` | `mm` | `mm` | `mm` | `mm` | `mm` | `mm` | ... | ... | ...
+|================
+
+Possible labels are listed on Figure <<fig:df_joint_center_label>>.
 
 [[fig:df_joint_center_label]]
 .Labels of Joints centers
@@ -212,7 +234,6 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 | ... | ... | ... | ... | ... | ... | ...
 |================
 
-**Units**:
 .Wrench file unit
 [options="header"]
 |================
@@ -232,19 +253,23 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 **File structure**:
 
-* 1st column: time-stamp (units: milliseconds).
-* 1st row: 9+1 labels.
-* From 2nd row: GRF, each corresponding to one time sample.
+.Ground Reaction Forces file structure
+[options="header"]
+|================
+| time | f_x | f_y | f_z | p_x | p_y | p_z | t_x | t_y | t_z
+| ... | ... | ... | ... | ... | ... | ... | ... | ...
+| ... | ... | ... | ... | ... | ... | ... | ... | ...
+|================
 
-**Header labels**: 1st-column label: “time”.
-Other labels:
+where `f` stands for force, `p` for the center of pressure, and `t` for torques.
 
-* force: `F_x` , `F_y` ,  `F_z`
-* centre of pressure: `P_x`, `P_y`, `P_z`
-* moment: `T_x` , `T_y` , `T_z`
+.Ground Reaction Forces file unit
+[options="header"]
+|================
+| time | f_x | f_y | f_z | p_x | p_y | p_z | t_x | t_y | t_z
+| `msec` | `N` | `N` | `N` | `m` | `m` | `m` | `N.m` | `N.m` | `N.m`
+|================
 
-
-**Units**: Newtons, meters and Nm
 
 === Electromyography file
 
@@ -255,15 +280,25 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 **File format**: .csv
 
-**File structure**:
 
-* 1st column: time-stamp (units: milliseconds).
-* 1st row: k+1 labels, with K = number of muscles.
-* From 2nd row: EMG, each corresponding to one time sample.
+.EMG file structure
+[options="header"]
+|================
+| time | label_1 | ... | labeli | ...
+| ... | ... | ... | ... | ...
+| ... | ... | ... | ... | ...
+|================
 
-**Header labels**: 1st-column label: “time”.
-All other labels: see the Figure 2.
+where `label_i` is to be a tag described in table <<tab:emg_tags>>.
 
+.EMG file unit
+[options="header"]
+|================
+| time | label_1 | ... | labeli | ...
+| `ms` | `mV` | `mV` | `mV` | `mV`
+|================
+
+[[tab:emg_tags]]
 .List of EMG muscles and labels considered.
 [options="header"]
 |================
