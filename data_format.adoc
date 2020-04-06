@@ -54,6 +54,7 @@ The following types of data are considered:
 
 In the following sections, each of these types of data will be defined and detailed.
 
+=== Filename format, and generalities
 
 Unless specified if different, all datafile recorded will have a name using the following patterns:
 
@@ -76,6 +77,26 @@ Unless specified if different, all datafile recorded will have a name using the 
 where `N` is an integer identifying the human subject (if one is involved), and `R` is an integer identifying the repetition number.
 Use appropriate leading zeros for `R` and `N` to ensure proper ordering of files.
 
+Generally speaking, all `csv` files follows the https://en.wikipedia.org/wiki/Comma-separated_values[Comma-separated values] format, using **semicolon** as separator.
+
+In the following documentation, we will use tables for describing file content.
+As an example, the following table:
+
+[options="header"]
+|=================
+| label_1 | label_2 | label_3
+| value_1 | value_2 | value_3
+|=================
+
+would correspond to a file containing the 2 lines:
+
+[source]
+----
+label_1; label_2; label_3
+value_1; value_2; value_3
+----
+
+
 === Raw Data Files
 
 **Description**: This set of files should contain all data collected directly from the sensory system/s present in the benchmarking scenario (i.e. 3D marker positions, IMUs signals, forces from platforms, etc...).
@@ -90,7 +111,7 @@ Use appropriate leading zeros for `R` and `N` to ensure proper ordering of files
 This file must be provided if the experiments enroll a humanoid robot.
 From this file, the number of joints, its labels and the degrees of freedom can be extracted in order to construct the pre-processed joint angles file, and for the definition of the anthropometric file in humanoids.
 
-**Number of files**: all necessary files to describe the complete robotic structure. 
+**Number of files**: all necessary files to describe the complete robotic structure.
 
 **File format**: .urdf.
 The use of .urdf files also has shortcomings such as the lack of friction (important for e.g. walking steeper slope angles).
