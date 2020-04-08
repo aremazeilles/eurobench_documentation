@@ -96,6 +96,8 @@ label_1; label_2; label_3
 value_1; value_2; value_3
 ----
 
+If a field or a column cannot be filled (the force sensor only provides force measurement, no torque, or all human joint angles are not tracked), the label should be **discarded** from the file (i.e no empty column).
+Note that, depending on the benchmarking algorithm requirements, this may prevent the Performance Indicator computation.
 
 === Raw Data Files
 
