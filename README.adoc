@@ -30,12 +30,15 @@ It requires `make` and `asciidoctor` installed locally.
 
 ---
 
-image::http://eurobench2020.eu/wp-content/uploads/2018/06/cropped-logoweb.png["eurobench logo",width=200]
+image::http://eurobench2020.eu/wp-content/uploads/2018/06/cropped-logoweb.png["eurobench logo", width=200, role=left]
 Supported by Eurobench - the European robotic platform for bipedal locomotion benchmarking.
-More information: http://eurobench2020.eu/[eurobench2020.eu]
+More information: http://eurobench2020.eu/[eurobench2020.eu]).
+{zwsp} +
+{zwsp} +
+{zwsp} +
+{zwsp} +
+{zwsp} +
 
-
-
-image::http://eurobench2020.eu/wp-content/uploads/2018/02/euflag.png["euflag",role=left,width=100]
+image::http://eurobench2020.eu/wp-content/uploads/2018/02/euflag.png["euflag",float=left,width=100]
 This project has received funding from the European Union’s Horizon 2020
 research and innovation programme under grant agreement no. No 779963.
