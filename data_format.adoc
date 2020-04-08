@@ -6,26 +6,6 @@
 :linkattrs:
 :sectnums:
 
-
-== Modification Instructions
-
-This document gathers the agreed data format in EUROBENCH.
-Please:
-
-1. Read carefully the document.
-2. Provide any comment
-
-To provide comments, one can:
-
-* Create an issue through the https://help.github.com/en/github/managing-your-work-on-github/creating-an-issue[Git Hub Interface]
-** please indicate the specific section you are referring to.
-* Create an issue from the code file through the https://help.github.com/en/github/managing-your-work-on-github/opening-an-issue-from-code[Git Hub interface]
-* Send an email to us (anthony.remazeilles@tecnalia.com Leader of WP6: Software Development).
-
-Thank you for your collaboration!
-
-The EUROBENCH Team
-
 == Motivation
 
 The experimental datasets expected to populate the EUROBENCH database will engage data coming from a lot of different sensing devices, from different laboratories and will be designed for different benchmarking scenarios and algorithms.
@@ -35,6 +15,8 @@ Other motivations for the specification of a unique data format and conventions 
 * Ensuring automatic computation of Performance Indicators (PIs) based on recorded data.
 * Maximising compatibility between PIs that are common to several protocols (e.g. step length can be calculated in many ways and under many different conditions).
 * Allowing data collection and PI computation to happen independently in different times and location (e.g. enabling any remote user to benchmark an experiment performed in a specific laboratory setting).
+
+Any request to extend / change format described here should be done following the <<README.adoc#Modification Instructions, contribution policy>>.
 
 == Data files and format
 
