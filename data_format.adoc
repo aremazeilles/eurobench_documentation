@@ -116,6 +116,8 @@ From this file, the number of joints, its labels and the degrees of freedom can 
 
 **Number of files**: all necessary files to describe the complete robotic structure.
 
+**Name of the file**: The main urdf file which includes the rest of urdf files should be named as `humanoid_N_anthropometry`, where `N` is the humanoid number.
+
 **File format**: `.urdf`.
 The use of `.urdf` files also has shortcomings such as the lack of friction (important for e.g. walking steeper slope angles).
 In order to resolve these issues, EUROBENCH will use Gazebo as a simulator.
@@ -129,13 +131,11 @@ Moreover, it allows to use a wide variety of simulators commonly used in robotic
 
 **Number of files**: Usually each segment, sensor, or set of segments such as a leg are described in a single file. Finally the whole robot includes all these files in a single file which is the one loaded.
 
+**Name of the file**: `wr_N_config_M_segments`, where `N` is the WR number and `M` is the configuration number (for resizable robots this could be useful).
+
 **File Format**: .urdf. This format file allows to include Gazebo simulation tags, such as friction properties, or visualization properties that allow to simulate more realistic behaviours.
 This file shall contain the dimensions and inertial properties of each segment of the worn robot with respect to the reference system of the human body segment connected to it.
 This is needed to enable dynamic simulators to model the human-WR system.
-
-**name of the file**: `wr_N_config_M_segments`, where `N` is the WR number and `M` is the configuration number (for resizable robots this could be useful).
-
-**file format**: .yaml
 
 === Human anthropometric measures file
 
