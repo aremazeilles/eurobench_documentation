@@ -1,6 +1,11 @@
-# Eurobench Software documentation
+= Eurobench Software documentation
+:source-highlighter: pygments
+:pygments-style: emacs
+:icons: font
+:linkattrs:
 
-To gather documentation on software aspects.
+
+This document gathers documentation on software aspects related to the http://eurobench2020.eu/[Eurobench] project:
 
 * <<pi_spec.adoc#Performance Indicator Specification, Performance Indicator Algorithm specification>>
 
@@ -8,12 +13,28 @@ To gather documentation on software aspects.
 
 * <<template.adoc#Eurobench template, Eurobench template>>
 
-## Additional Tools
+== Modification Instructions
 
-To generate locally the documentation (under Linux), use:
+All this documentation is subject to evolution according to http://eurobench2020.eu/[Eurobench] needs.
+If you identify errors, or want to provide additional material, please use traditional Github tools:
 
-```bash
-make
-```
+* Create an issue through the https://help.github.com/en/github/managing-your-work-on-github/creating-an-issue[Git Hub Interface]
+** please indicate the specific section you are referring to.
+* Create an issue from the code file through the https://help.github.com/en/github/managing-your-work-on-github/opening-an-issue-from-code[Git Hub interface]
+* Send an email to us (anthony.remazeilles@tecnalia.com Leader of WP6: Software Development).
 
+== Additional Tools
+
+To generate locally the documentation (under Linux), type from the repository root `make`.
 It requires `make` and `asciidoctor` installed locally.
+
+---
+
+image::http://eurobench2020.eu/wp-content/uploads/2018/06/cropped-logoweb.png["eurobench logo", width=200, role=left]
+Supported by Eurobench - the European robotic platform for bipedal locomotion benchmarking.
+More information: http://eurobench2020.eu/[eurobench2020.eu]).
+
+
+image::http://eurobench2020.eu/wp-content/uploads/2018/02/euflag.png["euflag",float=left,width=100]
+This project has received funding from the European Union’s Horizon 2020
+research and innovation programme under grant agreement no. No 779963.
