@@ -28,11 +28,16 @@ This set of files  will be taken as input by a benchmarking routine that, after 
 .Main elements of the data processing chain
 image::img/df_processing_chain.png[align=center, title-align=center]
 
-The following types of data are considered:
+=== Terminology
 
-* Raw Data: Data directly collected by the sensors (e.g. marker trajectory).
-* Pre-processed Data: Data ready to be used as input by the benchmarking routine (e.g. joint angles).
-* Other kinds of data (e.g. Unified Robot Description Format, or URDF)
+Generally speaking, we consider 4 different classes of files related to an experiment:
+
+* **Bipedal system specification**: file providing specification of the dimension of any bipedal system.
+  It can be describing a human subject, a humanoid, a prosthesis, an exoskeleton.
+* **Testbed configuration** file: provide values for any configuration parameter needed to reproduce the conditions of an experimentation, or a subset of an experimentation.
+* **Raw Data**: Data directly collected by the sensors (e.g. marker trajectory).
+* **Pre-processed Data**: Sensor-actuator agnostic data acquired during the experimentation.
+  The structure of such file is to be compliant with the format agreed in this document.
 
 In the following sections, each of these types of data will be defined and detailed.
 
@@ -78,14 +83,32 @@ label_1; label_2; label_3
 value_1; value_2; value_3
 ----
 
+If a field or a column cannot be filled (the force sensor only provides force measurement, no torque, or all human joint angles are not tracked), the label should be **discarded** from the file (i.e no empty column). This way, the wrench file corresponding to a 6D force sensor (link:https://onrobot.com/sites/default/files/documents/Datasheet_HEX%20QC_20191122.pdf[OnRobot HEX-E QC], for example) would look as follows:
+----
+time; force_x; force_y; force_z; torque_x; torque_y; torque_z
+0; 1.67; 2.34; 0.83; 0.21; 0.53; 0.07
+0.001; 1.62; 2.12; 0.75; 0.29; 0.47; 0.1
+0.002; 1.63; 2.41; 0.81; 0.19; 0.56; 0.8
+.....
+----
 
-=== Raw Data Files
+while the wrench file for a 1D force sensor (link:https://www.tekscan.com/products-solutions/force-sensors/a101[FlexiForce A101 Sensor], for example) would have the following appearance:
+----
+time; force_x
+0; 1.67
+0.001; 1.62
+0.002; 1.63
+.....
+----
 
-**Description**: This set of files should contain all data collected directly from the sensory system/s present in the benchmarking scenario (i.e. 3D marker positions, IMUs signals, forces from platforms, etc...).
+Note that, depending on the benchmarking algorithm requirements, this may prevent the Performance Indicator computation. 
 
-**Number of files**: One file per run and sensory system should be provided. One file with data description in .txt.
+== Bipedal system specification files
 
-**File format**: These files are not supposed to be processed automatically by the EUROBENCH Benchmarking routines, so that a specific format is not defined. Data can be provided as the device drivers provide  them  (e.g. c3d, rosbag, .txt, .csv, ...). However, a description of the file content and acquisition frequency should be provided in a .txt file to help the user open and use these files.
+Any bipedal system involved in an experiment is to be described by a specification file.
+We are promoting the use of the _Unified Robot Description Format_, URDF, both for robotic systems and human subjects.
+
+Note that if an experiment involves a human subject and a wearable device, we expect to get two specification files, one for the human, and another for the wearable.
 
 === Unified Robot Description Format (URDF) file
 
@@ -95,10 +118,100 @@ From this file, the number of joints, its labels and the degrees of freedom can 
 
 **Number of files**: all necessary files to describe the complete robotic structure.
 
-**File format**: .urdf.
-The use of .urdf files also has shortcomings such as the lack of friction (important for e.g. walking steeper slope angles).
+**Name of the file**: The main urdf file which includes the rest of urdf files should be named as `humanoid_N_anthropometry`, where `N` is the humanoid number.
+
+**File format**: `.urdf`.
+The use of `.urdf` files also has shortcomings such as the lack of friction (important for e.g. walking steeper slope angles).
 In order to resolve these issues, EUROBENCH will use Gazebo as a simulator.
-This allows to enhance the .urdf with <gazebo/> tags, permitting the injection of features from the gazebo file format (.sdf) while retaining the most common file format, .urdf.
+This allows to enhance the `.urdf` with `<gazebo/>` tags, permitting the injection of features from the gazebo file format (`.sdf`) while retaining the most common file format, `.urdf`.
+
+=== WR segments description (URDF) file
+
+**Description**: Standard file used in robotics in XML format to describe the dimensions, the physics properties (COM, mass, friction) and inertial properties of each one of the segments of the worn robot.
+All these segments are linked by joints (fixed, prismatic, rotational) forming a single tree.
+Moreover, it allows to use a wide variety of simulators commonly used in robotics such as Gazebo.
+
+**Number of files**: Usually each segment, sensor, or set of segments such as a leg are described in a single file. Finally the whole robot includes all these files in a single file which is the one loaded.
+
+**Name of the file**: `wr_N_config_M_segments`, where `N` is the WR number and `M` is the configuration number (for resizable robots this could be useful).
+
+**File Format**: .urdf. This format file allows to include Gazebo simulation tags, such as friction properties, or visualization properties that allow to simulate more realistic behaviours.
+This file shall contain the dimensions and inertial properties of each segment of the worn robot with respect to the reference system of the human body segment connected to it.
+This is needed to enable dynamic simulators to model the human-WR system.
+
+=== Human anthropometric measures file
+
+**Description**: This file shall contain all the anthropometric measurements presented in Table 1 (Winter, 2009) and Figure 3.
+
+**Name of the file**: subject_N_anthropometry, where N = subject’s number.
+Use appropriate leading zeros for R and N to ensure proper ordering of files.
+
+**File format**: .yaml
+
+**File structure**: Set of lines containing key: value where the key is provided in Table 2.
+
+.List of body segments ang joints considered in our kinematic model proposed.
+[options="header"]
+|================
+| Group | Segments | Delimiting Joints | key label
+.4+| **Upper limb**
+  | Hand | wrist axis / 2nd knuckle middle finger | hand
+  | Forearm | elbow axis / ulnar styloid | forearm
+  | Upper Arm | glenhumeral axis / elbow axis | upper_arm
+  | Shoulder| sternoclaviar joint / glenhumeral axis | shoulder
+.5+| **Lower limb**
+  | Foot | lateral malleolus / head 2nd metatarsal | foot
+  | Shank | femoral condyles / medial malleolus | shank
+  | Thigh | greater trochanter / femoral condyles | thigh
+  | Pelvis | L4-L5 / greater trochanter | pelvis
+  | Pelvis width| From hip to hip | pelwis_w
+2+| **Head** | C7-T1 & first rip / ear canal | head
+2+| **Trunk** | C7-T1 / T12-L1 & diaphragm | trunk
+2+| **abdomen** | T12-L1 / L4-L5 | abdomen
+|================
+
+Units: Meters
+
+[[fig:df_segment_label]]
+.Segments Labels
+image::img/df_segment_label.png[align=center, title-align=center]
+
+=== Humanoid anthropometric measures file
+
+**Description**: This file shall contain all the anthropometric measurements from the humanoid robot mapped to the above proposed human segments (see Table 2 and Figure 3).
+
+**Name of the file**: humanoid_N_anthropometry, where N = humanoid’s identifier. Use appropriate leading zeros for R and N to ensure proper ordering of files.
+
+**File format**: .yaml
+
+**File structure**: Set of lines containing key: value where the key must contain the corresponding robot segment name.
+
+**Units**: Meters.
+
+== Testbed configuration file
+
+**Description**: This file shall contain all relevant information for reproducing the experiment in similar conditions.
+It can contain values of configuration of the used testbed (e.g. for slope: slope angle; for stairs: step height; etc…).
+It can also contain configuration parameters that may be needed by the algorithms for computing the performance indicators.
+
+**File format**: .yaml
+
+**File name**: `subject_N_testbed_T.yaml`, where N = subject’s number, and T can be used to distinguish different configuration settings used in a single experiment.
+
+**File structure**: Set of lines containing key: values.
+Where each key is one testbed-related data.
+keys must be self-explicative.
+Different words on the same key must be separated by underscore.
+keys must be written in lowercase.
+
+== Raw Data Files
+
+**Description**: This set of files should contain all data collected directly from the sensory system/s present in the benchmarking scenario (i.e. 3D marker positions, IMUs signals, forces from platforms, etc...).
+
+**Number of files**: One file per run and sensory system should be provided.
+
+**File format**: These files are not supposed to be processed automatically by the EUROBENCH Benchmarking routines, so that a specific format is not defined.
+Data can be provided as the device drivers provide them  (e.g. `c3d`, `rosbag`, `.txt`, `.csv`, ...). However, a description of the file content and acquisition frequency should be provided (like `Readme.md` or `Readme.txt`) to help the user opening and understanding these files.
 
 == Pre-Processed Data Files
 
@@ -252,7 +365,6 @@ where `f` stands for force, `p` for the center of pressure, and `t` for torques.
 | `msec` | `N` | `N` | `N` | `m` | `m` | `m` | `N.m` | `N.m` | `N.m`
 |================
 
-
 === Electromyography file
 
 **Description**: This file shall contain all the recorded EMG signals from the human subject.
@@ -261,7 +373,6 @@ where `f` stands for force, `p` for the center of pressure, and `t` for torques.
 Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 **File format**: .csv
-
 
 .EMG file structure
 [options="header"]
@@ -308,71 +419,6 @@ where `label_i` is to be a tag described in table <<tab:emg_tags>>.
 
 Units: Millivolts.
 
-=== WR segments description (URDF) file
-
-**Description**: Standard file used in robotics in XML format to describe the dimensions, the physics properties (COM, mass, friction) and inertial properties of each one of the segments of the worn robot.
-All these segments are linked by joints (fixed, prismatic, rotational) forming a single tree.
-Moreover, it allows to use a wide variety of simulators commonly used in robotics such as Gazebo.
-
-**Number of files**: Usually each segment, sensor, or set of segments such as a leg are described in a single file. Finally the whole robot includes all these files in a single file which is the one loaded.
-
-**File Format**: .urdf. This format file allows to include Gazebo simulation tags, such as friction properties, or visualization properties that allow to simulate more realistic behaviours.
-This file shall contain the dimensions and inertial properties of each segment of the worn robot with respect to the reference system of the human body segment connected to it.
-This is needed to enable dynamic simulators to model the human-WR system.
-
-**name of the file**: `wr_N_config_M_segments`, where `N` is the WR number and `M` is the configuration number (for resizable robots this could be useful).
-
-**file format**: .yaml
-
-=== Human anthropometric measures file
-
-**Description**: This file shall contain all the anthropometric measurements presented in Table 1 (Winter, 2009) and Figure 3.
-
-**Name of the file**: subject_N_anthropometry, where N = subject’s number.
-Use appropriate leading zeros for R and N to ensure proper ordering of files.
-
-**File format**: .yaml
-
-**File structure**: Set of lines containing key: value where the key is provided in Table 2.
-
-.List of body segments ang joints considered in our kinematic model proposed.
-[options="header"]
-|================
-| Group | Segments | Delimiting Joints | key label
-.4+| **Upper limb**
-  | Hand | wrist axis / 2nd knuckle middle finger | hand
-  | Forearm | elbow axis / ulnar styloid | forearm
-  | Upper Arm | glenhumeral axis / elbow axis | upper_arm
-  | Shoulder| sternoclaviar joint / glenhumeral axis | shoulder
-.5+| **Lower limb**
-  | Foot | lateral malleolus / head 2nd metatarsal | foot
-  | Shank | femoral condyles / medial malleolus | shank
-  | Thigh | greater trochanter / femoral condyles | thigh
-  | Pelvis | L4-L5 / greater trochanter | pelvis
-  | Pelvis width| From hip to hip | pelwis_w
-2+| **Head** | C7-T1 & first rip / ear canal | head
-2+| **Trunk** | C7-T1 / T12-L1 & diaphragm | trunk
-2+| **abdomen** | T12-L1 / L4-L5 | abdomen
-|================
-
-Units: Meters
-
-[[fig:df_segment_label]]
-.Segments Labels
-image::img/df_segment_label.png[align=center, title-align=center]
-
-
-=== Humanoid anthropometric measures file
-
-**Description**: This file shall contain all the anthropometric measurements from the humanoid robot mapped to the above proposed human segments (see Table 2 and Figure 3).
-
-**Name of the file**: humanoid_N_anthropometry, where N = humanoid’s identifier. Use appropriate leading zeros for R and N to ensure proper ordering of files.
-
-**File format**: .yaml
-
-**File structure**: Set of lines containing key: value where the key must contain the corresponding robot segment name.
-
-**Units**: Meters.
 
 === Gait events file
 
@@ -556,7 +602,7 @@ Knee angles are derived from the femur and the untorsioned tibia segments.
   The sign is such that a positive angle corresponds to a flexed knee.
 
 * **Knee rotation (Relative) (Label: knee_rotation)** Knee rotation is measured about the long axis of the shank.
-  It is measured as the angle between the sagittal axis of the shank and the sagittal axis of the thigh, projected into a plane perpendicular to the long axis of the shank. 
+  It is measured as the angle between the sagittal axis of the shank and the sagittal axis of the thigh, projected into a plane perpendicular to the long axis of the shank.
   The sign is such that a positive angle corresponds to internal rotation.
   If a tibial torsion value is present in the Session form, it is subtracted from the calculated knee rotation value.
   A positive tibial torsion value therefore has the effect of providing a constant external offset to knee rotation.
