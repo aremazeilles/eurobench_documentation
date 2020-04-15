@@ -101,6 +101,26 @@ label_1; label_2; label_3
 value_1; value_2; value_3
 ----
 
+If a field or a column cannot be filled (the force sensor only provides force measurement, no torque, or all human joint angles are not tracked), the label should be **discarded** from the file (i.e no empty column). This way, the wrench file corresponding to a 6D force sensor (link:https://onrobot.com/sites/default/files/documents/Datasheet_HEX%20QC_20191122.pdf[OnRobot HEX-E QC], for example) would look as follows:
+----
+time; force_x; force_y; force_z; torque_x; torque_y; torque_z
+0; 1.67; 2.34; 0.83; 0.21; 0.53; 0.07
+0.001; 1.62; 2.12; 0.75; 0.29; 0.47; 0.1
+0.002; 1.63; 2.41; 0.81; 0.19; 0.56; 0.8
+.....
+----
+
+while the wrench file for a 1D force sensor (link:https://www.tekscan.com/products-solutions/force-sensors/a101[FlexiForce A101 Sensor], for example) would have the following appearance:
+----
+time; force_x
+0; 1.67
+0.001; 1.62
+0.002; 1.63
+.....
+----
+
+Note that, depending on the benchmarking algorithm requirements, this may prevent the Performance Indicator computation. 
+
 == Bipedal system specification files
 
 Any bipedal system involved in an experiment is to be described by a specification file.
@@ -442,6 +462,46 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 |====================
 
 **Units**: Seconds
+
+=== Testbed-related data file
+
+**Description**: This file shall contain all the data that describes the configuration of the specific testbed (e.g. for slope: slope angle; for stairs: step height; etc…).
+
+**File format**: .yaml
+
+**File name**: subject_N_testbedLabel_R where  N = subject’s number, R = run number and testbedLabel is shown in Table 4.
+Use appropriate leading zeros for R and N to ensure proper ordering of files.
+New testbedLabel can be added in the future, depending on new testbeds available.
+
+
+.List of labels for testbeds
+[options="header"]
+|=======================
+| Testbed | testbedLabel
+| Walking on flat ground | flat
+| Walking on slopes | slope
+| Walking on stairs | stairs
+| Overcoming obstacles | obstacles
+| Walking on irregular hard terrains | irregular
+| Walking on treadmill | treadmill
+| Walking/standing on moving surfaces | moving
+| Walking/standing during pushes | pushes
+| Standing during manipulation skills | manipulation
+| Picking and carrying objects | pickAndCarry
+| Chair sitting and standing | chair
+| Walking on laterally inclined surfaces | lateral
+| Walking on virtual terrains | virtual
+| Walking on soft terrains | soft
+| Opening/closing doors | door
+| Moving in narrow spaces | narrow
+| Pushing a shopping trolley | trolley
+|=======================
+
+**File structure**: Set of lines containing key: values.
+Where each key is one testbed-related data.
+keys must be self-explicative.
+different words on the same key must be separated by underscore.
+keys must be written in lowercase.
 
 === Human Factor metrics
 
