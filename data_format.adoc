@@ -96,8 +96,26 @@ label_1; label_2; label_3
 value_1; value_2; value_3
 ----
 
-If a field or a column cannot be filled (the force sensor only provides force measurement, no torque, or all human joint angles are not tracked), the label should be **discarded** from the file (i.e no empty column).
-Note that, depending on the benchmarking algorithm requirements, this may prevent the Performance Indicator computation.
+If a field or a column cannot be filled (the force sensor only provides force measurement, no torque, or all human joint angles are not tracked), the label should be **discarded** from the file (i.e no empty column). This way, the wrench file corresponding to a 6D force sensor (link:https://onrobot.com/sites/default/files/documents/Datasheet_HEX%20QC_20191122.pdf[OnRobot HEX-E QC], for example) would look as follows:
+----
+time; force_x; force_y; force_z; torque_x; torque_y; torque_z
+0; 1.67; 2.34; 0.83; 0.21; 0.53; 0.07
+0.001; 1.62; 2.12; 0.75; 0.29; 0.47; 0.1
+0.002; 1.63; 2.41; 0.81; 0.19; 0.56; 0.8
+.....
+----
+
+while the wrench file for a 1D force sensor (link:https://www.tekscan.com/products-solutions/force-sensors/a101[FlexiForce A101 Sensor], for example) would have the following appearance:
+----
+time; force_x
+0; 1.67
+0.001; 1.62
+0.002; 1.63
+.....
+----
+
+
+Note that, depending on the benchmarking algorithm requirements, this may prevent the Performance Indicator computation. 
 
 === Raw Data Files
 
