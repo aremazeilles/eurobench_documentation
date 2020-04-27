@@ -164,7 +164,6 @@ value: [0.96867, 1.01667, 0.98843, 0.95168, 0.87936, 0.94576, 0.87802, 0.87571, 
 
 For a `matrix` output:
 
-For a vector output, where the first list refers to the first row of the matrix:
 [source, yaml]
 ----
 type: 'matrix'
