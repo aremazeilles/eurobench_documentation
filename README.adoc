@@ -25,7 +25,7 @@ If you identify errors, or want to provide additional material, please use tradi
 
 == Additional Tools
 
-To generate locally the documentation (under Linux), type from the repository root `make`.
+To generate locally the documentation (under Linux), type from the repository root the command `make`.
 It requires `make` and `asciidoctor` installed locally.
 
 ---
