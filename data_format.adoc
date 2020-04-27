@@ -83,6 +83,8 @@ label_1; label_2; label_3
 value_1; value_2; value_3
 ----
 
+==== incomplete data file
+
 If a field or a column cannot be filled (the force sensor only provides force measurement, no torque, or all human joint angles are not tracked), the label should be **discarded** from the file (i.e no empty column). This way, the wrench file corresponding to a 6D force sensor (link:https://onrobot.com/sites/default/files/documents/Datasheet_HEX%20QC_20191122.pdf[OnRobot HEX-E QC], for example) would look as follows:
 ----
 time; force_x; force_y; force_z; torque_x; torque_y; torque_z
@@ -101,7 +103,50 @@ time; force_x
 .....
 ----
 
-Note that, depending on the benchmarking algorithm requirements, this may prevent the Performance Indicator computation. 
+WARNING: Note that, depending on the benchmarking algorithm requirements, this may prevent the Performance Indicator computation, if a column is expected by the algorithm, but not present in the data file.
+
+==== Protocol with multiple but similar sensors
+
+Some protocols can require the use of various but similar sensors (like a force sensor on each of the crutches).
+In that case two options are proposed:
+
+WARNING: The protocol should indicate the appropriate option to use.
+
+**Option 1: one file per device**
+
+The two files will share the same structure (based on the information stored in it), but will only differ by their name:
+
+* `subject_N_run_R_wrench_tag1.csv` for the force sensor labelled `tag1`
+* `subject_N_run_R_wrench_tag2.csv` for the force sensor labelled `tag2`
+
+The label string (`tag1`, `tag2`) to use is defined by the protocol.
+
+Both files will contain data following the regular wrench file pattern, i.e.:
+
+[options="header"]
+|=================
+| time | force_x | force_y | force_z | torque_x | torque_y | torque_z
+| 0 | 1.67 | 2.34 | 0.83 | 0.21 | 0.53 | 0.07
+| 0.001 | 1.62 | 2.12 | 0.75 | 0.29 | 0.47 | 0.1
+| 0.002 | 1.63 | 2.41 | 0.81 | 0.19 | 0.56 | 0.8
+| ... | ... | ...
+|=================
+
+**Option 2: one file gathering the two devices**
+
+A single file is provided, and use the generic format `subject_N_run_R_wrench.csv`.
+The file content is a concatenation of the two readings, with the labels adjusted to distinguish the two devices:
+
+[options="header"]
+|=================
+| time | tag1_force_x | tag1_force_y | tag1_force_z | tag1_torque_x | tag1_torque_y | tag1_torque_z | tag2_force_x | tag2_force_y | tag2_force_z | tag2_torque_x | tag2_torque_y | tag2_torque_z
+| 0 | 1.67 | 2.34 | 0.83 | 0.21 | 0.53 | 0.07 | 1.67 | 2.34 | 0.83 | 0.21 | 0.53 | 0.07
+| 0.001 | 1.62 | 2.12 | 0.75 | 0.29 | 0.47 | 0.1 | 1.62 | 2.12 | 0.75 | 0.29 | 0.47 | 0.1
+| 0.002 | 1.63 | 2.41 | 0.81 | 0.19 | 0.56 | 0.8 | 1.63 | 2.41 | 0.81 | 0.19 | 0.56 | 0.8
+| ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ...
+|=================
+
+WARNING: This option is only accepted if the data logged is using the same timestamp.
 
 == Bipedal system specification files
 
