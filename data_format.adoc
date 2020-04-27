@@ -101,7 +101,7 @@ time; force_x
 .....
 ----
 
-Note that, depending on the benchmarking algorithm requirements, this may prevent the Performance Indicator computation. 
+Note that, depending on the benchmarking algorithm requirements, this may prevent the Performance Indicator computation.
 
 == Bipedal system specification files
 
@@ -288,7 +288,6 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 **File structure**:
 
-
 .3D joint center file structure
 [options="header"]
 |================
@@ -309,6 +308,53 @@ Possible labels are listed on Figure <<fig:df_joint_center_label>>.
 [[fig:df_joint_center_label]]
 .Labels of Joints centers
 image::img/df_joint_center_label.png[align=center, title-align=center]
+
+=== Body Center of Mass 3D trajectory
+
+The body Center of Mass (COM) is frequently considered in biomechanics, as it reflects the motion of the whole body.
+It is usually defined as _the unique point where the weighted relative position of the distributed mass sums to zero_ (https://en.wikipedia.org/wiki/Center_of_mass[wikipedia])
+
+
+**Description**: This file shall contain the estimated COM position along time.
+
+**Name of the file**: subject_N_run_R_com  where  N = subject’s number and R = run number.
+Use appropriate leading zeros for R and N to ensure proper ordering of files.
+
+**File format**: .csv
+
+**File structure**:
+
+.COM position file structure and unit
+[options="header"]
+|================
+| time | x | y | z
+| `sec` | `m` | `m` | `m`
+|================
+
+=== Angular Momentum around the Center of Mass
+
+The angular momentum of a body is a vector quantity that represents the magnitude and the direction in which the body rotates about a reference point <<Bennett2010>>.
+
+**Description**: This file shall contain the estimated angular momentum around the COM along time.
+
+**Name of the file**: subject_N_run_R_angularMomentum  where  N = subject’s number and R = run number.
+Use appropriate leading zeros for R and N to ensure proper ordering of files.
+
+**File format**: .csv
+
+**File structure**:
+
+.Angular Momentum file structure and unit
+[options="header"]
+|================
+| time | xx | xy | xz | yx | yy | yz | zx | zy | zz
+| `sec` | `Js` | `Js` | `Js`| `Js` | `Js` | `Js`| `Js` | `Js` | `Js`
+|================
+where `Js` stands for Joule second (equivalent to $$kgm²s^{⁻1}$$).
+
+[bibliography]
+
+* [[Bennett2010]] B.C Bennett, S.D. Russell, P. Sheth, M. F. Abel. Angular momentum of walking at different speeds. Human Movement Science, 2010 (https://kin.sfsu.edu/sites/default/files/Angular%20momentum%20of%20walking%20at%20different%20speeds.pdf[link])
 
 === Wrench file
 
