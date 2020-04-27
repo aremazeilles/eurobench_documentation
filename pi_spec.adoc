@@ -127,73 +127,69 @@ The input data of an experiment can be composed of:
 * datafile collected from sensors during the experimentation
 * datafile corresponding to benchmarking condition, like robot specification, human specification, testbed configuration, ...
 
-We are considering two options:
-
-* Option 1: assuming all input files will be provided explicitely to the PI programm:
+We assume the processing algorithm entry point expects all input files to be explicitely detailed:
 
 [source, sh]
 ----
 run_pi subject_N_run_R_jointAngles.csv subject_N_anthropometric.yaml testbed.yaml [output_folder]
 ----
 
-
-* Option 2: placing all datafile inside a folder (e.g. _data_input_), and gives that folder as input parameter:
-
-[source, sh]
-----
-run_pi data_input/ [output_folder]
-----
-
-Looking at the two options:
-
-* Option1:
-** PRO: the algorithm knows directly the name of the file associated to each input information
-** PRO there is no filename adjustment needed, we can transmit the file as, i.e `subject_N_run_R_jointAngles.csv`
-** CONS: the PI manager needs to know the requested file type, together with the order of definition in the command line.
-* Option2:
-** PRO: the PI manager does not not have to deal with the previous CONS aspect, the PI call is purelly generic
-** CONS: to get the PI subject and run agnostic, the PI manager should rename the file before calling the PI:
-*** convert `subject_N_run_R_jointAngles.csv` into `jointAngles.csv`
-*** convert `subject_N_anthropometric.yaml` into `anthropometry.yaml`
-
-Right now the first option is implemented.
+NOTE: The expected launch command is the information required in the PI Algo template entry named <<template.adoc#Input command, input command>>.
 
 === Output data
 
 To be again generic, we are proposing the following output format:
 
 * One file per PI score.
-* That file would have a yaml structure indicating the content type.
-  For instance:
+* That file would have a https://fr.wikipedia.org/wiki/YAML[YAML] structure indicating the content type.
+
+The YAML file should contains keys `type` and `value`.
+We consider the following options:
+
+For a `scalar` output:
 
 [source, yaml]
 ----
+type: 'scalar'
+value: 42
+----
 
+For a `vector` output:
+
+[source, yaml]
+----
 type: 'vector'
 value: [0.96867, 1.01667, 0.98843, 0.95168, 0.87936, 0.94576, 0.87802, 0.87571, 0.81802, 0.82336]
 ----
 
-Another option could be gathering all PI outcomes into an unique PI file:
+For a `matrix` output:
+
+For a vector output, where the first list refers to the first row of the matrix:
+[source, yaml]
+----
+type: 'matrix'
+value: [[1.0, 0, 0], [0, 1.0, 0], [0, 0, 1.0]]
+----
+
+For a vector including labels, a matrix is used, with the first row being the labels:
 
 [source, yaml]
 ----
-
-pi_name: step_time
-   type: 'vector'
-   value: [0.96867, 1.01667, 0.98843, 0.95168, 0.87936, 0.94576, 0.87802, 0.87571, 0.81802, 0.82336]
-pi_name: velocity
-   type: 'value'
-   value: 0.2
+type: 'labelled_matrix'
+value: [['step_length', 'step_time', 'stride_time'], [0.5, 0.8, 0.4]]
 ----
 
-Right now, the first option is implemented, i.e. one file per PI score.
+NOTE: The type of the output file is defined in the <<template.adoc#output type field, PI spec>>, set in the general template sheet.
 
-Note that providing several PI through a unique source code or algorithm is an option provided to the developer.
+Note that providing several PI output through a unique source code or algorithm is an option provided to the developer.
 But in any case, we should have as many files generated as PI computed.
-Indeed, a protocol can have various PI associated to it, each of them being associated to different algorithm or code.
 
-The scoring is performed **per run**.
-It is assumed that at the definition of the PI in the database it has been also provided information for:
+The name of each PI file has to be the same as the name of the PI, as specified in the PI table in the <<template.adoc#PI Sheet, name>> entry.
 
-* computing a unique score from a range of value (like use `mean` for providing an indicative unique step_time for a given run)
-* aggregating all PI scores obtained from the N runs (like how to extract an experiment step_time score given all the step_time vectors obatined in the successive runs).
+NOTE: for non-scalar metrics, we suggest the definition of a metric to _compress_ or aggregare the score (like using `mean` for providing a unique value from a vectir result for a given run).
+      See the <<template.adoc#intra-run aggregation, intra-run aggregation definition>>.
+
+WARNING: The scoring is _ideally_ performed **per run**.
+         The score aggregation across the N runs (like how to extract an experiment `step_time` score given all the `step_time` vectors obtained in the successive runs) is specified in the template.
+         See the <<template.adoc#inter-run aggregation, inter-run aggregation definition>>.
+         It will be automatically computed by the PI Manager
