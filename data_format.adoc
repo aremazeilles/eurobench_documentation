@@ -354,7 +354,7 @@ where `Js` stands for Joule second (equivalent to $$kgm²s^{⁻1}$$).
 
 [bibliography]
 
-* [[Bennett2010]] B.C Bennett, S.D. Russell, P. Sheth, M. F. Abel. Angular momentum of walking at different speeds. Human Movement Science, 2010 (https://kin.sfsu.edu/sites/default/files/Angular%20momentum%20of%20walking%20at%20different%20speeds.pdf[link])
+[[Bennett2010]] [Bennett2010]: B.C Bennett, S.D. Russell, P. Sheth, M. F. Abel. Angular momentum of walking at different speeds. Human Movement Science, 2010 (https://kin.sfsu.edu/sites/default/files/Angular%20momentum%20of%20walking%20at%20different%20speeds.pdf[link])
 
 === Wrench file
 
