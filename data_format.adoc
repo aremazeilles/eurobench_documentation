@@ -83,6 +83,13 @@ label_1; label_2; label_3
 value_1; value_2; value_3
 ----
 
+For all `csv`-based data file type, we will present in the following document a table with:
+
+* the first line indicating the column labels to use
+* the second line indicating the unit of each column
+
+If we can accept that all column may not be present in the file (see next section), we assume that the first row should **always contain the labels of all columns present in the file**.
+
 ==== incomplete data file
 
 If a field or a column cannot be filled (the force sensor only provides force measurement, no torque, or all human joint angles are not tracked), the label should be **discarded** from the file (i.e no empty column). This way, the wrench file corresponding to a 6D force sensor (link:https://onrobot.com/sites/default/files/documents/Datasheet_HEX%20QC_20191122.pdf[OnRobot HEX-E QC], for example) would look as follows:
@@ -280,21 +287,13 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 **File structure**:
 
-.Joint angle file structure
+.Joint angle file structure and unit
 [options="header"]
 |================
 | time | r_hip_y | r_hip_x | r_hip_z | r_knee_y | r_knee_x | r_knee_z | ... | ... | ...
-| ... | ... | ... | ... | ... | ... | ... | ... | ... | ...
-| ... | ... | ... | ... | ... | ... | ... | ... | ... | ...
+| `sec` | `deg` | `deg` | `deg` | `deg` | `deg` | `deg` | ... | ... | ...
 |================
 
-
-.Joint angle file unit
-[options="header"]
-|================
-| time | r_hip_y | r_hip_x | r_hip_z | r_knee_y | r_knee_x | r_knee_z | ... | ... | ...
-| `msec` | `deg` | `deg` | `deg` | `deg` | `deg` | `deg` | ... | ... | ...
-|================
 
 === Joint torques file
 
@@ -307,22 +306,14 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 **File structure**:
 
-.Joint torque file structure
+.Joint torque file structure and unit
 [options="header"]
 |================
 | time | r_hip_x | r_hip_y | r_hip_z | r_knee_x | r_knee_y | r_knee_z | ... | ... | ...
-| ... | ... | ... | ... | ... | ... | ... | ... | ... | ...
-| ... | ... | ... | ... | ... | ... | ... | ... | ... | ...
+| `sec` | `N.m` | `N.m` | `N.m` | `N.m` | `N.m` | `N.m` | ... | ... | ...
 |================
 
-.Wrench file unit
-[options="header"]
-|================
-| time | r_hip_x | r_hip_y | r_hip_z | r_knee_x | r_knee_y | r_knee_z | ... | ... | ...
-| `msec` | `Nm` | `Nm` | `Nm` | `Nm` | `Nm` | `Nm` | ... | ... | ...
-|================
-
-=== Joint centers 3D trajectories file
+=== Joint center 3D trajectories file
 
 **Description**: This file shall contain all the measured trajectories of the joints.
 
@@ -334,19 +325,11 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 **File structure**:
 
 
-.3D joint center file structure
+.3D joint center file structure and unit
 [options="header"]
 |================
 | time | r_ankle_x | r_ankle_y | r_ankle_z | r_knee_x | r_knee_y | r_knee_z | ... | ... | ...
-| ... | ... | ... | ... | ... | ... | ... | ... | ... | ...
-| ... | ... | ... | ... | ... | ... | ... | ... | ... | ...
-|================
-
-.3D joint center unit
-[options="header"]
-|================
-| time | r_ankle_x | r_ankle_y | r_ankle_z | r_knee_x | r_knee_y | r_knee_z | ..
-| `msec` | `mm` | `mm` | `mm` | `mm` | `mm` | `mm` | ... | ... | ...
+| `sec` | `m` | `m` | `m` | `m` | `m` | `m` | ... | ... | ...
 |================
 
 Possible labels are listed on Figure <<fig:df_joint_center_label>>.
@@ -366,21 +349,12 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 **File structure**:
 
-.Wrench file structure
-[options="header"]
-|================
-| time | force_x | force_y | force_z | torque_x | torque_y | torque_z
-| ... | ... | ... | ... | ... | ... | ...
-| ... | ... | ... | ... | ... | ... | ...
-|================
-
-.Wrench file unit
+.Wrench file structure and unit
 [options="header"]
 |================
 | time | force_x | force_y | force_z | torque_x | torque_y | torque_z
 | `sec` | `N` | `N` | `N` | `N.m` | `N.m` | `N.m`
 |================
-
 
 === Ground Reaction Forces file
 
@@ -393,22 +367,14 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 **File structure**:
 
-.Ground Reaction Forces file structure
+.Ground Reaction Forces file structure and unit
 [options="header"]
 |================
 | time | f_x | f_y | f_z | p_x | p_y | p_z | t_x | t_y | t_z
-| ... | ... | ... | ... | ... | ... | ... | ... | ...
-| ... | ... | ... | ... | ... | ... | ... | ... | ...
+| `sec` | `N` | `N` | `N` | `m` | `m` | `m` | `N.m` | `N.m` | `N.m`
 |================
 
 where `f` stands for force, `p` for the center of pressure, and `t` for torques.
-
-.Ground Reaction Forces file unit
-[options="header"]
-|================
-| time | f_x | f_y | f_z | p_x | p_y | p_z | t_x | t_y | t_z
-| `msec` | `N` | `N` | `N` | `m` | `m` | `m` | `N.m` | `N.m` | `N.m`
-|================
 
 === Electromyography file
 
@@ -419,22 +385,14 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 **File format**: .csv
 
-.EMG file structure
+.EMG file structure and unit
 [options="header"]
 |================
-| time | label_1 | ... | labeli | ...
-| ... | ... | ... | ... | ...
-| ... | ... | ... | ... | ...
+| time | label_1 | ... | label_i | ...
+| `s` | `mV` | `mV` | `mV` | `mV`
 |================
 
 where `label_i` is to be a tag described in table <<tab:emg_tags>>.
-
-.EMG file unit
-[options="header"]
-|================
-| time | label_1 | ... | labeli | ...
-| `ms` | `mV` | `mV` | `mV` | `mV`
-|================
 
 [[tab:emg_tags]]
 .List of EMG muscles and labels considered.
