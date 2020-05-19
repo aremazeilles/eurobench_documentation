@@ -453,11 +453,14 @@ It gathers:
   Label: `hr`
 * _Heart rate variability_ (HRV): is the physiological phenomenon of variation in the time interval between heartbeats.
   It is measured by the variation in the beat-to-beat interval (https://en.wikipedia.org/wiki/Heart_rate_variability[link]).
+  Unit is set to `sec` (second).
   Label: `hrv`
 * _Respiration rate_: rate at which breathing occurs (https://en.wikipedia.org/wiki/Respiratory_rate[link]).
+  Unit is `bpm` (breaths per minute).
   Label : `rr`
 * _Galvanic skin response_: refers to changes in sweat gland activity that are reflective of the intensity of our emotional state
   (https://en.wikipedia.org/wiki/Electrodermal_activity[link]).
+  Unit is `mS` (milliSiemens).
   Label: `gsr`
 
 **Name of the file**: subject_N_run_R_physiological where N = subject’s number and R = run number.
@@ -471,7 +474,7 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 [options="header"]
 |================
 | time | hr | hrv | rr | gsr
-| `sec` | `bpm` | `?` | `?` | `?`
+| `sec` | `bpm` | `sec` | `bpm` | `mS`
 |================
 
 === Testbed-related data file
