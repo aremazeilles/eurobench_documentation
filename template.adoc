@@ -62,6 +62,7 @@ The table is described per block just for easing the description of it.
   Should be related to the short name provided within the <<PI Algo sheet>>.
 
 .Protocol Template sheet - Controlled variables
+[[table_controlled_variables]]
 [options="header"]
 |=================
 | name | Definition | type | range | unit

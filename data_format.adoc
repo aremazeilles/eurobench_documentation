@@ -254,7 +254,25 @@ It can also contain configuration parameters that may be needed by the algorithm
 Where each key is one testbed-related data.
 keys must be self-explicative.
 Different words on the same key must be separated by underscore.
-keys must be written in lowercase.
+keys must be written in lower case style.
+
+If a protocol involves several equipments, then all configuration information should be placed in the same file, using the pattern `device_name_param_name` to describe each of the device.
+For instance, if a protocol involves a push stick and an instrumented garment, we would consider the following configuration file:
+
+[source, yaml]
+----
+push_tick_param_1: 3.14
+push_tick_param_2: 0
+garment_param_i : [15, 46]
+garment_param_j: 2
+----
+
+The exact format of the file is defined by the protocol itself.
+
+[WARNING]
+====
+All controlled variables, as defined in the <<template.adoc#table_controlled_variables, template spec>> should be defined in that file.
+====
 
 == Raw Data Files
 
@@ -447,46 +465,6 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 |====================
 
 **Units**: Seconds
-
-=== Testbed-related data file
-
-**Description**: This file shall contain all the data that describes the configuration of the specific testbed (e.g. for slope: slope angle; for stairs: step height; etc…).
-
-**File format**: .yaml
-
-**File name**: subject_N_testbedLabel_R where  N = subject’s number, R = run number and testbedLabel is shown in Table 4.
-Use appropriate leading zeros for R and N to ensure proper ordering of files.
-New testbedLabel can be added in the future, depending on new testbeds available.
-
-
-.List of labels for testbeds
-[options="header"]
-|=======================
-| Testbed | testbedLabel
-| Walking on flat ground | flat
-| Walking on slopes | slope
-| Walking on stairs | stairs
-| Overcoming obstacles | obstacles
-| Walking on irregular hard terrains | irregular
-| Walking on treadmill | treadmill
-| Walking/standing on moving surfaces | moving
-| Walking/standing during pushes | pushes
-| Standing during manipulation skills | manipulation
-| Picking and carrying objects | pickAndCarry
-| Chair sitting and standing | chair
-| Walking on laterally inclined surfaces | lateral
-| Walking on virtual terrains | virtual
-| Walking on soft terrains | soft
-| Opening/closing doors | door
-| Moving in narrow spaces | narrow
-| Pushing a shopping trolley | trolley
-|=======================
-
-**File structure**: Set of lines containing key: values.
-Where each key is one testbed-related data.
-keys must be self-explicative.
-different words on the same key must be separated by underscore.
-keys must be written in lowercase.
 
 === Human Factor metrics
 
