@@ -64,7 +64,7 @@ Unless specified if different, all datafile recorded will have a name using the 
 where `N` is an integer identifying the human subject (if one is involved), and `R` is an integer identifying the repetition number.
 Use appropriate leading zeros for `R` and `N` to ensure proper ordering of files.
 
-Generally speaking, all `csv` files follows the https://en.wikipedia.org/wiki/Comma-separated_values[Comma-separated values] format, using **semicolon** as separator.
+Generally speaking, all `csv` files follow the https://en.wikipedia.org/wiki/Comma-separated_values[Comma-separated values] format, using **semicolon** as separator.
 
 In the following documentation, we will use tables for describing file content.
 As an example, the following table:
@@ -111,6 +111,15 @@ time; force_x
 ----
 
 WARNING: Note that, depending on the benchmarking algorithm requirements, this may prevent the Performance Indicator computation, if a column is expected by the algorithm, but not present in the data file.
+
+=== Global reference frame
+
+Even though data collected should always be aligned with the specification of the protocol that could supersede the general description provided here, in any measurement involving a global Cartesian reference frame, such reference frame should be placed as proposed in the ISB recommendations, with <<Wu1995>>:
+
+* `x` axis aligned with the gait direction
+* `y` axis vertical and pointing upwards
+
+[[Wu1995]] [Wu1995]: G. Wu and P. R. Cavanagh. ISB recommendations for standardization in the reporting of kinematic data. Journal of Biomechanics, 28(10), 1995. https://www.ece.uvic.ca/~bctill/papers/mocap/Wu_Cavanagh_1995.pdf[pdf].
 
 ==== Protocol with multiple but similar sensors
 
@@ -355,6 +364,71 @@ Possible labels are listed on Figure <<fig:df_joint_center_label>>.
 [[fig:df_joint_center_label]]
 .Labels of Joints centers
 image::img/df_joint_center_label.png[align=center, title-align=center]
+
+=== Body Center of Mass 3D trajectory
+
+The body Center of Mass (COM) is frequently considered in biomechanics, as it reflects the motion of the whole body.
+It is usually defined as _the unique point where the weighted relative position of the distributed mass sums to zero_ (https://en.wikipedia.org/wiki/Center_of_mass[wikipedia])
+
+
+**Description**: This file shall contain the estimated COM position along time.
+
+**Name of the file**: subject_N_run_R_com  where  N = subject’s number and R = run number.
+Use appropriate leading zeros for R and N to ensure proper ordering of files.
+
+**File format**: .csv
+
+**File structure**:
+
+.COM position file structure and unit
+[options="header"]
+|================
+| time | x | y | z
+| `sec` | `m` | `m` | `m`
+|================
+
+=== Angular Momentum around the Center of Mass
+
+The angular momentum of a body is a vector quantity that represents the magnitude and the direction in which the body rotates about a reference point <<Bennett2010>>.
+
+**Description**: This file shall contain the estimated angular momentum around the COM along time.
+
+**Name of the file**: subject_N_run_R_angularMomentum  where  N = subject’s number and R = run number.
+Use appropriate leading zeros for R and N to ensure proper ordering of files.
+
+**File format**: .csv
+
+**File structure**:
+
+.Angular Momentum file structure and unit
+[options="header"]
+|================
+| time | x | y | z
+| `sec` | `Js` | `Js` | `Js`
+|================
+where `Js` stands for Joule second (equivalent to $$kgm²s^{⁻1}$$).
+
+[bibliography]
+
+[[Bennett2010]] [Bennett2010]: B.C Bennett, S.D. Russell, P. Sheth, M. F. Abel. Angular momentum of walking at different speeds. Human Movement Science, 2010 (https://kin.sfsu.edu/sites/default/files/Angular%20momentum%20of%20walking%20at%20different%20speeds.pdf[link])
+
+=== Inertia Tensor
+
+**Description**: The inertia tensor describes the body´s resistance to rotational motion in response to a torque.
+
+**Name of the file**: subject_N_run_R_inertiaTensor  where  N = subject’s number and R = run number.
+Use appropriate leading zeros for R and N to ensure proper ordering of files.
+
+**File format**: .csv
+
+**File structure**:
+
+.Inertia tensor file structure and unit
+[options="header"]
+|================
+| time | xx | xy | xz | yx | yy | yz | zx | zy | zz
+| `sec` | `kgm²` | `kgm²` | `kgm²`| `kgm²` | `kgm²` | `kgm²`| `kgm²` | `kgm²` | `kgm²`
+|================
 
 === Wrench file
 
