@@ -62,6 +62,7 @@ The table is described per block just for easing the description of it.
   Should be related to the short name provided within the <<PI Algo sheet>>.
 
 .Protocol Template sheet - Controlled variables
+[[table_controlled_variables]]
 [options="header"]
 |=================
 | name | Definition | type | range | unit
@@ -162,8 +163,8 @@ value: [0.96867, 1.01667, 0.98843, 0.95168, 0.87936, 0.94576, 0.87802, 0.87571, 
 ```
 
 The PI type is in that case a vector.
-We envision for now outputs of type `scalar`, `vector` and `matrix`.
-Possibly, we may extend these types to more options that could encode also the best visualisation tool.
+We envision for now outputs of type `scalar`, `vector`, `matrix` and `labelled_matrix`.
+More details are available on the <<pi_spec#Output data, PI specification file>> file.
 
 === intra-run aggregation
 
@@ -192,7 +193,7 @@ Note that we can define various operators for one PI (like mean and standard dev
 The intra-run aggregation is thus using the following pattern: `[ [number, operator] ]`.
 Obviously it does not need to be filled for scalar output.
 
-=== Inter-run aggregation
+=== inter-run aggregation
 
 A similar operation is needed for combining the scores obtained for each run, to generate a PI for the whole experiment.
 Similar operators are proposed, but they will be computed on all the values obtained for all runs.
