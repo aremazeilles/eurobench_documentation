@@ -15,7 +15,7 @@ This document gathers documentation on software aspects related to the http://eu
 
 == Modification Instructions
 
-All this documentation is subject to evolution according to http://eurobench2020.eu/[Eurobench] needs.
+All the documentation is subject to evolution according to http://eurobench2020.eu/[Eurobench] needs.
 If you identify errors, or want to provide additional material, please use traditional Github tools:
 
 * Create an issue through the https://help.github.com/en/github/managing-your-work-on-github/creating-an-issue[Git Hub Interface]
@@ -25,7 +25,7 @@ If you identify errors, or want to provide additional material, please use tradi
 
 == Additional Tools
 
-To generate locally the documentation (under Linux), type from the repository root `make`.
+To generate locally the documentation (under Linux), type from the repository root the command `make`.
 It requires `make` and `asciidoctor` installed locally.
 
 ---
