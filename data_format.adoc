@@ -541,8 +541,7 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 === Physiological data
 
-**Description**: We gather in that concept measurements of the heart activity and skin response.
-It gathers:
+**Description**: We gather in that concept measurements of the heart activity and skin response:
 
 * _Heart rate_: speed of the heartbeat measured by the number of contractions (beats) of the heart per minute (bpm) (https://en.wikipedia.org/wiki/Heart_rate[link]).
   Label: `hr`
@@ -557,6 +556,9 @@ It gathers:
   (https://en.wikipedia.org/wiki/Electrodermal_activity[link]).
   Unit is `mS` (milliSiemens).
   Label: `gsr`
+* _Electrocardiogram_ (ECG): electrical activity of the heart as perceived by electrodes placed on the skin (https://en.wikipedia.org/wiki/Electrocardiography[link]).
+  Unit is `mV` (milliVolt).
+  Label: `ecg`
 
 **Name of the file**: subject_N_run_R_physiological where N = subject’s number and R = run number.
 Use appropriate leading zeros for R and N to ensure proper ordering of files.
@@ -567,10 +569,15 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 .Physiological file structure
 [options="header"]
-|================
-| time | hr | hrv | rr | gsr
-| `sec` | `bpm` | `sec` | `bpm` | `mS`
-|================
+|=================================
+| time | hr | hrv | rr | gsr | ecg
+| `sec` | `bpm` | `sec` | `bpm` | `mS`| `mV`
+|=================================
+
+Note that recording all these dimensions may not be required by all protocols.
+Unmeasured dimensions should be discarded by removing the related label from the file.
+
+Also, if different acquisition devices are used, and if the acquisition frequency is different, then more specific data file could be generated (like `physiological_ecg` is ecg presents a different frequency).
 
 === Human Factor metrics
 
