@@ -556,7 +556,7 @@ Units: Millivolts.
 
 === Physiological data
 
-**Description**: We gather in that concept measurements of the heart activity and skin response:
+**Description**: We gather in that concept measurements of the heart/breathing system activity and skin response:
 
 * _Heart rate_: speed of the heartbeat measured by the number of contractions (beats) of the heart per minute (bpm) (https://en.wikipedia.org/wiki/Heart_rate[link]).
   Label: `hr`
@@ -591,7 +591,7 @@ Units: Millivolts.
 Note that recording all these dimensions may not be required by all protocols.
 Unmeasured dimensions should be discarded by removing the related label from the file.
 
-Also, if different acquisition devices are used, and if the acquisition frequency is different, then more specific data file could be generated (like `physiological_ecg` is ecg presents a different frequency).
+Also, if different acquisition devices are used, and if the acquisition frequency is different, then more specific data file could be generated (like `physiological_ecg` if ecg presents a different frequency).
 
 === Human Factor metrics
 
