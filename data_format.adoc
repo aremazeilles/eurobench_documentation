@@ -41,28 +41,53 @@ Generally speaking, we consider 4 different classes of files related to an exper
 
 In the following sections, each of these types of data will be defined and detailed.
 
+An experiment consists in recording datafiles while the subject (human / robot / both) is performing a given task.
+The activity can be repeated as follows:
+
+* to get different **runs**: a set of runs consists in repeating the same actions (and recording) in the same conditions (for enabling statistics for instance).
+  We would thus acquire several times the same set of information, but the data will be split in different datafiles.
+* to consider different **conditions**: in that case, a setting is changed.
+  It can be a configuration of the testbed or environmental settings (augment the slope angle), a configuration of the robotic system (support level of the exoskeleton), or an indication to the user (redo the operation with eyes closed).
+  The parameter being changed must be mentioned as a  <<template.adoc#Protocol Template sheet - Controlled variables, controlled variable>>., and must be listed in the <<Testbed configuration file, testbed configuration file>>.
+  For each condition, we can have a set of runs.
+* to involved several **subjects**: this is particularly relevant for experiments involving humans.
+  In that case, we can considering having for each subject the execution of the same protocol, i.e involving potentially several conditions, and for each condition several repetitions or runs.
+
 === Filename format, and generalities
 
-Unless specified if different, all datafile recorded will have a name using the following patterns:
+Generally speaking pre-processed data should follow the following pattern:
 
-.Pre-processed files format
+```
+subject_X_cond_Y_run_Z_[type].csv
+```
+where:
+
+* `[type]` is a string related to the type of information stored in the file.
+  This is the root name of the file.
+* X, Y, Z are integer respectively associated the to the number of subjects involved, the number of different conditions being tested, and the number of repetitions per condition.
+* The `subject` / `cond` / `run` namespaces are only used when it makes sense.
+  An experiment involving a unique subject would have have pre-preocessed files following the pattern: `cond_Y_run_Z_[type].csv`.
+  An experiment with various subject but unique condition would follow the pattern `subject_X_run_Z_[type].csv`.
+  At the extreme, an experiment involving a unique subject (or an humanoid), with single condition and no repetition will be described by files with pattern: `[type].csv`.
+
+Unless specified if different, all datafile recorded will have a name using this pattern.
+Each data file is now described, focusing on the type of information stored (extensions subject, cond and run are skiped for now).
+
+.Pre-processed files format (list to be updated)
 [options="header"]
 |================
 | File name | Format | Content
-| subject_N_run_R_jointAngles  | csv | Joint Angles
-| subject_N_run_R_jointTorques | csv | Joint Torques
-| subject_N_run_R_jointTrajectories | csv | Joint Trajectories
-| subject_N_run_R_grf | csv | Ground reaction Forces
-| subject_N_run_R_emg | csv | Electromyography
-| wr_N_config_M_segments | yaml | Segments descriptions files
+| jointAngles  | csv | Joint Angles
+| jointTorques | csv | Joint Torques
+| jointTrajectories | csv | Joint Trajectories
+| grf | csv | Ground reaction Forces
+| emg | csv | Electromyography
+| wr_N_config_M_segments (unclear)| yaml | Segments descriptions files
 | subject_N_anthropometry | yaml | Anthropometry description
 | humanoid_N_anthropometry | yaml | Humanoid description
-| subject_N_run_R_gaitEvents | yaml | Gait Events
+| gaitEvents | yaml | Gait Events
 | subject_N_run_R_testbedLabel | yaml | testbed specifics
 |================
-
-where `N` is an integer identifying the human subject (if one is involved), and `R` is an integer identifying the repetition number.
-Use appropriate leading zeros for `R` and `N` to ensure proper ordering of files.
 
 Generally speaking, all `csv` files follow the https://en.wikipedia.org/wiki/Comma-separated_values[Comma-separated values] format, using **semicolon** as separator.
 
@@ -241,7 +266,7 @@ image::img/df_segment_label.png[align=center, title-align=center]
 
 **Description**: This file shall contain all the anthropometric measurements from the humanoid robot mapped to the above proposed human segments (see Table 2 and Figure 3).
 
-**Name of the file**: humanoid_N_anthropometry, where N = humanoid’s identifier. Use appropriate leading zeros for R and N to ensure proper ordering of files.
+**Name of the file**: humanoid_N_anthropometry, where N = humanoid’s identifier.
 
 **File format**: .yaml
 
@@ -257,7 +282,7 @@ It can also contain configuration parameters that may be needed by the algorithm
 
 **File format**: .yaml
 
-**File name**: `subject_N_testbed_T.yaml`, where N = subject’s number, and T can be used to distinguish different configuration settings used in a single experiment.
+**File name**: `testbed_T.yaml`, where T can be used to distinguish different configuration settings used in a single experiment.
 
 **File structure**: Set of lines containing key: values.
 Where each key is one testbed-related data.
@@ -307,7 +332,7 @@ We will work together with you to create the required data file type.
 
 **Description**: This file shall contain the time-series of all measured joint angles, expressed in YXZ Cardan Angles, as defined in the “Angle Definition” section.
 
-**Name of the file**: `subject_N_run_R_jointAngles`  where N = subject’s number and R = run number.
+**filename root**: `jointAngles`  where N = subject’s number and R = run number.
 Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 **File format**: `.csv`
@@ -326,10 +351,9 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 **Description**: This file shall contain all the measured joint torques.
 
-**Name of the file**: subject_N_run_R_jointTorques  where  N = subject’s number and R = run number.
-Use appropriate leading zeros for R and N to ensure proper ordering of files.
+**filename root**: `jointTorques`
 
-**File format**: .csv
+**File format**: `.csv`
 
 **File structure**:
 
@@ -344,13 +368,11 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 **Description**: This file shall contain all the measured trajectories of the joints.
 
-**Name of the file**: subject_N_run_R_jointTrajectories  where  N = subject’s number and R = run number.
-Use appropriate leading zeros for R and N to ensure proper ordering of files.
+**Filename root**: `jointTrajectories`.
 
-**File format**: .csv
+**File format**: `.csv`
 
 **File structure**:
-
 
 .3D joint center file structure and unit
 [options="header"]
@@ -373,10 +395,9 @@ It is usually defined as _the unique point where the weighted relative position 
 
 **Description**: This file shall contain the estimated COM position along time.
 
-**Name of the file**: subject_N_run_R_com  where  N = subject’s number and R = run number.
-Use appropriate leading zeros for R and N to ensure proper ordering of files.
+**Filename root**: `com`.
 
-**File format**: .csv
+**File format**: `.csv`
 
 **File structure**:
 
@@ -393,10 +414,9 @@ The angular momentum of a body is a vector quantity that represents the magnitud
 
 **Description**: This file shall contain the estimated angular momentum around the COM along time.
 
-**Name of the file**: subject_N_run_R_angularMomentum  where  N = subject’s number and R = run number.
-Use appropriate leading zeros for R and N to ensure proper ordering of files.
+**Filename root**: `angularMomentum`.
 
-**File format**: .csv
+**File format**: `.csv`
 
 **File structure**:
 
@@ -416,10 +436,9 @@ where `Js` stands for Joule second (equivalent to $$kgm²s^{⁻1}$$).
 
 **Description**: The inertia tensor describes the body´s resistance to rotational motion in response to a torque.
 
-**Name of the file**: subject_N_run_R_inertiaTensor  where  N = subject’s number and R = run number.
-Use appropriate leading zeros for R and N to ensure proper ordering of files.
+**Filename root**: `inertiaTensor`.
 
-**File format**: .csv
+**File format**: `.csv`
 
 **File structure**:
 
@@ -434,10 +453,9 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 **Description**: This file shall contain wrench (force and torque) measured by a force sensor.
 
-**Name of the file**: subject_N_run_R_wrench where N = subject’s number and R = run number.
-Use appropriate leading zeros for R and N to ensure proper ordering of files.
+**Filename root**: `wrench`
 
-**File format**: .csv
+**File format**: `.csv`
 
 **File structure**:
 
@@ -452,10 +470,9 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 **Description**: This file shall contain forces measured by force platforms.
 
-**Name of the file**: subject_N_run_R_grf where N = subject’s number and R = run number.
-Use appropriate leading zeros for R and N to ensure proper ordering of files.
+**Filename root**: `grf`
 
-**File format**: .csv
+**File format**: `.csv`
 
 **File structure**:
 
@@ -472,10 +489,9 @@ where `f` stands for force, `p` for the center of pressure, and `t` for torques.
 
 **Description**: This file shall contain all the recorded EMG signals from the human subject.
 
-**Name of the file**: subject_N_run_R_emg, where N = subject’s number and R = run number.
-Use appropriate leading zeros for R and N to ensure proper ordering of files.
+**Filename root**: `emg`
 
-**File format**: .csv
+**File format**: `.csv`
 
 .EMG file structure and unit
 [options="header"]
@@ -518,10 +534,9 @@ Units: Millivolts.
 
 **Description**: This file shall include all detected (or calculated) heel strike and toe off gait events.
 
-**Name of the file**: subject_N_run_R_gaitEvents  where  N = subject’s number and R= run number.
-Use appropriate leading zeros for R and N to ensure proper ordering of files.
+**Filename root**: `gaitEvents`
 
-**File format**: .yaml
+**File format**: `.yaml`
 
 **File structure**:Set of lines containing key: vector of values. Where the key is provided on the last column of Table 3.
 
@@ -558,10 +573,9 @@ It gathers:
   Unit is `mS` (milliSiemens).
   Label: `gsr`
 
-**Name of the file**: subject_N_run_R_physiological where N = subject’s number and R = run number.
-Use appropriate leading zeros for R and N to ensure proper ordering of files.
+**Filename root**: `physiological`
 
-**File format**: .csv
+**File format**: `.csv`
 
 **File structure**:
 
