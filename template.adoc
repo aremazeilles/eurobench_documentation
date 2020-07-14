@@ -72,8 +72,14 @@ The table is described per block just for easing the description of it.
 
 
 Controlled variables are conditional settings that should be filled by an experimenter, to describe their experimentation conditions.
-These variables are not likely to be changed during an experiment trial execution.
-As an example, for a walking on slope protocol, the controlled variables could be the slope angle and the slope length.
+These variables are not supposed to change during an experiment trial execution.
+Parameters can be related to either:
+
+* a configuration parameter of the testbed (for a walking on slope protocol, the controlled variables could be the slope angle and the slope length).
+* a configuration of the robotic system (like setting different levels of assistance of an exoskeleton, or testing different set of tunning parameters of an humanoid)
+* a behavior indication provided to the subject (like do the action with eyes closed)
+
+The controlled variables, together with the protocol spec, should enable anybody to reproduce a given execution with exactly the same settings.
 
 * `Name`: single word.
   If needed `under_scored` like name can be used.
