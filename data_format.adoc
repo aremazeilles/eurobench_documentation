@@ -48,7 +48,7 @@ The activity can be repeated as follows:
   We would thus acquire several times the same set of information, but the data will be split in different datafiles.
 * to consider different **conditions**: in that case, a setting is changed.
   It can be a configuration of the testbed or environmental settings (augment the slope angle), a configuration of the robotic system (support level of the exoskeleton), or an indication to the user (redo the operation with eyes closed).
-  The parameter being changed must be mentioned as a  <<template.adoc#Protocol Template sheet - Controlled variables, controlled variable>>., and must be listed in the <<Testbed configuration file, testbed configuration file>>.
+  The parameter being changed must be mentioned as a <<template.adoc#table_controlled_variables, controlled variable>>, and must be listed in the <<Testbed configuration file, testbed configuration file>>.
   For each condition, we can have a set of runs.
 * to involved several **subjects**: this is particularly relevant for experiments involving humans.
   In that case, we can considering having for each subject the execution of the same protocol, i.e involving potentially several conditions, and for each condition several repetitions or runs.
