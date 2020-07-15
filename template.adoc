@@ -169,8 +169,8 @@ value: [0.96867, 1.01667, 0.98843, 0.95168, 0.87936, 0.94576, 0.87802, 0.87571, 
 ```
 
 The PI type is in that case a vector.
-We envision for now outputs of type `scalar`, `vector`, `matrix` and `labelled_matrix`.
-More details are available on the <<pi_spec#Output data, PI specification file>> file.
+We envision for now outputs of type `scalar`, `vector`, `matrix`, `labelled_matrix` and `string`.
+More details are available on the <<pi_spec.adoc#Output data, PI specification file>> file.
 
 === intra-run aggregation
 
