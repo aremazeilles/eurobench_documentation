@@ -849,79 +849,84 @@ As the thorax frontal axis points downward while the head frontal axis points up
 
 This section is still under construction. Our intention is to provide a complete set of examples for three fields: human, humanoids, and wearable robots locomotion dataset.
 
+In the following we use `{}` to factorize filenames:
+
+* Name `subject_{01_03}_jointAngles.csv`, is used to name the three files `subject_01_jointAngles.csv`, `subject_02_jointAngles.csv` and `subject_03_jointAngles.csv`.
+* Name `subject_{01_03}_run_{01-02}_jointAngles.csv` refers to files: `subject_01_run_01_jointAngles.csv`, `subject_01_run_02_jointAngles.csv`, `subject_02_run_01_jointAngles.csv`, `subject_02_run_02_jointAngles.csv`, `subject_03_run_01_jointAngles.csv`, `subject_03_run_02_jointAngles.csv` 
+
 === Example 1
 
-The Laboratory HumanLab has done a study on Parkinson’s patients and recorded two subjects during overground walking, with inertial sensors. Three runs were recorded per subject. These are the files that they have produced to be compatible with the EUROBENCH Database.
+The Laboratory HumanLab has done a study on Parkinson’s patients and recorded two subjects during overground walking, with inertial sensors.
+Three runs were recorded per subject.
+These are the files that they have produced to be compatible with the EUROBENCH Database.
 
-* Raw Files
-** raw_data.txt
-** subject_01_imu_raw_01.cappa
-** subject_01_imu_raw_02.cappa
-** subject_01_imu_raw_03.cappa
-** subject_02_imu_raw_01.cappa
-** subject_02_imu_raw_02.cappa
-** subject_02_imu_raw_03.cappa
+* Raw Files (format suggested, not mandatory)
+** `raw_data.txt`
+** `subject_{01-02}_run_{01-03}_imu_raw.cappa`
 * Anthropometric Files
-** subject_01_anthropometry.yaml
-** subject_02_anthropometry.yaml
+** `subject_01_anthropometry.yaml`
+** `subject_02_anthropometry.yaml`
 * Electromyography Files
-** subject_01_run_01_emg.csv
-** subject_01_run_02_emg.csv
-** subject_01_run_03_emg.csv
-** subject_02_run_01_emg.csv
-** subject_02_run_02_emg.csv
-** subject_02_run_03_emg.csv
+** `subject_{01-02}_run_{01-03}_emg.csv`
 * Gait Events Files
-** subject_01_run_01_gaitEvents.csv
-** subject_01_run_02_gaitEvents.csv
-** subject_01_run_03_gaitEvents.csv
-** subject_02_run_01_gaitEvents.csv
-** subject_02_run_02_gaitEvents.csv
-** subject_02_run_03_gaitEvents.csv
-* Testbed related data file
-** subject_01_run_01_flat.yaml
-** subject_01_run_02_flat.yaml
-** subject_01_run_03_flat.yaml
-** subject_02_run_01_flat.yaml
-** subject_02_run_02_flat.yaml
-** subject_02_run_03_flat.yaml
+** `subject_{01-03}_run_{01-03}_gaitEvents.csv`
+* Testbed configuration related data file
+** `testbed.yaml`
+
+There is only a unique testbed configuration file, as all runs are repetitions of the same experimental conditions.
 
 === Example 2
-The Laboratory ExoLab has done a study on healthy people wearing an H2 exoskeleton and recorded one subject during slope ascending, with optical markers. Two runs were recorded. These are the files that they have produced to be compatible with the EUROBENCH Database.
 
-* Raw Files
-** raw_data.txt
-** subject_01_markers_raw_01.cappa
-** subject_01_markers_raw_02.cappa
+The Laboratory ExoLab has done a study on healthy people wearing an H2 exoskeleton and recorded one subject during slope ascending, with optical markers.
+Three runs were recorded.
+The experiment was then repeated changeing the support level of the exoskeleton
+
+* Raw Files (format suggested, not mandatory)
+** `raw_data.txt`
+** `cond_{01-02}_run_{01-03}_markers_raw.cappa`
 * Anthropometric Files
-** subject_01_anthropometry.yaml
+** `anthropometry.yaml`
 * Gait Events Files
-** subject_01_run_01_gaitEvents.csv
-** subject_01_run_02_gaitEvents.csv
+** `cond_{01-02}_run_{01-03}_gaitEvents.csv`
 * Testbed related data file
-** subject_01_run_01_slope.yaml
-** subject_01_run_02_slope.yaml
+** `cond_{01-02}_testbed.yaml`
+
+label `subject` is discarded as a unique subject is considered.
+The level of exoskeleton support is specified through a variable in `cond_01_testbed.yaml` and `cond_02_testbed.yaml` files. 
 
 === Example 3
 
 The Laboratory HumanoidLab has done a study on the new walking pattern generator and recorded the robot during flat ground walking. Two runs were recorded. These are the files that they submit to be compatible with the EUROBENCH Database.
 
-* Raw Files
-** rosbag_01.bag (containing /tf topic)
-** rosbag_02.bag (containing /tf topic)
-** humanoid_markers_raw_01.cappa
-** humanoid_markers_raw_02.cappa
+* Raw Files (format suggested, not mandatory)
+** `rosbag_{01-02}.bag` (containing /tf topic)
+** `humanoid_markers_raw_{01-02}.cappa`
 * .urdf File
-** humanoid_lower_body.urdf
-** humanoid_upper_body.urdf
-** humanoid_feet.urdf
-** humanoid_hands.urdf
+** `humanoid.urdf`
 * Gait Events Files
-** humanoid_01_run_01_gaitEvents.csv
-** humanoid_01_run_02_gaitEvents.csv
+** `run_01_gaitEvents.csv`
+** `run_02_gaitEvents.csv`
 * Testbed related data file
-** humanoid_01_run_01_flat_01.yaml
-** humanoid_01_run_02_flat_02.yaml
+** `testbed.yaml`
+
+=== Example 4
+
+A laboratory studied human behaviour during sit-to-stand activity.
+Two subjects were involved.
+Each subject were asked to perform 5 sit-to-stand, and data collection was stopped once the person was standing up.
+Then the operation was repeated with eyes closed, to see the importance of the visual clue.
+An instrumented chair was used, which is collecting a set of measures, in a format specified by the protocol.
+
+* Anthropometric Files
+** `subject_{01-02}_anthropometry.yaml`
+* Gait Events Files
+** `subject_{01-02}_cond_{01-02}_run_{01-05}_jointAngle.csv`
+* Chair sensors data 
+** `subject_{01-02}_cond_{01-02}_run_{01-05}_platformData.csv`
+* Testbed related data file
+** `cond_{01-02}_testbed.yaml`
+
+The eyes status (open/closed) is set trhough a parameter in files `cond_01_testbed.yaml` and `cond_02_testbed.yaml`.
 
 == References
 
