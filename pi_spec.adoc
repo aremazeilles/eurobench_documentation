@@ -178,6 +178,14 @@ type: 'labelled_matrix'
 value: [['step_length', 'step_time', 'stride_time'], [0.5, 0.8, 0.4]]
 ----
 
+For a string output:
+
+[source, yaml]
+----
+type: 'string'
+value: 'hip'
+----
+
 NOTE: The type of the output file is defined in the <<template.adoc#output type field, PI spec>>, set in the general template sheet.
 
 Note that providing several PI output through a unique source code or algorithm is an option provided to the developer.
