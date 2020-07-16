@@ -279,10 +279,11 @@ image::img/df_segment_label.png[align=center, title-align=center]
 **Description**: This file shall contain all relevant information for reproducing the experiment in similar conditions.
 It can contain values of configuration of the used testbed (e.g. for slope: slope angle; for stairs: step height; etc…).
 It can also contain configuration parameters that may be needed by the algorithms for computing the performance indicators.
+It can also contain subject behavior constraints set by the experimenter (ask the human to perform the action eyes closed, or use  different tuning parameter set for the humanoid, or a different support level for the exoskeleton...).
 
 **File format**: .yaml
 
-**File name**: `testbed_T.yaml`, where T can be used to distinguish different configuration settings used in a single experiment.
+**File name**: `testbed.yaml`.
 
 **File structure**: Set of lines containing key: values.
 Where each key is one testbed-related data.
@@ -301,7 +302,7 @@ garment_param_i : [15, 46]
 garment_param_j: 2
 ----
 
-The exact format of the file is defined by the protocol itself.
+The exact content of the file is defined by the protocol itself.
 
 [WARNING]
 ====
@@ -592,6 +593,21 @@ Note that recording all these dimensions may not be required by all protocols.
 Unmeasured dimensions should be discarded by removing the related label from the file.
 
 Also, if different acquisition devices are used, and if the acquisition frequency is different, then more specific data file could be generated (like `physiological_ecg` if ecg presents a different frequency).
+
+=== Testbed / Platform specific data recorded
+
+**Description**: In some protocol, an instrumented device may have been designed to collect a set of sensor data.
+We consider the possibility of gathering sensed data in a common file under the following conditions:
+
+* all data recorded should share the same timestamp.
+* the file contains labelled column
+* as mush as possible, the column labels should be following the data format proposed in the data types previously described in this document.
+
+**Filename root**: `platformData`
+
+**File format**: `.csv`
+
+**File structure**: specific to the testbed. Label row mandatory.
 
 === Human Factor metrics
 
