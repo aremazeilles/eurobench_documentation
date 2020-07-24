@@ -8,11 +8,11 @@
 
 == Introduction
 
-The addition of new material to the Eurobench Benchmarking Software requires providing a set of information for filling the database.
-This is what we describe here.
+The addition of new protocol to the Eurobench Benchmarking Software requires providing a set of information for filling the database.
 
-All tables are followed by an explanation of each of the fields that deserve it.
+An link:doc/protocol_template.xlsx[excel sheet] is provided to gather that information.
 
+All tables are followed by an explanation of each of the fields that deserves it.
 
 == Scenario sheet
 
@@ -92,36 +92,31 @@ The controlled variables, together with the protocol spec, should enable anybody
 .Protocol Template sheet - Testbed
 [options="header"]
 |=================
-| Sensor | Type | Technical file sheet
-| ... | |
-| ... | |
-| Actuator | Type | Technical file sheet
-| ... | |
-| ... | |
-| Other equipment | Type | Technical file sheet
+| Item | Type (Sensor, actuator or combined) | Technical file sheet
 | ... | |
 | ... | |
 |=================
 
+Each item that can be bought and installed without customization have to be listed (e.g. motion capture system, IMU, force platform, ...).
 
-For each of the 3 families, we expect:
-
-* `sensor` or `Actuator` or `Other`: Name and brand of the device used
-* `Type`: Classification of the type of device.
-  The classification still to be defined.
-  A first approximation for the sensor could be the one used by ROS on http://wiki.ros.org/Sensors[this page].
-  For the other groups, it will be defined based on the contribution received.
-* `Technical file sheet`: Link to a document providing any additional information about the device that you consider necessary for enabling another person to reproduce the testbed with it.
+If a specific instrumented equipment has to be constructed, it has to be mentioned as a standaline item, even if it includes several sensors and or actuautors.
+The technical file sheet should provide the _BOM_ (Bill of Materials), and the mounting instructions.
+Example of entry could be _instrumented chair_, or _sensorized wall_.
 
 .Protocol Template sheet - Protocol Description
 [options="header"]
 |=================
+| General description |
 | Step | Description
 | 1 | ...
 | 2 | ...
 |=================
 
 As a recipe, the Protocol description should provide all the successive operations should conduct the experimenter to conduct an experimentation, from the system preparation, subject preparation to the execution and data collection.
+
+The field _General description_ should provide a short (e.g. one sentence) overview of the action taking place during the experimentation.
+This table may not contain enough information to detail all the steps (like how and where to place markers on human bodies).
+We assume more exhaustive description will be provided with the documentation associated to the protocol, aside that excel sheet.
 
 == PI Sheet
 First we start reminding two concepts (this should be brought to a dedicated page):
