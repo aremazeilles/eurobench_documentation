@@ -6,26 +6,6 @@
 :linkattrs:
 :sectnums:
 
-
-== Modification Instructions
-
-This document gathers the agreed data format in EUROBENCH.
-Please:
-
-1. Read carefully the document.
-2. Provide any comment
-
-To provide comments, one can:
-
-* Create an issue through the https://help.github.com/en/github/managing-your-work-on-github/creating-an-issue[Git Hub Interface]
-** please indicate the specific section you are referring to.
-* Create an issue from the code file through the https://help.github.com/en/github/managing-your-work-on-github/opening-an-issue-from-code[Git Hub interface]
-* Send an email to us (anthony.remazeilles@tecnalia.com Leader of WP6: Software Development).
-
-Thank you for your collaboration!
-
-The EUROBENCH Team
-
 == Motivation
 
 The experimental datasets expected to populate the EUROBENCH database will engage data coming from a lot of different sensing devices, from different laboratories and will be designed for different benchmarking scenarios and algorithms.
@@ -35,6 +15,8 @@ Other motivations for the specification of a unique data format and conventions 
 * Ensuring automatic computation of Performance Indicators (PIs) based on recorded data.
 * Maximising compatibility between PIs that are common to several protocols (e.g. step length can be calculated in many ways and under many different conditions).
 * Allowing data collection and PI computation to happen independently in different times and location (e.g. enabling any remote user to benchmark an experiment performed in a specific laboratory setting).
+
+Any request to extend / change format described here should be done following the <<README.adoc#Modification Instructions, contribution policy>>.
 
 == Data files and format
 
@@ -46,43 +28,173 @@ This set of files  will be taken as input by a benchmarking routine that, after 
 .Main elements of the data processing chain
 image::img/df_processing_chain.png[align=center, title-align=center]
 
-The following types of data are considered:
+=== Terminology
 
-* Raw Data: Data directly collected by the sensors (e.g. marker trajectory).
-* Pre-processed Data: Data ready to be used as input by the benchmarking routine (e.g. joint angles).
-* Other kinds of data (e.g. Unified Robot Description Format, or URDF)
+Generally speaking, we consider 4 different classes of files related to an experiment:
+
+* **Bipedal system specification**: file providing specification of the dimension of any bipedal system.
+  It can be describing a human subject, a humanoid, a prosthesis, an exoskeleton.
+* **Testbed configuration** file: provide values for any configuration parameter needed to reproduce the conditions of an experimentation, or a subset of an experimentation.
+* **Raw Data**: Data directly collected by the sensors (e.g. marker trajectory).
+* **Pre-processed Data**: Sensor-actuator agnostic data acquired during the experimentation.
+  The structure of such file is to be compliant with the format agreed in this document.
 
 In the following sections, each of these types of data will be defined and detailed.
 
+An experiment consists in recording datafiles while the subject (human / robot / both) is performing a given task.
+The activity can be repeated as follows:
 
-Unless specified if different, all datafile recorded will have a name using the following patterns:
+* to get different **runs**: a set of runs consists in repeating the same actions (and recording) in the same conditions (for enabling statistics for instance).
+  We would thus acquire several times the same set of information, but the data will be split in different datafiles.
+* to consider different **conditions**: in that case, a setting is changed.
+  It can be a configuration of the testbed or environmental settings (augment the slope angle), a configuration of the robotic system (support level of the exoskeleton), or an indication to the user (redo the operation with eyes closed).
+  The parameter being changed must be mentioned as a <<template.adoc#table_controlled_variables, controlled variable>>, and must be listed in the <<Testbed configuration file, testbed configuration file>>.
+  For each condition, we can have a set of runs.
+* to involved several **subjects**: this is particularly relevant for experiments involving humans.
+  In that case, we can considering having for each subject the execution of the same protocol, i.e involving potentially several conditions, and for each condition several repetitions or runs.
 
-.Pre-processed files format
+=== Filename format, and generalities
+
+Generally speaking pre-processed data should follow the following pattern:
+
+```
+subject_X_cond_Y_run_Z_[type].csv
+```
+where:
+
+* `[type]` is a string related to the type of information stored in the file.
+  This is the root name of the file.
+* X, Y, Z are integer respectively associated the to the number of subjects involved, the number of different conditions being tested, and the number of repetitions per condition.
+* The `subject` / `cond` / `run` namespaces are only used when it makes sense.
+  An experiment involving a unique subject would have have pre-preocessed files following the pattern: `cond_Y_run_Z_[type].csv`.
+  An experiment with various subject but unique condition would follow the pattern `subject_X_run_Z_[type].csv`.
+  At the extreme, an experiment involving a unique subject (or an humanoid), with single condition and no repetition will be described by files with pattern: `[type].csv`.
+
+Unless specified if different, all datafile recorded will have a name using this pattern.
+Each data file is now described, focusing on the type of information stored (extensions subject, cond and run are skiped for now).
+
+.Pre-processed files format (list to be updated)
 [options="header"]
 |================
 | File name | Format | Content
-| subject_N_run_R_jointAngles  | csv | Joint Angles
-| subject_N_run_R_jointTorques | csv | Joint Torques
-| subject_N_run_R_jointTrajectories | csv | Joint Trajectories
-| subject_N_run_R_grf | csv | Ground reaction Forces
-| subject_N_run_R_emg | csv | Electromyography
-| wr_N_config_M_segments | yaml | Segments descriptions files
+| jointAngles  | csv | Joint Angles
+| jointTorques | csv | Joint Torques
+| jointTrajectories | csv | Joint Trajectories
+| grf | csv | Ground reaction Forces
+| emg | csv | Electromyography
+| wr_N_config_M_segments (unclear)| yaml | Segments descriptions files
 | subject_N_anthropometry | yaml | Anthropometry description
 | humanoid_N_anthropometry | yaml | Humanoid description
-| subject_N_run_R_gaitEvents | yaml | Gait Events
+| gaitEvents | yaml | Gait Events
 | subject_N_run_R_testbedLabel | yaml | testbed specifics
 |================
 
-where `N` is an integer identifying the human subject (if one is involved), and `R` is an integer identifying the repetition number.
-Use appropriate leading zeros for `R` and `N` to ensure proper ordering of files.
+Generally speaking, all `csv` files follow the https://en.wikipedia.org/wiki/Comma-separated_values[Comma-separated values] format, using **semicolon** as separator.
 
-=== Raw Data Files
+In the following documentation, we will use tables for describing file content.
+As an example, the following table:
 
-**Description**: This set of files should contain all data collected directly from the sensory system/s present in the benchmarking scenario (i.e. 3D marker positions, IMUs signals, forces from platforms, etc...).
+[options="header"]
+|=================
+| label_1 | label_2 | label_3
+| value_1 | value_2 | value_3
+|=================
 
-**Number of files**: One file per run and sensory system should be provided. One file with data description in .txt.
+would correspond to a file containing the 2 lines:
 
-**File format**: These files are not supposed to be processed automatically by the EUROBENCH Benchmarking routines, so that a specific format is not defined. Data can be provided as the device drivers provide  them  (e.g. c3d, rosbag, .txt, .csv, ...). However, a description of the file content and acquisition frequency should be provided in a .txt file to help the user open and use these files.
+[source]
+----
+label_1; label_2; label_3
+value_1; value_2; value_3
+----
+
+For all `csv`-based data file type, we will present in the following document a table with:
+
+* the first line indicating the column labels to use
+* the second line indicating the unit of each column
+
+If we can accept that all column may not be present in the file (see next section), we assume that the first row should **always contain the labels of all columns present in the file**.
+
+==== incomplete data file
+
+If a field or a column cannot be filled (the force sensor only provides force measurement, no torque, or all human joint angles are not tracked), the label should be **discarded** from the file (i.e no empty column). This way, the wrench file corresponding to a 6D force sensor (link:https://onrobot.com/sites/default/files/documents/Datasheet_HEX%20QC_20191122.pdf[OnRobot HEX-E QC], for example) would look as follows:
+----
+time; force_x; force_y; force_z; torque_x; torque_y; torque_z
+0; 1.67; 2.34; 0.83; 0.21; 0.53; 0.07
+0.001; 1.62; 2.12; 0.75; 0.29; 0.47; 0.1
+0.002; 1.63; 2.41; 0.81; 0.19; 0.56; 0.8
+.....
+----
+
+while the wrench file for a 1D force sensor (link:https://www.tekscan.com/products-solutions/force-sensors/a101[FlexiForce A101 Sensor], for example) would have the following appearance:
+----
+time; force_x
+0; 1.67
+0.001; 1.62
+0.002; 1.63
+.....
+----
+
+WARNING: Note that, depending on the benchmarking algorithm requirements, this may prevent the Performance Indicator computation, if a column is expected by the algorithm, but not present in the data file.
+
+=== Global reference frame
+
+Even though data collected should always be aligned with the specification of the protocol that could supersede the general description provided here, in any measurement involving a global Cartesian reference frame, such reference frame should be placed as proposed in the ISB recommendations, with <<Wu1995>>:
+
+* `x` axis aligned with the gait direction
+* `y` axis vertical and pointing upwards
+
+[[Wu1995]] [Wu1995]: G. Wu and P. R. Cavanagh. ISB recommendations for standardization in the reporting of kinematic data. Journal of Biomechanics, 28(10), 1995. https://www.ece.uvic.ca/~bctill/papers/mocap/Wu_Cavanagh_1995.pdf[pdf].
+
+==== Protocol with multiple but similar sensors
+
+Some protocols can require the use of various but similar sensors (like a force sensor on each of the crutches).
+In that case two options are proposed:
+
+WARNING: The protocol should indicate the appropriate option to use.
+
+**Option 1: one file per device**
+
+The two files will share the same structure (based on the information stored in it), but will only differ by their name:
+
+* `subject_N_run_R_wrench_tag1.csv` for the force sensor labelled `tag1`
+* `subject_N_run_R_wrench_tag2.csv` for the force sensor labelled `tag2`
+
+The label string (`tag1`, `tag2`) to use is defined by the protocol.
+
+Both files will contain data following the regular wrench file pattern, i.e.:
+
+[options="header"]
+|=================
+| time | force_x | force_y | force_z | torque_x | torque_y | torque_z
+| 0 | 1.67 | 2.34 | 0.83 | 0.21 | 0.53 | 0.07
+| 0.001 | 1.62 | 2.12 | 0.75 | 0.29 | 0.47 | 0.1
+| 0.002 | 1.63 | 2.41 | 0.81 | 0.19 | 0.56 | 0.8
+| ... | ... | ...
+|=================
+
+**Option 2: one file gathering the two devices**
+
+A single file is provided, and use the generic format `subject_N_run_R_wrench.csv`.
+The file content is a concatenation of the two readings, with the labels adjusted to distinguish the two devices:
+
+[options="header"]
+|=================
+| time | tag1_force_x | tag1_force_y | tag1_force_z | tag1_torque_x | tag1_torque_y | tag1_torque_z | tag2_force_x | tag2_force_y | tag2_force_z | tag2_torque_x | tag2_torque_y | tag2_torque_z
+| 0 | 1.67 | 2.34 | 0.83 | 0.21 | 0.53 | 0.07 | 1.67 | 2.34 | 0.83 | 0.21 | 0.53 | 0.07
+| 0.001 | 1.62 | 2.12 | 0.75 | 0.29 | 0.47 | 0.1 | 1.62 | 2.12 | 0.75 | 0.29 | 0.47 | 0.1
+| 0.002 | 1.63 | 2.41 | 0.81 | 0.19 | 0.56 | 0.8 | 1.63 | 2.41 | 0.81 | 0.19 | 0.56 | 0.8
+| ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ... | ...
+|=================
+
+WARNING: This option is only accepted if the data logged is using the same timestamp.
+
+== Bipedal system specification files
+
+Any bipedal system involved in an experiment is to be described by a specification file.
+We are promoting the use of the _Unified Robot Description Format_, URDF, both for robotic systems and human subjects.
+
+Note that if an experiment involves a human subject and a wearable device, we expect to get two specification files, one for the human, and another for the wearable.
 
 === Unified Robot Description Format (URDF) file
 
@@ -90,156 +202,14 @@ Use appropriate leading zeros for `R` and `N` to ensure proper ordering of files
 This file must be provided if the experiments enroll a humanoid robot.
 From this file, the number of joints, its labels and the degrees of freedom can be extracted in order to construct the pre-processed joint angles file, and for the definition of the anthropometric file in humanoids.
 
-**Number of files**: all necessary files to describe the complete robotic structure. 
+**Number of files**: all necessary files to describe the complete robotic structure.
 
-**File format**: .urdf.
-The use of .urdf files also has shortcomings such as the lack of friction (important for e.g. walking steeper slope angles).
+**Name of the file**: The main urdf file which includes the rest of urdf files should be named as `humanoid_N_anthropometry`, where `N` is the humanoid number.
+
+**File format**: `.urdf`.
+The use of `.urdf` files also has shortcomings such as the lack of friction (important for e.g. walking steeper slope angles).
 In order to resolve these issues, EUROBENCH will use Gazebo as a simulator.
-This allows to enhance the .urdf with <gazebo/> tags, permitting the injection of features from the gazebo file format (.sdf) while retaining the most common file format, .urdf.
-
-== Pre-Processed Data Files
-
-This set of files should contain all the data processed from the raw data and needed for running a specific benchmarking routine.
-As described in each of the following sub-sections, we envision one format per type of information.
-These files should be preferably agnostic of the specific sensor used to capture it, so that the benchmarking routines can be launched independently of the acquisition devices.
-All time-series files should contain timestamped information, since timestamp reference will be shared by all files describing a same experiment run.
-
-An experiment can provide one or more of the following file types.
-If a testbed or a benchmarking routine requires a data type not included in this document, please contact the EUROBENCH Team.
-We will work together with you to create the required data file type.
-
-=== Joint angles file
-
-**Description**: This file shall contain the time-series of all measured joint angles, expressed in YXZ Cardan Angles, as defined in the “Angle Definition” section.
-
-**Name of the file**: `subject_N_run_R_jointAngles`  where N = subject’s number and R = run number.
-Use appropriate leading zeros for R and N to ensure proper ordering of files.
-
-**File format**: `.csv`
-
-**File structure**:
-
-* 1st column: time-stamp (units: milliseconds).
-* 1st row: header with M+1 labels  were  M = number of angles considered.
-* From 2nd row: angle values, each corresponding to one time sample.
-
-**Header labels**: 1st-column label: “time”.
-All other labels: see ‘Angle definition’ section.
-
-**Units**: Degrees
-
-=== Joint torques file
-
-**Description**: This file shall contain all the measured joint torques.
-
-**Name of the file**: subject_N_run_R_jointTorques  where  N = subject’s number and R = run number.
-Use appropriate leading zeros for R and N to ensure proper ordering of files.
-
-**File format**: .csv
-
-**File structure**:
-
-* 1st column: time-stamp (units: milliseconds).
-* 1st row: header with (3*M)+1 labels  were  M = number of joints.
-* From 2nd row: torque values, each corresponding to one time sample.
-
-**Header labels**: 1st-column label: “time”.
-All other labels: see the ‘Angle definition’ section.
-
-**Units**: Nm
-
-=== Joint centers 3D trajectories file
-
-**Description**: This file shall contain all the measured trajectories of the joints.
-
-**Name of the file**: subject_N_run_R_jointTrajectories  where  N = subject’s number and R = run number.
-Use appropriate leading zeros for R and N to ensure proper ordering of files.
-
-**File format**: .csv
-
-**File structure**:
-
-* 1st column: time-stamp (units: milliseconds).
-* 1st row: header with (3*M)+1 labels  were  M = number of joints.
-* From 2nd row: 3D trajectories, each corresponding to one time sample.
-
-**Header labels**: 1st-column label: “time”.
-All other labels: see the Figure 2.
-
-**Units**: Millimeters
-
-[[fig:df_joint_center_label]]
-.Labels of Joints centers
-image::img/df_joint_center_label.png[align=center, title-align=center]
-
-=== Ground Reaction Forces file
-
-**Description**: This file shall contain forces measured by force platforms.
-
-**Name of the file**: subject_N_run_R_grf where N = subject’s number and R = run number.
-Use appropriate leading zeros for R and N to ensure proper ordering of files.
-
-**File format**: .csv
-
-**File structure**:
-
-* 1st column: time-stamp (units: milliseconds).
-* 1st row: 9+1 labels.
-* From 2nd row: GRF, each corresponding to one time sample.
-
-**Header labels**: 1st-column label: “time”.
-Other labels:
-
-* force: `F_x` , `F_y` ,  `F_z`
-* centre of pressure: `P_x`, `P_y`, `P_z`
-* moment: `T_x` , `T_y` , `T_z`
-
-**Units**: Newtons, meters and Nm
-
-=== Electromyography file
-
-**Description**: This file shall contain all the recorded EMG signals from the human subject.
-
-**Name of the file**: subject_N_run_R_emg, where N = subject’s number and R = run number.
-Use appropriate leading zeros for R and N to ensure proper ordering of files.
-
-**File format**: .csv
-
-**File structure**:
-
-* 1st column: time-stamp (units: milliseconds).
-* 1st row: k+1 labels, with K = number of muscles.
-* From 2nd row: EMG, each corresponding to one time sample.
-
-**Header labels**: 1st-column label: “time”.
-All other labels: see the Figure 2.
-
-.List of EMG muscles and labels considered.
-[options="header"]
-|================
-| Muscle | Label
-| Abductor Longus | AbLo
-| Biceps Femoris | BiFe
-| Gastrocnemious Lateralis |GaLa
-| Gastrocnemious Medialis | GaMe
-| Gluteus Maximus | GlMa
-| Gluteus Medialis | GlMe
-| Gracilis | Gra
-| Peroneus Longus | PeLo
-| Rectus Femoris | ReFe
-| Sartorius | Sar
-| Semimembranosus | SeMe
-| Semitendinosus | SeTe
-| Serratus Anterior | SeAn
-| Soleus | Sol
-| Tensor Fascia Latae | TeFa
-| Tibialis Anterior | TiAn
-| Extensor Digitorum | ExDi
-| Vastus Lateralis | VaLa
-| Vastus Medialis  |  VaMe
-|================
-
-Units: Millivolts.
+This allows to enhance the `.urdf` with `<gazebo/>` tags, permitting the injection of features from the gazebo file format (`.sdf`) while retaining the most common file format, `.urdf`.
 
 === WR segments description (URDF) file
 
@@ -249,13 +219,11 @@ Moreover, it allows to use a wide variety of simulators commonly used in robotic
 
 **Number of files**: Usually each segment, sensor, or set of segments such as a leg are described in a single file. Finally the whole robot includes all these files in a single file which is the one loaded.
 
+**Name of the file**: `wr_N_config_M_segments`, where `N` is the WR number and `M` is the configuration number (for resizable robots this could be useful).
+
 **File Format**: .urdf. This format file allows to include Gazebo simulation tags, such as friction properties, or visualization properties that allow to simulate more realistic behaviours.
 This file shall contain the dimensions and inertial properties of each segment of the worn robot with respect to the reference system of the human body segment connected to it.
 This is needed to enable dynamic simulators to model the human-WR system.
-
-**name of the file**: `wr_N_config_M_segments`, where `N` is the WR number and `M` is the configuration number (for resizable robots this could be useful).
-
-**file format**: .yaml
 
 === Human anthropometric measures file
 
@@ -294,12 +262,11 @@ Units: Meters
 .Segments Labels
 image::img/df_segment_label.png[align=center, title-align=center]
 
-
 === Humanoid anthropometric measures file
 
 **Description**: This file shall contain all the anthropometric measurements from the humanoid robot mapped to the above proposed human segments (see Table 2 and Figure 3).
 
-**Name of the file**: humanoid_N_anthropometry, where N = humanoid’s identifier. Use appropriate leading zeros for R and N to ensure proper ordering of files.
+**Name of the file**: humanoid_N_anthropometry, where N = humanoid’s identifier.
 
 **File format**: .yaml
 
@@ -307,14 +274,270 @@ image::img/df_segment_label.png[align=center, title-align=center]
 
 **Units**: Meters.
 
+== Testbed configuration file
+
+**Description**: This file shall contain all relevant information for reproducing the experiment in similar conditions.
+It can contain values of configuration of the used testbed (e.g. for slope: slope angle; for stairs: step height; etc…).
+It can also contain configuration parameters that may be needed by the algorithms for computing the performance indicators.
+It can also contain subject behavior constraints set by the experimenter (ask the human to perform the action eyes closed, or use  different tuning parameter set for the humanoid, or a different support level for the exoskeleton...).
+
+**File format**: .yaml
+
+**File name**: `testbed.yaml`.
+
+**File structure**: Set of lines containing key: values.
+Where each key is one testbed-related data.
+keys must be self-explicative.
+Different words on the same key must be separated by underscore.
+keys must be written in lower case style.
+
+If a protocol involves several equipments, then all configuration information should be placed in the same file, using the pattern `device_name_param_name` to describe each of the device.
+For instance, if a protocol involves a push stick and an instrumented garment, we would consider the following configuration file:
+
+[source, yaml]
+----
+push_tick_param_1: 3.14
+push_tick_param_2: 0
+garment_param_i : [15, 46]
+garment_param_j: 2
+----
+
+The exact content of the file is defined by the protocol itself.
+
+[WARNING]
+====
+All controlled variables, as defined in the <<template.adoc#table_controlled_variables, template spec>> should be defined in that file.
+====
+
+== Raw Data Files
+
+**Description**: This set of files should contain all data collected directly from the sensory system/s present in the benchmarking scenario (i.e. 3D marker positions, IMUs signals, forces from platforms, etc...).
+
+**Number of files**: One file per run and sensory system should be provided.
+
+**File format**: These files are not supposed to be processed automatically by the EUROBENCH Benchmarking routines, so that a specific format is not defined.
+Data can be provided as the device drivers provide them  (e.g. `c3d`, `rosbag`, `.txt`, `.csv`, ...). However, a description of the file content and acquisition frequency should be provided (like `Readme.md` or `Readme.txt`) to help the user opening and understanding these files.
+
+== Pre-Processed Data Files
+
+This set of files should contain all the data processed from the raw data and needed for running a specific benchmarking routine.
+As described in each of the following sub-sections, we envision one format per type of information.
+These files should be preferably agnostic of the specific sensor used to capture it, so that the benchmarking routines can be launched independently of the acquisition devices.
+All time-series files should contain timestamped information, since timestamp reference will be shared by all files describing a same experiment run.
+
+An experiment can provide one or more of the following file types.
+If a testbed or a benchmarking routine requires a data type not included in this document, please contact the EUROBENCH Team.
+We will work together with you to create the required data file type.
+
+=== Joint angles file
+
+**Description**: This file shall contain the time-series of all measured joint angles, expressed in YXZ Cardan Angles, as defined in the “Angle Definition” section.
+
+**filename root**: `jointAngles`  where N = subject’s number and R = run number.
+Use appropriate leading zeros for R and N to ensure proper ordering of files.
+
+**File format**: `.csv`
+
+**File structure**:
+
+.Joint angle file structure and unit
+[options="header"]
+|================
+| time | r_hip_y | r_hip_x | r_hip_z | r_knee_y | r_knee_x | r_knee_z | ... | ... | ...
+| `sec` | `deg` | `deg` | `deg` | `deg` | `deg` | `deg` | ... | ... | ...
+|================
+
+
+=== Joint torques file
+
+**Description**: This file shall contain all the measured joint torques.
+
+**filename root**: `jointTorques`
+
+**File format**: `.csv`
+
+**File structure**:
+
+.Joint torque file structure and unit
+[options="header"]
+|================
+| time | r_hip_x | r_hip_y | r_hip_z | r_knee_x | r_knee_y | r_knee_z | ... | ... | ...
+| `sec` | `N.m` | `N.m` | `N.m` | `N.m` | `N.m` | `N.m` | ... | ... | ...
+|================
+
+=== Joint center 3D trajectories file
+
+**Description**: This file shall contain all the measured trajectories of the joints.
+
+**Filename root**: `jointTrajectories`.
+
+**File format**: `.csv`
+
+**File structure**:
+
+.3D joint center file structure and unit
+[options="header"]
+|================
+| time | r_ankle_x | r_ankle_y | r_ankle_z | r_knee_x | r_knee_y | r_knee_z | ... | ... | ...
+| `sec` | `m` | `m` | `m` | `m` | `m` | `m` | ... | ... | ...
+|================
+
+Possible labels are listed on Figure <<fig:df_joint_center_label>>.
+
+[[fig:df_joint_center_label]]
+.Labels of Joints centers
+image::img/df_joint_center_label.png[align=center, title-align=center]
+
+=== Body Center of Mass 3D trajectory
+
+The body Center of Mass (COM) is frequently considered in biomechanics, as it reflects the motion of the whole body.
+It is usually defined as _the unique point where the weighted relative position of the distributed mass sums to zero_ (https://en.wikipedia.org/wiki/Center_of_mass[wikipedia])
+
+
+**Description**: This file shall contain the estimated COM position along time.
+
+**Filename root**: `com`.
+
+**File format**: `.csv`
+
+**File structure**:
+
+.COM position file structure and unit
+[options="header"]
+|================
+| time | x | y | z
+| `sec` | `m` | `m` | `m`
+|================
+
+=== Angular Momentum around the Center of Mass
+
+The angular momentum of a body is a vector quantity that represents the magnitude and the direction in which the body rotates about a reference point <<Bennett2010>>.
+
+**Description**: This file shall contain the estimated angular momentum around the COM along time.
+
+**Filename root**: `angularMomentum`.
+
+**File format**: `.csv`
+
+**File structure**:
+
+.Angular Momentum file structure and unit
+[options="header"]
+|================
+| time | x | y | z
+| `sec` | `Js` | `Js` | `Js`
+|================
+where `Js` stands for Joule second (equivalent to $$kgm²s^{⁻1}$$).
+
+[bibliography]
+
+[[Bennett2010]] [Bennett2010]: B.C Bennett, S.D. Russell, P. Sheth, M. F. Abel. Angular momentum of walking at different speeds. Human Movement Science, 2010 (https://kin.sfsu.edu/sites/default/files/Angular%20momentum%20of%20walking%20at%20different%20speeds.pdf[link])
+
+=== Inertia Tensor
+
+**Description**: The inertia tensor describes the body´s resistance to rotational motion in response to a torque.
+
+**Filename root**: `inertiaTensor`.
+
+**File format**: `.csv`
+
+**File structure**:
+
+.Inertia tensor file structure and unit
+[options="header"]
+|================
+| time | xx | xy | xz | yx | yy | yz | zx | zy | zz
+| `sec` | `kgm²` | `kgm²` | `kgm²`| `kgm²` | `kgm²` | `kgm²`| `kgm²` | `kgm²` | `kgm²`
+|================
+
+=== Wrench file
+
+**Description**: This file shall contain wrench (force and torque) measured by a force sensor.
+
+**Filename root**: `wrench`
+
+**File format**: `.csv`
+
+**File structure**:
+
+.Wrench file structure and unit
+[options="header"]
+|================
+| time | force_x | force_y | force_z | torque_x | torque_y | torque_z
+| `sec` | `N` | `N` | `N` | `N.m` | `N.m` | `N.m`
+|================
+
+=== Ground Reaction Forces file
+
+**Description**: This file shall contain forces measured by force platforms.
+
+**Filename root**: `grf`
+
+**File format**: `.csv`
+
+**File structure**:
+
+.Ground Reaction Forces file structure and unit
+[options="header"]
+|================
+| time | f_x | f_y | f_z | p_x | p_y | p_z | t_x | t_y | t_z
+| `sec` | `N` | `N` | `N` | `m` | `m` | `m` | `N.m` | `N.m` | `N.m`
+|================
+
+where `f` stands for force, `p` for the center of pressure, and `t` for torques.
+
+=== Electromyography file
+
+**Description**: This file shall contain all the recorded EMG signals from the human subject.
+
+**Filename root**: `emg`
+
+**File format**: `.csv`
+
+.EMG file structure and unit
+[options="header"]
+|================
+| time | label_1 | ... | label_i | ...
+| `s` | `mV` | `mV` | `mV` | `mV`
+|================
+
+where `label_i` is to be a tag described in table <<tab:emg_tags>>.
+
+[[tab:emg_tags]]
+.List of EMG muscles and labels considered.
+[options="header"]
+|================
+| Muscle | Label
+| Abductor Longus | AbLo
+| Biceps Femoris | BiFe
+| Gastrocnemious Lateralis |GaLa
+| Gastrocnemious Medialis | GaMe
+| Gluteus Maximus | GlMa
+| Gluteus Medialis | GlMe
+| Gracilis | Gra
+| Peroneus Longus | PeLo
+| Rectus Femoris | ReFe
+| Sartorius | Sar
+| Semimembranosus | SeMe
+| Semitendinosus | SeTe
+| Serratus Anterior | SeAn
+| Soleus | Sol
+| Tensor Fascia Latae | TeFa
+| Tibialis Anterior | TiAn
+| Extensor Digitorum | ExDi
+| Vastus Lateralis | VaLa
+| Vastus Medialis  |  VaMe
+|================
+
+Units: Millivolts.
+
 === Gait events file
 
 **Description**: This file shall include all detected (or calculated) heel strike and toe off gait events.
 
-**Name of the file**: subject_N_run_R_gaitEvents  where  N = subject’s number and R= run number.
-Use appropriate leading zeros for R and N to ensure proper ordering of files.
+**Filename root**: `gaitEvents`
 
-**File format**: .yaml
+**File format**: `.yaml`
 
 **File structure**:Set of lines containing key: vector of values. Where the key is provided on the last column of Table 3.
 
@@ -332,45 +555,59 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 **Units**: Seconds
 
-=== Testbed-related data file
+=== Physiological data
 
-**Description**: This file shall contain all the data that describes the configuration of the specific testbed (e.g. for slope: slope angle; for stairs: step height; etc…).
+**Description**: We gather in that concept measurements of the heart/breathing system activity and skin response:
 
-**File format**: .yaml
+* _Heart rate_: speed of the heartbeat measured by the number of contractions (beats) of the heart per minute (bpm) (https://en.wikipedia.org/wiki/Heart_rate[link]).
+  Label: `hr`
+* _Heart rate variability_ (HRV): is the physiological phenomenon of variation in the time interval between heartbeats.
+  It is measured by the variation in the beat-to-beat interval (https://en.wikipedia.org/wiki/Heart_rate_variability[link]).
+  Unit is set to `sec` (second).
+  Label: `hrv`
+* _Respiration rate_: rate at which breathing occurs (https://en.wikipedia.org/wiki/Respiratory_rate[link]).
+  Unit is `bpm` (breaths per minute).
+  Label : `rr`
+* _Galvanic skin response_: refers to changes in sweat gland activity that are reflective of the intensity of our emotional state
+  (https://en.wikipedia.org/wiki/Electrodermal_activity[link]).
+  Unit is `mS` (milliSiemens).
+  Label: `gsr`
+* _Electrocardiogram_ (ECG): electrical activity of the heart as perceived by electrodes placed on the skin (https://en.wikipedia.org/wiki/Electrocardiography[link]).
+  Unit is `mV` (milliVolt).
+  Label: `ecg`
 
-**File name**: subject_N_testbedLabel_R where  N = subject’s number, R = run number and testbedLabel is shown in Table 4.
-Use appropriate leading zeros for R and N to ensure proper ordering of files.
-New testbedLabel can be added in the future, depending on new testbeds available.
+**Filename root**: `physiological`
 
+**File format**: `.csv`
 
-.List of labels for testbeds
+**File structure**:
+
+.Physiological file structure
 [options="header"]
-|=======================
-| Testbed | testbedLabel
-| Walking on flat ground | flat
-| Walking on slopes | slope
-| Walking on stairs | stairs
-| Overcoming obstacles | obstacles
-| Walking on irregular hard terrains | irregular
-| Walking on treadmill | treadmill
-| Walking/standing on moving surfaces | moving
-| Walking/standing during pushes | pushes
-| Standing during manipulation skills | manipulation
-| Picking and carrying objects | pickAndCarry
-| Chair sitting and standing | chair
-| Walking on laterally inclined surfaces | lateral
-| Walking on virtual terrains | virtual
-| Walking on soft terrains | soft
-| Opening/closing doors | door
-| Moving in narrow spaces | narrow
-| Pushing a shopping trolley | trolley
-|=======================
+|=================================
+| time | hr | hrv | rr | gsr | ecg
+| `sec` | `bpm` | `sec` | `bpm` | `mS`| `mV`
+|=================================
 
-**File structure**: Set of lines containing key: values.
-Where each key is one testbed-related data.
-keys must be self-explicative.
-different words on the same key must be separated by underscore.
-keys must be written in lowercase.
+Note that recording all these dimensions may not be required by all protocols.
+Unmeasured dimensions should be discarded by removing the related label from the file.
+
+Also, if different acquisition devices are used, and if the acquisition frequency is different, then more specific data file could be generated (like `physiological_ecg` if ecg presents a different frequency).
+
+=== Testbed / Platform specific data recorded
+
+**Description**: In some protocol, an instrumented device may have been designed to collect a set of sensor data.
+We consider the possibility of gathering sensed data in a common file under the following conditions:
+
+* all data recorded should share the same timestamp.
+* the file contains labelled column
+* as mush as possible, the column labels should be following the data format proposed in the data types previously described in this document.
+
+**Filename root**: `platformData`
+
+**File format**: `.csv`
+
+**File structure**: specific to the testbed. Label row mandatory.
 
 === Human Factor metrics
 
@@ -381,16 +618,19 @@ Here we focus on the representation of the questionnaires and related answers.
 
 The representation of any questionnaire is divided into two components:
 
-* The description of the questionnaire itself: `Factor Meta Data File`
-* The representation of the questionnaire answer: `Factor Data File`
+* The description of the questionnaire itself: <<Factor Meta Data File>>
+* The representation of the questionnaire answer: <<Factor Data File>>
 
 We propose using `csv` format for both.
 
 ==== Factor Meta Data File
 
-**Description**: This file contains the specification of each question of the questionnaire. That file should be part of the protocol itself. It should not vary from an experimentation to another.
+**Description**: This file contains the specification of each question of the questionnaire.
+That file should be part of the protocol itself.
+It should not vary from an experimentation to another.
 
-**Name of the file**: `questionnaire_topic.csv`
+**Name of the file**: `questionnaire_name.csv`, where `name` should be a unique identifier given to that questionnaire model.
+
 
 **File format**: `.csv`
 
@@ -426,12 +666,11 @@ With:
 
 **Description**: This file only contains the answers to each of the question asked.
 
-**Filename** : `questionnaire_topic_subject_N.csv`
+**Filename** : `subject_N_questionnaire_name.csv`, where `name` refers to the Factor Meta Data File this questionnaire answer is related to.
 
 **File format**: `.csv`
 
 **File structure**: a table structure with the following content:
-
 
 .Meta Data File structure sample
 [options="header"]
@@ -487,7 +726,7 @@ Knee angles are derived from the femur and the untorsioned tibia segments.
   The sign is such that a positive angle corresponds to a flexed knee.
 
 * **Knee rotation (Relative) (Label: knee_rotation)** Knee rotation is measured about the long axis of the shank.
-  It is measured as the angle between the sagittal axis of the shank and the sagittal axis of the thigh, projected into a plane perpendicular to the long axis of the shank. 
+  It is measured as the angle between the sagittal axis of the shank and the sagittal axis of the thigh, projected into a plane perpendicular to the long axis of the shank.
   The sign is such that a positive angle corresponds to internal rotation.
   If a tibial torsion value is present in the Session form, it is subtracted from the calculated knee rotation value.
   A positive tibial torsion value therefore has the effect of providing a constant external offset to knee rotation.
@@ -610,79 +849,84 @@ As the thorax frontal axis points downward while the head frontal axis points up
 
 This section is still under construction. Our intention is to provide a complete set of examples for three fields: human, humanoids, and wearable robots locomotion dataset.
 
+In the following we use `{}` to factorize filenames:
+
+* Name `subject_{01_03}_jointAngles.csv`, is used to name the three files `subject_01_jointAngles.csv`, `subject_02_jointAngles.csv` and `subject_03_jointAngles.csv`.
+* Name `subject_{01_03}_run_{01-02}_jointAngles.csv` refers to files: `subject_01_run_01_jointAngles.csv`, `subject_01_run_02_jointAngles.csv`, `subject_02_run_01_jointAngles.csv`, `subject_02_run_02_jointAngles.csv`, `subject_03_run_01_jointAngles.csv`, `subject_03_run_02_jointAngles.csv` 
+
 === Example 1
 
-The Laboratory HumanLab has done a study on Parkinson’s patients and recorded two subjects during overground walking, with inertial sensors. Three runs were recorded per subject. These are the files that they have produced to be compatible with the EUROBENCH Database.
+The Laboratory HumanLab has done a study on Parkinson’s patients and recorded two subjects during overground walking, with inertial sensors.
+Three runs were recorded per subject.
+These are the files that they have produced to be compatible with the EUROBENCH Database.
 
-* Raw Files
-** raw_data.txt
-** subject_01_imu_raw_01.cappa
-** subject_01_imu_raw_02.cappa
-** subject_01_imu_raw_03.cappa
-** subject_02_imu_raw_01.cappa
-** subject_02_imu_raw_02.cappa
-** subject_02_imu_raw_03.cappa
+* Raw Files (format suggested, not mandatory)
+** `raw_data.txt`
+** `subject_{01-02}_run_{01-03}_imu_raw.cappa`
 * Anthropometric Files
-** subject_01_anthropometry.yaml
-** subject_02_anthropometry.yaml
+** `subject_01_anthropometry.yaml`
+** `subject_02_anthropometry.yaml`
 * Electromyography Files
-** subject_01_run_01_emg.csv
-** subject_01_run_02_emg.csv
-** subject_01_run_03_emg.csv
-** subject_02_run_01_emg.csv
-** subject_02_run_02_emg.csv
-** subject_02_run_03_emg.csv
+** `subject_{01-02}_run_{01-03}_emg.csv`
 * Gait Events Files
-** subject_01_run_01_gaitEvents.csv
-** subject_01_run_02_gaitEvents.csv
-** subject_01_run_03_gaitEvents.csv
-** subject_02_run_01_gaitEvents.csv
-** subject_02_run_02_gaitEvents.csv
-** subject_02_run_03_gaitEvents.csv
-* Testbed related data file
-** subject_01_run_01_flat.yaml
-** subject_01_run_02_flat.yaml
-** subject_01_run_03_flat.yaml
-** subject_02_run_01_flat.yaml
-** subject_02_run_02_flat.yaml
-** subject_02_run_03_flat.yaml
+** `subject_{01-03}_run_{01-03}_gaitEvents.csv`
+* Testbed configuration related data file
+** `testbed.yaml`
+
+There is only a unique testbed configuration file, as all runs are repetitions of the same experimental conditions.
 
 === Example 2
-The Laboratory ExoLab has done a study on healthy people wearing an H2 exoskeleton and recorded one subject during slope ascending, with optical markers. Two runs were recorded. These are the files that they have produced to be compatible with the EUROBENCH Database.
 
-* Raw Files
-** raw_data.txt
-** subject_01_markers_raw_01.cappa
-** subject_01_markers_raw_02.cappa
+The Laboratory ExoLab has done a study on healthy people wearing an H2 exoskeleton and recorded one subject during slope ascending, with optical markers.
+Three runs were recorded.
+The experiment was then repeated changeing the support level of the exoskeleton
+
+* Raw Files (format suggested, not mandatory)
+** `raw_data.txt`
+** `cond_{01-02}_run_{01-03}_markers_raw.cappa`
 * Anthropometric Files
-** subject_01_anthropometry.yaml
+** `anthropometry.yaml`
 * Gait Events Files
-** subject_01_run_01_gaitEvents.csv
-** subject_01_run_02_gaitEvents.csv
+** `cond_{01-02}_run_{01-03}_gaitEvents.csv`
 * Testbed related data file
-** subject_01_run_01_slope.yaml
-** subject_01_run_02_slope.yaml
+** `cond_{01-02}_testbed.yaml`
+
+label `subject` is discarded as a unique subject is considered.
+The level of exoskeleton support is specified through a variable in `cond_01_testbed.yaml` and `cond_02_testbed.yaml` files. 
 
 === Example 3
 
 The Laboratory HumanoidLab has done a study on the new walking pattern generator and recorded the robot during flat ground walking. Two runs were recorded. These are the files that they submit to be compatible with the EUROBENCH Database.
 
-* Raw Files
-** rosbag_01.bag (containing /tf topic)
-** rosbag_02.bag (containing /tf topic)
-** humanoid_markers_raw_01.cappa
-** humanoid_markers_raw_02.cappa
+* Raw Files (format suggested, not mandatory)
+** `rosbag_{01-02}.bag` (containing /tf topic)
+** `humanoid_markers_raw_{01-02}.cappa`
 * .urdf File
-** humanoid_lower_body.urdf
-** humanoid_upper_body.urdf
-** humanoid_feet.urdf
-** humanoid_hands.urdf
+** `humanoid.urdf`
 * Gait Events Files
-** humanoid_01_run_01_gaitEvents.csv
-** humanoid_01_run_02_gaitEvents.csv
+** `run_01_gaitEvents.csv`
+** `run_02_gaitEvents.csv`
 * Testbed related data file
-** humanoid_01_run_01_flat_01.yaml
-** humanoid_01_run_02_flat_02.yaml
+** `testbed.yaml`
+
+=== Example 4
+
+A laboratory studied human behaviour during sit-to-stand activity.
+Two subjects were involved.
+Each subject were asked to perform 5 sit-to-stand, and data collection was stopped once the person was standing up.
+Then the operation was repeated with eyes closed, to see the importance of the visual clue.
+An instrumented chair was used, which is collecting a set of measures, in a format specified by the protocol.
+
+* Anthropometric Files
+** `subject_{01-02}_anthropometry.yaml`
+* Gait Events Files
+** `subject_{01-02}_cond_{01-02}_run_{01-05}_jointAngle.csv`
+* Chair sensors data 
+** `subject_{01-02}_cond_{01-02}_run_{01-05}_platformData.csv`
+* Testbed related data file
+** `cond_{01-02}_testbed.yaml`
+
+The eyes status (open/closed) is set trhough a parameter in files `cond_01_testbed.yaml` and `cond_02_testbed.yaml`.
 
 == References
 

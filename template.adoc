@@ -8,11 +8,11 @@
 
 == Introduction
 
-The addition of new material to the Eurobench Benchmarking Software requires providing a set of information for filling the database.
-This is what we describe here.
+The addition of new protocol to the Eurobench Benchmarking Software requires providing a set of information for filling the database.
 
-All tables are followed by an explanation of each of the fields that deserve it.
+An link:doc/protocol_template.xlsx[excel sheet] is provided to gather that information.
 
+All tables are followed by an explanation of each of the fields that deserves it.
 
 == Scenario sheet
 
@@ -62,6 +62,7 @@ The table is described per block just for easing the description of it.
   Should be related to the short name provided within the <<PI Algo sheet>>.
 
 .Protocol Template sheet - Controlled variables
+[[table_controlled_variables]]
 [options="header"]
 |=================
 | name | Definition | type | range | unit
@@ -71,8 +72,14 @@ The table is described per block just for easing the description of it.
 
 
 Controlled variables are conditional settings that should be filled by an experimenter, to describe their experimentation conditions.
-These variables are not likely to be changed during an experiment trial execution.
-As an example, for a walking on slope protocol, the controlled variables could be the slope angle and the slope length.
+These variables are not supposed to change during an experiment trial execution.
+Parameters can be related to either:
+
+* a configuration parameter of the testbed (for a walking on slope protocol, the controlled variables could be the slope angle and the slope length).
+* a configuration of the robotic system (like setting different levels of assistance of an exoskeleton, or testing different set of tunning parameters of an humanoid)
+* a behavior indication provided to the subject (like do the action with eyes closed)
+
+The controlled variables, together with the protocol spec, should enable anybody to reproduce a given execution with exactly the same settings.
 
 * `Name`: single word.
   If needed `under_scored` like name can be used.
@@ -85,36 +92,31 @@ As an example, for a walking on slope protocol, the controlled variables could b
 .Protocol Template sheet - Testbed
 [options="header"]
 |=================
-| Sensor | Type | Technical file sheet
-| ... | |
-| ... | |
-| Actuator | Type | Technical file sheet
-| ... | |
-| ... | |
-| Other equipment | Type | Technical file sheet
+| Item | Type (Sensor, actuator or combined) | Technical file sheet
 | ... | |
 | ... | |
 |=================
 
+Each item that can be bought and installed without customization have to be listed (e.g. motion capture system, IMU, force platform, ...).
 
-For each of the 3 families, we expect:
-
-* `sensor` or `Actuator` or `Other`: Name and brand of the device used
-* `Type`: Classification of the type of device.
-  The classification still to be defined.
-  A first approximation for the sensor could be the one used by ROS on http://wiki.ros.org/Sensors[this page].
-  For the other groups, it will be defined based on the contribution received.
-* `Technical file sheet`: Link to a document providing any additional information about the device that you consider necessary for enabling another person to reproduce the testbed with it.
+If a specific instrumented equipment has to be constructed, it has to be mentioned as a standaline item, even if it includes several sensors and or actuautors.
+The technical file sheet should provide the _BOM_ (Bill of Materials), and the mounting instructions.
+Example of entry could be _instrumented chair_, or _sensorized wall_.
 
 .Protocol Template sheet - Protocol Description
 [options="header"]
 |=================
+| General description |
 | Step | Description
 | 1 | ...
 | 2 | ...
 |=================
 
 As a recipe, the Protocol description should provide all the successive operations should conduct the experimenter to conduct an experimentation, from the system preparation, subject preparation to the execution and data collection.
+
+The field _General description_ should provide a short (e.g. one sentence) overview of the action taking place during the experimentation.
+This table may not contain enough information to detail all the steps (like how and where to place markers on human bodies).
+We assume more exhaustive description will be provided with the documentation associated to the protocol, aside that excel sheet.
 
 == PI Sheet
 First we start reminding two concepts (this should be brought to a dedicated page):
@@ -162,8 +164,8 @@ value: [0.96867, 1.01667, 0.98843, 0.95168, 0.87936, 0.94576, 0.87802, 0.87571, 
 ```
 
 The PI type is in that case a vector.
-We envision for now outputs of type `scalar`, `vector` and `matrix`.
-Possibly, we may extend these types to more options that could encode also the best visualisation tool.
+We envision for now outputs of type `scalar`, `vector`, `matrix`, `labelled_matrix` and `string`.
+More details are available on the <<pi_spec.adoc#Output data, PI specification file>> file.
 
 === intra-run aggregation
 
@@ -192,7 +194,7 @@ Note that we can define various operators for one PI (like mean and standard dev
 The intra-run aggregation is thus using the following pattern: `[ [number, operator] ]`.
 Obviously it does not need to be filled for scalar output.
 
-=== Inter-run aggregation
+=== inter-run aggregation
 
 A similar operation is needed for combining the scores obtained for each run, to generate a PI for the whole experiment.
 Similar operators are proposed, but they will be computed on all the values obtained for all runs.
