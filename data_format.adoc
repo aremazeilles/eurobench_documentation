@@ -657,10 +657,13 @@ With:
   It can be a string, and contain any complex structure.
   The only constraint is that it has to be unique for the given questionnaire.
 * `type`: definition of the type of answer expected
-** Possible values: `value`, `text`, `boolean`, `likert`, `select`, `multi_select`
+** Possible values: `value`, `text`, `boolean`, `likert`, `reverse_likert`, `select`, `multi_select`
 * `options`: additional information to represent the answer options (if needed)
 * `text`: item text
 * `unit`: answer unit indication (if any)
+
+Note that the 5 columns previously detailed are the minimum ones.
+A questionnaire definition may include more columns if this is needed for special computations.
 
 ==== Factor Data File
 
