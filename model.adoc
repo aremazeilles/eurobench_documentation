@@ -37,7 +37,7 @@ Each segment has a key label assigned, for bilateral bodies use the prefix "_r" 
    | greater trochanters |pelvis_wfootnote:[the pelvis is a single rigid body with more than one dimension. If referring to the body segment use only the "pelvis" label, if referring to its dimensions use "r_pelvis","l_pelvis" and "pelvis_w"]
 2+| **Head** | C7-T1 & first rip / ear canal | head
 .6+| **Trunk**footnote:[depending on availability and need of mass and inertia information the trunk can be used alone, include the shoulders or include shoulders and abdomen.]
-  | Trunk | C7-T1 / T12-L1 & diaphragm | trunk 
+  | Trunk | C7-T1 / T12-L1 & diaphragm | trunk
  .2+| Torso +
  (trunk + shoulders) | C7-T1 / T12-L1 & diaphragm | torso
   | glenhumeral axes | torso_wfootnote:[the trunk is a single rigid body with more than one dimensions. If referring to the body segment use only the "trunk" label]
