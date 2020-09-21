@@ -307,7 +307,7 @@ We will work together with you to create the required data file type.
 
 === Joint angles file
 
-**Description**: This file shall contain the time-series of all measured joint angles, expressed in YXZ Cardan Angles, as defined in the “Angle Definition” section.
+**Description**: This file shall contain the time-series of all measured joint angles, expressed in YXZ Cardan Angles, as defined in the <<model.adoc#sec_angles, Angle Definition>> section.
 
 **filename root**: `jointAngles`  where N = subject’s number and R = run number.
 Use appropriate leading zeros for R and N to ensure proper ordering of files.
@@ -323,6 +323,7 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 | `sec` | `deg` | `deg` | `deg` | `deg` | `deg` | `deg` | ... | ... | ...
 |================
 
+Joint labels should refer to the names provided within the <<model.adoc#fig:df_joint_center_label, human model document>>.
 
 === Joint torques file
 
@@ -341,6 +342,8 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 | `sec` | `N.m` | `N.m` | `N.m` | `N.m` | `N.m` | `N.m` | ... | ... | ...
 |================
 
+Joint labels should refer to the names provided within the <<model.adoc#fig:df_joint_center_label, human model document>>.
+
 === Joint center 3D trajectories file
 
 **Description**: This file shall contain all the measured trajectories of the joints.
@@ -358,11 +361,7 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 | `sec` | `m` | `m` | `m` | `m` | `m` | `m` | ... | ... | ...
 |================
 
-Possible labels are listed on Figure <<fig:df_joint_center_label>>.
-
-[[fig:df_joint_center_label]]
-.Labels of Joints centers
-image::img/df_joint_center_label.png[align=center, title-align=center]
+Joint labels should refer to the names provided within the <<model.adoc#fig:df_joint_center_label, human model document>>.
 
 === Body Center of Mass 3D trajectory
 
