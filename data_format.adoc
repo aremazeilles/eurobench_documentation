@@ -227,7 +227,7 @@ This is needed to enable dynamic simulators to model the human-WR system.
 
 === Human anthropometric measures file
 
-**Description**: This file shall contain all the anthropometric measurements of the human body segment, as detailed in <<model.adoc#Human body segment, model document>>.
+**Description**: This file shall contain all the anthropometric measurements of the human body segment, as detailed in the <<model.adoc#sec_hbs, model document>>.
 
 **Name of the file**: subject_N_anthropometry, where N = subject’s number.
 Use appropriate leading zeros for R and N to ensure proper ordering of files.
