@@ -11,7 +11,7 @@ Concepts and label described here are then used and referenced in the <<data_for
 
 == Joint centers
 
-[[fig:df_joint_center_label]]
+[[fig_df_joint_center_label]]
 .Labels of Joints centers
 image::img/df_joint_center_label.png[align=center, title-align=center]
 

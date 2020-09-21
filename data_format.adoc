@@ -361,7 +361,7 @@ Joint labels should refer to the names provided within the <<model.adoc#fig:df_j
 | `sec` | `m` | `m` | `m` | `m` | `m` | `m` | ... | ... | ...
 |================
 
-Joint labels should refer to the names provided within the <<model.adoc#fig:df_joint_center_label, human model document>>.
+Joint labels should refer to the names provided within the <<model.adoc#fig_joint_center_label, human model document>>.
 
 === Body Center of Mass 3D trajectory
 
