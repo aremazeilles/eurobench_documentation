@@ -21,6 +21,7 @@ Each body segment is a single body with multiple dimensions, inertial and mass p
 Each segment has a key label assigned, for bilateral bodies use the prefix "_r" or "_l" to differentiate between right and left bodies. E.g. "r_hand"
 
 .List of body segments and joints considered in our kinematic model proposed.
+[[table:body_segment]]
 [options="header"]
 |================
 | Group | Segments | Delimiting Joints | key label

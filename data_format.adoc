@@ -227,40 +227,16 @@ This is needed to enable dynamic simulators to model the human-WR system.
 
 === Human anthropometric measures file
 
-**Description**: This file shall contain all the anthropometric measurements presented in Table 1 (Winter, 2009) and Figure 3.
+**Description**: This file shall contain all the anthropometric measurements of the human body segment, as detailed in <<model.adoc#Human body segment, model document>>.
 
 **Name of the file**: subject_N_anthropometry, where N = subject’s number.
 Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 **File format**: .yaml
 
-**File structure**: Set of lines containing key: value where the key is provided in Table 2.
+**File structure**: Set of lines containing key: value where the key is provided in table <<model.adoc#table:body_segment>>.
 
-.List of body segments and joints considered in our kinematic model proposed.
-[options="header"]
-|================
-| Group | Segments | Delimiting Joints | key label
-.4+| **Upper limb**
-  | Hand | wrist axis / 2nd knuckle middle finger | hand
-  | Forearm | elbow axis / ulnar styloid | forearm
-  | Upper Arm | glenhumeral axis / elbow axis | upper_arm
-  | Shoulder| sternoclaviar joint / glenhumeral axis | shoulder
-.5+| **Lower limb**
-  | Foot | lateral malleolus / head 2nd metatarsal | foot
-  | Shank | femoral condyles / medial malleolus | shank
-  | Thigh | greater trochanter / femoral condyles | thigh
-  | Pelvis | L4-L5 / greater trochanter | pelvis
-  | Pelvis width| From hip to hip | pelwis_w
-2+| **Head** | C7-T1 & first rip / ear canal | head
-2+| **Trunk** | C7-T1 / T12-L1 & diaphragm | trunk
-2+| **abdomen** | T12-L1 / L4-L5 | abdomen
-|================
-
-Units: Meters
-
-[[fig:df_segment_label]]
-.Segments Labels
-image::img/df_segment_label.png[align=center, title-align=center]
+**Units**: Meters
 
 === Humanoid anthropometric measures file
 
