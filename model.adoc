@@ -11,15 +11,17 @@ Concepts and label described here are then used and referenced in the <<data_for
 
 == Joint centers
 
-[[fig:df_joint_center_label]]
+[[fig_joint_center_label]]
 .Labels of Joints centers
 image::img/df_joint_center_label.png[align=center, title-align=center]
 
 == Human body segment
+[[sec_hbs]]
 Each body segment is a single body with multiple dimensions, inertial and mass properties. Each body segment is delimited by one or more joints. Depending on the availability and need for properties different models could be constructed by merging adjacent segments or approximating them to null-mass bodiesfootnote:[e.g. the "shoulder" segment is useful to compute degrees of freedom, but its mass property is difficult to assess and not generally available, so it could be used with a null mass or merged with the trunk].
 
 Each segment has a key label assigned, for bilateral bodies use the prefix "_r" or "_l" to differentiate between right and left bodies. E.g. "r_hand"
 
+[[table_body_segment]]
 .List of body segments and joints considered in our kinematic model proposed.
 [options="header"]
 |================
@@ -52,8 +54,8 @@ Each segment has a key label assigned, for bilateral bodies use the prefix "_r" 
 .Segments Labels
 image::img/df_segment_label.png[align=center, title-align=center]
 
+[[sec_angles]]
 == Angles definition
-
 
 All the angle definitions here presented are based on the Plug-in Gait model from Vicon.
 Joint angles are represented by the YXZ Cardan angles derived by comparing the relative orientations of the proximal (parent) and distal (child) segments around each joint (see Figure 4).
