@@ -234,7 +234,7 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 **File format**: .yaml
 
-**File structure**: Set of lines containing key: value where the key is provided in table <<model.adoc#table:body_segment>>.
+**File structure**: Set of lines containing key: value where the key is provided in the <<model.adoc#table:body_segment, body segment table>>.
 
 **Units**: Meters
 
