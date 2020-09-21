@@ -323,7 +323,7 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 | `sec` | `deg` | `deg` | `deg` | `deg` | `deg` | `deg` | ... | ... | ...
 |================
 
-Joint labels should refer to the names provided within the <<model.adoc#fig:df_joint_center_label, human model document>>.
+Joint labels should refer to the names provided within the <<model.adoc#fig_joint_center_label, human model document>>.
 
 === Joint torques file
 
@@ -342,7 +342,7 @@ Joint labels should refer to the names provided within the <<model.adoc#fig:df_j
 | `sec` | `N.m` | `N.m` | `N.m` | `N.m` | `N.m` | `N.m` | ... | ... | ...
 |================
 
-Joint labels should refer to the names provided within the <<model.adoc#fig:df_joint_center_label, human model document>>.
+Joint labels should refer to the names provided within the <<model.adoc#fig_joint_center_label, human model document>>.
 
 === Joint center 3D trajectories file
 
