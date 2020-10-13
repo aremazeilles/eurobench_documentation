@@ -11,7 +11,7 @@
 
 The addition of new protocol to the Eurobench Benchmarking Software requires providing a set of information for filling the database.
 
-An link:doc/protocol_template.xlsx[excel sheet] is provided to gather that information.
+An link:{attachmentsdir}/protocol_template.xlsx[excel sheet] is provided to gather that information.
 
 All tables are followed by an explanation of each of the fields that deserves it.
 
