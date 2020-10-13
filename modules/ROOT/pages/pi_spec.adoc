@@ -1,5 +1,5 @@
 = Performance Indicator Specification
-:imagesdir: ../assets/images
+:imagesdir: ../images
 :sectnums:
 :sectnumlevels: 4
 :experimental:
@@ -47,7 +47,7 @@ The successive operations conducted by the PI Manager are the followings:
 
 [[fig:pim_interact]]
 .Global interaction of the PI Manager with the database to collect the experimental data
-image::img/pi_manager_interaction.png[align=center, title-align=center]
+image::pi_manager_interaction.png[align=center, title-align=center]
 
 NOTE: As mentioned, each of the PI routines are encapsulated within a docker image.
       It avoids any dependency conflicts in between the different PI code implementation, and isolates the PI Manager machine from the PI computation effort.
@@ -56,7 +56,7 @@ The PI Manager has somehow (to be clarified) a local copy of the experiment file
 
 [[fig:pim_loop]]
 .Overall PI Manager processing loop
-image::img/pi_manager_loop.png[align=center, title-align=center]
+image::pi_manager_loop.png[align=center, title-align=center]
 
 We assume that each run (iteration of the experiment with similar conditions or independent variables), is described by a set of _Pre-processed files_.
 

@@ -1,5 +1,5 @@
 = Eurobench Data Format
-:imagesdir: ../assets/images
+:imagesdir: ../images
 :sectnums:
 :sectnumlevels: 4
 :experimental:
@@ -27,7 +27,7 @@ This set of files  will be taken as input by a benchmarking routine that, after 
 
 [[fig:df_processing_chain]]
 .Main elements of the data processing chain
-image::img/df_processing_chain.png[align=center, title-align=center]
+image::df_processing_chain.png[align=center, title-align=center]
 
 === Terminology
 
@@ -405,7 +405,7 @@ The angular momentum of a body is a vector quantity that represents the magnitud
 |================
 where `Js` stands for Joule second (equivalent to $$kgm²s^{⁻1}$$).
 
-[bibliography]
+**bibliography**:
 
 [[Bennett2010]] [Bennett2010]: B.C Bennett, S.D. Russell, P. Sheth, M. F. Abel. Angular momentum of walking at different speeds. Human Movement Science, 2010 (https://kin.sfsu.edu/sites/default/files/Angular%20momentum%20of%20walking%20at%20different%20speeds.pdf[link])
 

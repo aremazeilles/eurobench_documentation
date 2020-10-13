@@ -1,5 +1,5 @@
 = Eurobench template
-:imagesdir: ../assets/images
+:imagesdir: ../images
 :sectnums:
 :sectnumlevels: 4
 :experimental:
