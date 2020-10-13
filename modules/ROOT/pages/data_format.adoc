@@ -1,10 +1,11 @@
 = Eurobench Data Format
-:source-highlighter: pygments
-:pygments-style: emacs
-:icons: font
-:toc: right
-:linkattrs:
+:imagesdir: ../assets/images
 :sectnums:
+:sectnumlevels: 4
+:experimental:
+:keywords: AsciiDoc
+:source-highlighter: highlight.js
+:icons: font
 
 == Motivation
 
