@@ -1,0 +1,5 @@
+:attachmentsdir: {moduledir}/assets/attachments
+:exampledir: {moduledir}/assets/examples
+:imagesdir: {moduledir}/assets/images
+:partialsdir: {moduledir}/assets/_partials
+
