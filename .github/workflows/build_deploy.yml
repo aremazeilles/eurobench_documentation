@@ -16,7 +16,7 @@ jobs:
       - name: "Launch antora"
         uses: kameshsampath/antora-site-action@master
         with:
-          antora_playbook: antora-playbook.yml
+          antora_playbook: antora-playbook.yaml
       - name: upload artifact
         uses: actions/upload-artifact@v2
         with:
