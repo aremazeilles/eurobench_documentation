@@ -9,11 +9,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: "Checkout master"
+      - name: Checkout master
         uses: actions/checkout@v1
       - name: "get playbook"
         run: wget -O playbook.yaml https://raw.githubusercontent.com/eurobench/antora_playbook/main/playbook.yaml
-      - name: "Launch antora"
+      - name: Launch antora
         uses: kameshsampath/antora-site-action@master
         with:
           antora_playbook: playbook.yaml
@@ -22,3 +22,12 @@ jobs:
         with:
           name: build
           path: build
+      - name: Deploy Content
+        uses: peaceiris/actions-gh-pages@v3
+        env:
+          personal_token: ${{ secrets.DEPLOYMENT_TOKEN }}
+          external_repository: eurobench/eurobench.github.io
+          publish_branch: main
+          publish_dir: ./build
+        with:
+          commit_message: ${{ github.event.head_commit.message }}
