@@ -28,5 +28,5 @@ jobs:
           personal_token: ${{ secrets.DEPLOYMENT_TOKEN }}
           external_repository: eurobench/eurobench.github.io
           publish_branch: main
-          publish_dir: build
+          publish_dir: build/site
           commit_message: ${{ github.event.head_commit.message }}
