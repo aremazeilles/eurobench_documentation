@@ -387,7 +387,8 @@ It is usually defined as _the unique point where the weighted relative position 
 === Angular Momentum around the Center of Mass
 
 The angular momentum of a body is a vector quantity that represents the magnitude and the direction in which the body rotates about a reference point <<Bennett2010>>.
-We refer here to the total body angular momentum, around the total body Center of Mass (`CoM`), expressed in global coordinates. That is, the sum of the angular momenta of different segments around the total body `CoM` (see eq. (16) in <<Herr2008>> or the methods section in <<Bennet2010>>).
+We refer here to the total body angular momentum, around the total body Center of Mass (`CoM`), expressed in global coordinates.
+That is, the sum of the angular momenta of different segments around the total body `CoM` (see eq. (16) in <<Herr2008>> or the methods section in <<Bennett2010>>).
 
 **Description**: This file shall contain the estimated angular momentum around the COM along time.
 
