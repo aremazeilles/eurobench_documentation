@@ -67,11 +67,11 @@ image::df_angle_convention.png[align=center, title-align=center]
 
 === Hip
 
-* **Hip ab/adduction (Relative) (Label: hip_adduction)** Hip adduction is measured in the plane of the hip flexion axis and the knee joint centre.
+* **Hip ab/adduction (Relative) (Label: hip_adduction)** Hip adduction is measured in the plane of the hip flexion axis and the knee joint center.
   The angle is calculated between the long axis of the thigh and the frontal axis of the pelvis projected into this plane.
   A positive number corresponds to an adducted (inwardly moved) leg.
 
-* **Hip flexion/extension (Relative) (Label: hip_flexion)** Hip flexion is calculated about an axis parallel to the pelvic transverse axis which passes through the hip joint centre.
+* **Hip flexion/extension (Relative) (Label: hip_flexion)** Hip flexion is calculated about an axis parallel to the pelvic transverse axis which passes through the hip joint center.
   The sagittal thigh axis is projected onto the plane perpendicular to the hip flexion axis.
   Hip flexion is then the angle between the projected sagittal thigh axis and the sagittal pelvic axis.
   A positive (Flexion) angle value corresponds to the situation in which the knee is in front of the body.
@@ -91,7 +91,7 @@ Knee angles are derived from the femur and the untorsioned tibia segments.
   The sign is such that a positive angle corresponds to a flexed knee.
 
 * **Knee rotation (Relative) (Label: knee_rotation)** Knee rotation is measured about the long axis of the shank.
-  It is measured as the angle between the sagittal axis of the shank and the sagittal axis of the thigh, projected into a plane perpendicular to the long axis of the shank. 
+  It is measured as the angle between the sagittal axis of the shank and the sagittal axis of the thigh, projected into a plane perpendicular to the long axis of the shank.
   The sign is such that a positive angle corresponds to internal rotation.
   If a tibial torsion value is present in the Session form, it is subtracted from the calculated knee rotation value.
   A positive tibial torsion value therefore has the effect of providing a constant external offset to knee rotation.
