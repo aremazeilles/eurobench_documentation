@@ -5,7 +5,13 @@
 :linkattrs:
 
 
-This document gathers documentation on software aspects related to the http://eurobench2020.eu/[Eurobench] project:
+This document gathers documentation on software aspects related to the http://eurobench2020.eu/[Eurobench] project.
+
+All material is automatically deployed to this https://eurobench.github.io/[github Website].
+
+== Main content pointers
+
+The principle documentation pages are the following:
 
 * <<model.adoc#Human model, Human model>>
 * <<data_format.adoc#Eurobench Data Format, Eurobench Data Format>>
@@ -15,25 +21,45 @@ This document gathers documentation on software aspects related to the http://eu
 == Modification Instructions
 
 All the documentation is subject to evolution according to http://eurobench2020.eu/[Eurobench] needs.
-If you identify errors, or want to provide additional material, please use traditional Github tools:
+If you identify errors, or want to provide additional material, please use traditional GitHub tools:
 
 * Create an issue through the https://help.github.com/en/github/managing-your-work-on-github/creating-an-issue[Git Hub Interface]
 ** please indicate the specific section you are referring to.
 * Create an issue from the code file through the https://help.github.com/en/github/managing-your-work-on-github/opening-an-issue-from-code[Git Hub interface]
 * Send an email to us (anthony.remazeilles@tecnalia.com Leader of WP6: Software Development).
 
+== Content deployment
+
+The repository is using https://antora.org/[Antora] to generate a static website from this content.
+Antora requires 3 components:
+
+* Components that contain the information to deploy.
+  That is this repository.
+  The structure of this repo is thus guided by Antora's requirements 
+* A UI themes which configures the graphical aspect of the website.
+  We use a fork of the default UI, located in the https://github.com/eurobench/antora_ui[Eurobench organization's github].
+* A playbook that contains the configuration to be used by Antora to generate the static pages.
+  The one we used in stored in the https://github.com/eurobench/antora_playbook[Eurobench organization's github]
+
+General information on the Antora concepts can be found https://matthewsetter.com/antora/three-core-concepts/[here].
+
+All the deployment is then handled through the link:.github/workflows/build_deploy.yml[GitHub actions] of this website.
+
+
 == Additional Tools
+
+_TODO: To be revised_
 
 To generate locally the documentation (under Linux), type from the repository root the command `make`.
 It requires `make` and `asciidoctor` installed locally.
 
 ---
 
-image::http://eurobench2020.eu/wp-content/uploads/2018/06/cropped-logoweb.png["eurobench logo", width=200, role=left]
+image:http://eurobench2020.eu/wp-content/uploads/2018/06/cropped-logoweb.png["eurobench logo", width=200, role=left]
 Supported by Eurobench - the European robotic platform for bipedal locomotion benchmarking.
 More information: http://eurobench2020.eu/[eurobench2020.eu]).
 
 
-image::http://eurobench2020.eu/wp-content/uploads/2018/02/euflag.png["euflag",float=left,width=100]
+image:http://eurobench2020.eu/wp-content/uploads/2018/02/euflag.png["euflag",float=left,width=100]
 This project has received funding from the European Union’s Horizon 2020
-research and innovation programme under grant agreement no. No 779963.
+research and innovation program under grant agreement no. No 779963.
