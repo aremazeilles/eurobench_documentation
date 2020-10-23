@@ -35,7 +35,7 @@ The objective of the `PI Manager` is to orchestrate the computation of the perfo
 The overall interaction scheme is described on the following figure.
 We assume here that an experiment has just been uploaded to the Benchmarking Software, i.e. all experimental data are already uploaded and stored into the database.
 
-The remaining operation is the scoring of the experiment, which is for what is triggered the PI Mananger.
+The remaining operation is the scoring of the experiment, which is for what is triggered the PI Manager.
 The successive operations conducted by the PI Manager are the followings:
 
 1. From the Experiment ID, the PI Manager gets access from the database to the Protocol this experiment is related to.
@@ -60,7 +60,7 @@ image::pi_manager_loop.png[align=center, title-align=center]
 
 We assume that each run (iteration of the experiment with similar conditions or independent variables), is described by a set of _Pre-processed files_.
 
-Then The PI Manager loops on each run and docker:
+Then The PI Manager loops on each run as follows:
 
 * For each run
 ** gather all pre-processed files associated to that run, together to any condition files describing the experimental condition.
@@ -70,12 +70,12 @@ Then The PI Manager loops on each run and docker:
 ** Once each run has been evaluated, the PI Manager compute the global PI score, given the computed PI per run.
 ** All results are uploaded to the database
 
-Once this loop is achived, the PI scores of that experiment are uploaded into the database.
+Once this loop is achieved, the PI scores of that experiment are uploaded into the database.
 That way, a future comparison of this experiment with another only consists in consulting the data stored into the database.
 
 **Message to take away**:
 
-* All PI algorithms have to be encapsulated into a docker image
+* All PI algorithms have to be encapsulated into a Docker image
 * All PI algorithm should be able to launch computation given the _Pre-Processed files_ associated to a single run.
 
 The preparation of the Docker image containing the processing algorithm will be more extensively detailed later on.
@@ -103,17 +103,17 @@ with:
 - `test_data`: folder containing reference input data and associated expected output result that can be used for making code testing.
 - `compile.sh`: shell script containing the command to build the program
 - `DockerFile`: file indicating how to create the Docker image for that code.
-- `install.sh`: shell program indicating how to install all dependencies on a fresh ubuntu machine.
-- `run_pi`: script that will be the docker container entry point, and that should launch the PI computation, given an input folder (with all input processing files) and an output folder (to store result files).
+- `install.sh`: shell program indicating how to install all dependencies on a fresh Ubuntu machine.
+- `run_pi`: script that will be the Docker container entry point, and that should launch the PI computation, given an input folder (with all input processing files) and an output folder (to store result files).
 
 We are aiming at such generic repository structure to have a common management scheme for all PI code.
 
-Most of the mentioned files are related to the preparation of the docker image, which will be described in a second phase.
+Most of the mentioned files are related to the preparation of the Docker image, which will be described in a second phase.
 We will now focus on the expected interface of the benchmarking algorithm.
 
 == PI algorithm interface
 
-Independentely of the programming language, we request the entry point (being an executable or a script) to have the interface illustrated on Figure named <<fig:pim_loop>>:
+Independently of the programming language, we request the entry point (being an executable or a script) to have the interface illustrated on Figure named <<fig:pim_loop>>:
 
 * Input: all preprocessed data file of a single run
 * Output: one file per Performance Indicator computed.
@@ -128,7 +128,7 @@ The input data of an experiment can be composed of:
 * datafile collected from sensors during the experimentation
 * datafile corresponding to benchmarking condition, like robot specification, human specification, testbed configuration, ...
 
-We assume the processing algorithm entry point expects all input files to be explicitely detailed:
+We assume the processing algorithm entry point expects all input files to be explicitly detailed:
 
 [source, sh]
 ----
@@ -194,7 +194,7 @@ But in any case, we should have as many files generated as PI computed.
 
 The name of each PI file has to be the same as the name of the PI, as specified in the PI table in the <<template.adoc#PI Sheet, name>> entry.
 
-NOTE: for non-scalar metrics, we suggest the definition of a metric to _compress_ or aggregare the score (like using `mean` for providing a unique value from a vectir result for a given run).
+NOTE: for non-scalar metrics, we suggest the definition of a metric to _compress_ or aggregate the score (like using `mean` for providing a unique value from a vector result for a given run).
       See the <<template.adoc#intra-run aggregation, intra-run aggregation definition>>.
 
 WARNING: The scoring is _ideally_ performed **per run**.
