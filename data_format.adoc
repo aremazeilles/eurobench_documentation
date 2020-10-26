@@ -5,6 +5,8 @@
 :toc: right
 :linkattrs:
 :sectnums:
+:xrefstyle: short
+
 
 == Motivation
 
@@ -476,10 +478,10 @@ where `f` stands for force, `p` for the center of pressure, and `t` for torques.
 | `s` | `mV` | `mV` | `mV` | `mV`
 |================
 
-where `label_i` is to be a tag described in table <<tab:emg_tags>>.
+where `label_i` is to be a tag described in <<tab:emg_tags>>.
 
 [[tab:emg_tags]]
-.List of EMG muscles and labels considered.
+.List of EMG muscles and labels considered. Suffixes `_l` and `_r` may be added to differentiate left and right limb, when needed.
 [options="header"]
 |================
 | Muscle | Label
