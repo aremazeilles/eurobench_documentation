@@ -35,11 +35,11 @@ Antora requires 3 components:
 
 * Components that contain the information to deploy.
   That is this repository.
-  The structure of this repo is thus guided by Antora's requirements 
+  The structure of this repo is thus guided by Antora's requirements.
 * A UI themes which configures the graphical aspect of the website.
   We use a fork of the default UI, located in the https://github.com/eurobench/antora_ui[Eurobench organization's github].
 * A playbook that contains the configuration to be used by Antora to generate the static pages.
-  The one we used in stored in the https://github.com/eurobench/antora_playbook[Eurobench organization's github]
+  The one we used in stored in the https://github.com/eurobench/antora_playbook[Eurobench organization's github].
 
 General information on the Antora concepts can be found https://matthewsetter.com/antora/three-core-concepts/[here].
 
@@ -48,10 +48,11 @@ All the deployment is then handled through the link:.github/workflows/build_depl
 
 == Additional Tools
 
-_TODO: To be revised_
-
 To generate locally the documentation (under Linux), type from the repository root the command `make`.
 It requires `make` and `asciidoctor` installed locally.
+
+WARNING: Look for html pages in folder `modules/ROOT/pages`.
+The link towards other pages may not be working locally.
 
 ---
 

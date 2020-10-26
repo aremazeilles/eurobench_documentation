@@ -3,7 +3,7 @@
 # Distributed under the Non-Profit Open Software License 3.0 (NPOSL-3.0).
 
 SILENT = @
-ADOC_FILES = $(wildcard ./*.adoc)
+ADOC_FILES = $(wildcard *.adoc modules/ROOT/pages/*.adoc)
 HTML_FILES = $(subst .adoc,.html,$(ADOC_FILES))
 all: $(HTML_FILES)
 
