@@ -366,8 +366,7 @@ Joint labels should refer to the names provided within the <<model.adoc#fig_join
 === Body Center of Mass 3D trajectory
 
 The body Center of Mass (COM) is frequently considered in biomechanics, as it reflects the motion of the whole body.
-It is usually defined as _the unique point where the weighted relative position of the distributed mass sums to zero_ (https://en.wikipedia.org/wiki/Center_of_mass[wikipedia])
-
+It is usually defined as _the unique point where the weighted relative position of the distributed mass sums to zero_ (https://en.wikipedia.org/wiki/Center_of_mass[wikipedia]).
 
 **Description**: This file shall contain the estimated COM position along time.
 
@@ -377,11 +376,11 @@ It is usually defined as _the unique point where the weighted relative position 
 
 **File structure**:
 
-.COM position file structure and unit
+.COM position file structure and unit (velocity and acceleration are only added if measured)
 [options="header"]
 |================
-| time | x | y | z
-| `sec` | `m` | `m` | `m`
+| time | `x` | `y` | `z` | `vel_x` | `vel_y` | `vel_z` | `acc_x` | `acc_y` | `acc_z`
+| `sec` | `m` | `m` | `m` | ms^{-1} | ms^{-1} | ms^{-1} | $$ms^{-2}$$ | latexmath:[ms^{-2}] | asciimath:[ms^{-2}]
 |================
 
 === Angular Momentum around the Center of Mass
@@ -402,7 +401,7 @@ The angular momentum of a body is a vector quantity that represents the magnitud
 | time | x | y | z
 | `sec` | `Js` | `Js` | `Js`
 |================
-where `Js` stands for Joule second (equivalent to $$kgm²s^{⁻1}$$).
+where `Js` stands for Joule second (equivalent to asciimath:[kgm²s^{⁻1}]).
 
 [bibliography]
 
