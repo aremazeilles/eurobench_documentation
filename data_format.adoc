@@ -381,7 +381,7 @@ It is usually defined as _the unique point where the weighted relative position 
 [options="header"]
 |================
 | time | `x` | `y` | `z` | `vel_x` | `vel_y` | `vel_z` | `acc_x` | `acc_y` | `acc_z`
-| `sec` | `m` | `m` | `m` | ms^{-1} | ms^{-1} | ms^{-1} | $$ms^{-2}$$ | latexmath:[ms^{-2}] | asciimath:[$ms^{-2}$]
+| `sec` | `m` | `m` | `m` | ms^{-1} | ms^{-1} | ms^{-1} | ms^{-2} | ms^{-2}] | ms^{-2}]
 |================
 
 === Angular Momentum around the Center of Mass
@@ -402,7 +402,7 @@ The angular momentum of a body is a vector quantity that represents the magnitud
 | time | x | y | z
 | `sec` | `Js` | `Js` | `Js`
 |================
-where `Js` stands for Joule second (equivalent to stem:[kgm²s^{⁻1}]).
+where `Js` stands for Joule second (equivalent to latexmath:[kgm²s^{⁻1}]).
 
 [bibliography]
 
