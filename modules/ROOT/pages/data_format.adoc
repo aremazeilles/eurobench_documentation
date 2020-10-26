@@ -4,7 +4,7 @@
 :sectnumlevels: 4
 :experimental:
 :keywords: AsciiDoc
-:source-highlighter: highlight.js
+:source-highlighter: highlightjs
 :icons: font
 
 == Motivation

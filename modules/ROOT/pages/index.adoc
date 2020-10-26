@@ -1,6 +1,7 @@
 = Eurobench Software documentation
+:imagesdir: ../images
 :source-highlighter: pygments
-:pygments-style: emacs
+:pygments-style: monokai
 :icons: font
 :linkattrs:
 
@@ -23,14 +24,13 @@ If you identify errors, or want to provide additional material, please use tradi
 * Create an issue from the code file through the https://help.github.com/en/github/managing-your-work-on-github/opening-an-issue-from-code[Git Hub interface]
 * Send an email to us (anthony.remazeilles@tecnalia.com Leader of WP6: Software Development).
 
-
 ---
 
-image::http://eurobench2020.eu/wp-content/uploads/2018/06/cropped-logoweb.png["eurobench logo", width=200, role=left]
+[cols=".^30, .^80", grid=none,frame=none]
+|======
+|image:logo_eurobench.png["eurobench logo", width=200, role=left] |
 Supported by Eurobench - the European robotic platform for bipedal locomotion benchmarking.
-More information: http://eurobench2020.eu/[eurobench2020.eu]).
-
-
-image::http://eurobench2020.eu/wp-content/uploads/2018/02/euflag.png["euflag",float=left,width=100]
-This project has received funding from the European Union’s Horizon 2020
-research and innovation program under grant agreement no. No 779963.
+More information: http://eurobench2020.eu/[eurobench2020.eu].
+| image:logo_eu.png["eu flag",float=left,width=100] | This project has received funding from the European Union’s Horizon 2020
+research and innovation programme under grant agreement no. No 779963.
+|======
