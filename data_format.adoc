@@ -6,6 +6,7 @@
 :linkattrs:
 :sectnums:
 :stem:
+:xrefstyle: short
 
 == Motivation
 
@@ -402,7 +403,7 @@ The angular momentum of a body is a vector quantity that represents the magnitud
 | time | x | y | z
 | `sec` | `Js` | `Js` | `Js`
 |================
-where `Js` stands for Joule second (equivalent to latexmath:[kgm²s^{⁻1}]).
+where `Js` stands for Joule second (equivalent to `kgm^2^s^⁻1^`).
 
 [bibliography]
 
@@ -476,10 +477,10 @@ where `f` stands for force, `p` for the center of pressure, and `t` for torques.
 | `s` | `mV` | `mV` | `mV` | `mV`
 |================
 
-where `label_i` is to be a tag described in table <<tab:emg_tags>>.
+where `label_i` is to be a tag described in <<tab:emg_tags>>.
 
 [[tab:emg_tags]]
-.List of EMG muscles and labels considered.
+.List of EMG muscles and labels considered. Suffixes `_l` and `_r` may be added to differentiate left and right limb, when needed.
 [options="header"]
 |================
 | Muscle | Label
@@ -504,8 +505,6 @@ where `label_i` is to be a tag described in table <<tab:emg_tags>>.
 | Vastus Medialis  |  VaMe
 |================
 
-Units: Millivolts.
-
 === Gait events file
 
 **Description**: This file shall include all detected (or calculated) heel strike and toe off gait events.
@@ -514,10 +513,11 @@ Units: Millivolts.
 
 **File format**: `.yaml`
 
-**File structure**:Set of lines containing key: vector of values. Where the key is provided on the last column of Table 3.
+**File structure**:Set of lines containing key: vector of values. Where the key is provided on the last column of <<tab:gait_tags>>.
 
 **File content**: See Table 3
 
+[[tab:gait_tags]]
 .List of gait events and its considered labelling
 [options="header"]
 |====================
