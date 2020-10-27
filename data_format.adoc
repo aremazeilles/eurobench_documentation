@@ -506,7 +506,6 @@ where `label_i` is to be a tag described in <<tab:emg_tags>>.
 | Vastus Medialis  |  VaMe
 |================
 
-Units: Millivolts.
 
 === Gait events file
 
@@ -516,10 +515,11 @@ Units: Millivolts.
 
 **File format**: `.yaml`
 
-**File structure**:Set of lines containing key: vector of values. Where the key is provided on the last column of Table 3.
+**File structure**:Set of lines containing key: vector of values. Where the key is provided on the last column of <<tab:gait_tags>>.
 
 **File content**: See Table 3
 
+[[tab:gait_tags]]
 .List of gait events and its considered labelling
 [options="header"]
 |====================
