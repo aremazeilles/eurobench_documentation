@@ -231,7 +231,7 @@ value: 'hip'
 
 ==== General considerations
 
-NOTE: The type of the output file is defined in the <<template.adoc#output type field, PI spec>>, set in the general template sheet.
+NOTE: The type of the output file is defined in the <<template.adoc#output-type-field, PI spec>>, set in the general template sheet.
 
 NOTE: Providing several PI outputs through a unique source code or algorithm is an option provided to the developer.
 But in any case, we should have as many files generated as PI computed.
@@ -239,7 +239,7 @@ But in any case, we should have as many files generated as PI computed.
 WARNING: The name of each PI file has to be the same as the name of the PI, as specified in the PI table in the <<template.adoc#PI Sheet, name>> entry.
 
 NOTE: for non-scalar metrics, we suggest the definition of a metric to _compress_ or aggregate the score (like using `mean` for providing a unique value from a vector result for a given run).
-      See the <<template.adoc#intra-run aggregation, intra-run aggregation definition>>.
+      See the <<template.adoc#intra-run-aggregation, intra-run aggregation definition>>.
 
 WARNING: The scoring is _ideally_ performed **per run**.
          The score aggregation across the N runs (like how to extract an experiment `step_time` score given all the `step_time` vectors obtained in the successive runs) is specified in the template.
