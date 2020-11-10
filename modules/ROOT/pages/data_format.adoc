@@ -1,12 +1,11 @@
 = Eurobench Data Format
-:source-highlighter: pygments
-:pygments-style: emacs
-:icons: font
-:toc: right
-:linkattrs:
+:imagesdir: ../images
 :sectnums:
-:stem:
-:xrefstyle: short
+:sectnumlevels: 4
+:experimental:
+:keywords: AsciiDoc
+:source-highlighter: highlightjs
+:icons: font
 
 == Motivation
 
@@ -15,7 +14,7 @@ In order to store these experiments in a consistent way, a common, comprehensive
 Other motivations for the specification of a unique data format and conventions are:
 
 * Ensuring automatic computation of Performance Indicators (PIs) based on recorded data.
-* Maximising compatibility between PIs that are common to several protocols (e.g. step length can be calculated in many ways and under many different conditions).
+* Maximizing compatibility between PIs that are common to several protocols (e.g. step length can be calculated in many ways and under many different conditions).
 * Allowing data collection and PI computation to happen independently in different times and location (e.g. enabling any remote user to benchmark an experiment performed in a specific laboratory setting).
 
 Any request to extend / change format described here should be done following the <<README.adoc#Modification Instructions, contribution policy>>.
@@ -28,7 +27,7 @@ This set of files  will be taken as input by a benchmarking routine that, after 
 
 [[fig:df_processing_chain]]
 .Main elements of the data processing chain
-image::img/df_processing_chain.png[align=center, title-align=center]
+image::df_processing_chain.png[align=center, title-align=center]
 
 === Terminology
 
@@ -68,12 +67,12 @@ where:
   This is the root name of the file.
 * X, Y, Z are integer respectively associated the to the number of subjects involved, the number of different conditions being tested, and the number of repetitions per condition.
 * The `subject` / `cond` / `run` namespaces are only used when it makes sense.
-  An experiment involving a unique subject would have have pre-preocessed files following the pattern: `cond_Y_run_Z_[type].csv`.
+  An experiment involving a unique subject would have have pre-processed files following the pattern: `cond_Y_run_Z_[type].csv`.
   An experiment with various subject but unique condition would follow the pattern `subject_X_run_Z_[type].csv`.
   At the extreme, an experiment involving a unique subject (or an humanoid), with single condition and no repetition will be described by files with pattern: `[type].csv`.
 
 Unless specified if different, all datafile recorded will have a name using this pattern.
-Each data file is now described, focusing on the type of information stored (extensions subject, cond and run are skiped for now).
+Each data file is now described, focusing on the type of information stored (extensions subject, cond and run are skipped for now).
 
 .Pre-processed files format (list to be updated)
 [options="header"]
@@ -120,6 +119,7 @@ If we can accept that all column may not be present in the file (see next sectio
 ==== incomplete data file
 
 If a field or a column cannot be filled (the force sensor only provides force measurement, no torque, or all human joint angles are not tracked), the label should be **discarded** from the file (i.e no empty column). This way, the wrench file corresponding to a 6D force sensor (link:https://onrobot.com/sites/default/files/documents/Datasheet_HEX%20QC_20191122.pdf[OnRobot HEX-E QC], for example) would look as follows:
+
 ----
 time; force_x; force_y; force_z; torque_x; torque_y; torque_z
 0; 1.67; 2.34; 0.83; 0.21; 0.53; 0.07
@@ -129,6 +129,7 @@ time; force_x; force_y; force_z; torque_x; torque_y; torque_z
 ----
 
 while the wrench file for a 1D force sensor (link:https://www.tekscan.com/products-solutions/force-sensors/a101[FlexiForce A101 Sensor], for example) would have the following appearance:
+
 ----
 time; force_x
 0; 1.67
@@ -223,7 +224,7 @@ Moreover, it allows to use a wide variety of simulators commonly used in robotic
 
 **Name of the file**: `wr_N_config_M_segments`, where `N` is the WR number and `M` is the configuration number (for resizable robots this could be useful).
 
-**File Format**: .urdf. This format file allows to include Gazebo simulation tags, such as friction properties, or visualization properties that allow to simulate more realistic behaviours.
+**File Format**: .urdf. This format file allows to include Gazebo simulation tags, such as friction properties, or visualization properties that allow to simulate more realistic behaviors.
 This file shall contain the dimensions and inertial properties of each segment of the worn robot with respect to the reference system of the human body segment connected to it.
 This is needed to enable dynamic simulators to model the human-WR system.
 
@@ -269,7 +270,7 @@ keys must be self-explicative.
 Different words on the same key must be separated by underscore.
 keys must be written in lower case style.
 
-If a protocol involves several equipments, then all configuration information should be placed in the same file, using the pattern `device_name_param_name` to describe each of the device.
+If a protocol involves several equipment, then all configuration information should be placed in the same file, using the pattern `device_name_param_name` to describe each of the device.
 For instance, if a protocol involves a push stick and an instrumented garment, we would consider the following configuration file:
 
 [source, yaml]
@@ -301,7 +302,7 @@ Data can be provided as the device drivers provide them  (e.g. `c3d`, `rosbag`, 
 This set of files should contain all the data processed from the raw data and needed for running a specific benchmarking routine.
 As described in each of the following sub-sections, we envision one format per type of information.
 These files should be preferably agnostic of the specific sensor used to capture it, so that the benchmarking routines can be launched independently of the acquisition devices.
-All time-series files should contain timestamped information, since timestamp reference will be shared by all files describing a same experiment run.
+All time-series files should contain time-stamped information, since timestamp reference will be shared by all files describing a same experiment run.
 
 An experiment can provide one or more of the following file types.
 If a testbed or a benchmarking routine requires a data type not included in this document, please contact the EUROBENCH Team.
@@ -359,8 +360,8 @@ Joint labels should refer to the names provided within the <<model.adoc#fig_join
 .3D joint center file structure and unit
 [options="header"]
 |================
-| time | r_ankle_x | r_ankle_y | r_ankle_z | r_knee_x | r_knee_y | r_knee_z | ... | ... | ...
-| `sec` | `m` | `m` | `m` | `m` | `m` | `m` | ... | ... | ...
+| time | r_ankle_x | r_ankle_y | r_ankle_z | r_knee_x | r_knee_y | r_knee_z | ...
+| `sec` | `m` | `m` | `m` | `m` | `m` | `m` | ...
 |================
 
 Joint labels should refer to the names provided within the <<model.adoc#fig_joint_center_label, human model document>>.
@@ -407,7 +408,7 @@ That is, the sum of the angular momenta of different segments around the total b
 |================
 where `Js` stands for Joule second (equivalent to `kgm^2^s^⁻1^`).
 
-[bibliography]
+**bibliography**:
 
 - [[[Bennett2010]]]: B.C Bennett, S.D. Russell, P. Sheth, M. F. Abel. Angular momentum of walking at different speeds. Human Movement Science, Colume 29, Issue 1, 2010 (https://kin.sfsu.edu/sites/default/files/Angular%20momentum%20of%20walking%20at%20different%20speeds.pdf[link])
 - [[[Herr2008]]] H. Herr, M. Popovic. Angular momentum in human walking. Journal of Experimental Biology, Volume 211, Issue 4, (2008) - (https://jeb.biologists.org/content/jexbio/211/4/467.full.pdf)[link]
@@ -706,7 +707,7 @@ There is only a unique testbed configuration file, as all runs are repetitions o
 
 The Laboratory ExoLab has done a study on healthy people wearing an H2 exoskeleton and recorded one subject during slope ascending, with optical markers.
 Three runs were recorded.
-The experiment was then repeated changeing the support level of the exoskeleton
+The experiment was then repeated changing the support level of the exoskeleton
 
 * Raw Files (format suggested, not mandatory)
 ** `raw_data.txt`
@@ -738,7 +739,7 @@ The Laboratory HumanoidLab has done a study on the new walking pattern generator
 
 === Example 4
 
-A laboratory studied human behaviour during sit-to-stand activity.
+A laboratory studied human behavior during sit-to-stand activity.
 Two subjects were involved.
 Each subject were asked to perform 5 sit-to-stand, and data collection was stopped once the person was standing up.
 Then the operation was repeated with eyes closed, to see the importance of the visual clue.
@@ -753,7 +754,7 @@ An instrumented chair was used, which is collecting a set of measures, in a form
 * Testbed related data file
 ** `cond_{01-02}_testbed.yaml`
 
-The eyes status (open/closed) is set trhough a parameter in files `cond_01_testbed.yaml` and `cond_02_testbed.yaml`.
+The eyes status (open/closed) is set through a parameter in files `cond_01_testbed.yaml` and `cond_02_testbed.yaml`.
 
 == References
 
