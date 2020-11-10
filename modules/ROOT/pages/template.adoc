@@ -154,7 +154,7 @@ First we start reminding two concepts (this should be brought to a dedicated pag
 Some item deserves more detailed explanation:
 
 === output type field
-[pi_output_type]
+[[pi_output_type]]
 The output type field refers to the type of output file used to describe the Performance Indicators.
 The type provided must refer to one of the output types described in <<pi_spec.adoc#Output data, the PI specification file>>.
 For now, format accepted are: `scalar`, `vector`, `matrix`, `vector_of_vector`, `vector_of_mtrix` and `string`.
