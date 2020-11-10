@@ -155,18 +155,9 @@ Some item deserves more detailed explanation:
 
 === output type field
 
-The objective type is to define the expected structure of the PI.
-Ideally a unique value would ease everything, but we can envision several cases where we prefer keeping several values.
-A PI value is a https://fr.wikipedia.org/wiki/YAML[YAML] file with a structure like this one:
-
-```yaml
-type: 'vector'
-value: [0.96867, 1.01667, 0.98843, 0.95168, 0.87936, 0.94576, 0.87802, 0.87571, 0.81802, 0.82336]
-```
-
-The PI type is in that case a vector.
-We envision for now outputs of type `scalar`, `vector`, `matrix`, `labelled_matrix` and `string`.
-More details are available on the <<pi_spec.adoc#Output data, PI specification file>> file.
+The output type field refers to the type of output file used to describe the Performance Indicators.
+The type provided must refer to one of the output types described in <<pi_spec.adoc#Output data, the PI specification file>>.
+For now, format accepted are: `scalar`, `vector`, `matrix`, `vector_of_vector`, `vector_of_mtrix` and `string`.
 
 === intra-run aggregation
 

@@ -144,8 +144,9 @@ To be again generic, we are proposing the following output format:
 * One file per PI score.
 * That file would have a https://fr.wikipedia.org/wiki/YAML[YAML] structure indicating the content type.
 
-The YAML file should contains keys `type` and `value`.
-We consider the following options:
+The accepted format are now listed.
+
+==== scalar
 
 For a `scalar` output:
 
@@ -155,37 +156,80 @@ type: 'scalar'
 value: 42
 ----
 
+==== vector
+
 For a `vector` output:
 
 [source, yaml]
 ----
 type: 'vector'
+# label is optional
+label: [lab1, lab2, lab3, lab4, lab5, lab6, lab7, lab8, lab9, lab10]
 value: [0.96867, 1.01667, 0.98843, 0.95168, 0.87936, 0.94576, 0.87802, 0.87571, 0.81802, 0.82336]
 ----
 
-For a `matrix` output:
+The key `label` is optional.
+If used, there should be as many labels as entries in the `value` vector.
+
+As a rule of thumb:
+
+* using label makes sense if each entry of the vector refers to some different aspects (like a vector containing the step length, the step time, and the stride time)
+* without label, the vector may be referring to the same measure repeated along the actions (like all step length measured).
+
+==== matrix
 
 [source, yaml]
 ----
 type: 'matrix'
+# labels are optional
+row_label: [row_1, row_2, row_3]
+col_label: [col_1, col_2, col_3]
 value: [[1.0, 0, 0], [0, 1.0, 0], [0, 0, 1.0]]
 ----
 
-For a vector including labels, a matrix is used, with the first row being the labels:
+Labels can be used to enhance the visualisation of the matrix.
+
+==== vector of vectors
+
+The difference with a matrix is that each vector may have different lengths
 
 [source, yaml]
 ----
-type: 'labelled_matrix'
-value: [['step_length', 'step_time', 'stride_time'], [0.5, 0.8, 0.4]]
+type: 'vector_of_vector'
+values:
+ - label: [label_1, label_2]
+   value: [val_1, val_2]
+ - label: [label_1, label_2, label_3]
+   value: [val_1, val_2, val_3]
 ----
 
-For a string output:
+Again, labels are optionals, but can be used to ease the display of the PI content.
+
+==== vector of matrices
+
+[source, yaml]
+----
+type: vector_of_matrix
+value:
+ - row_label: [row_1, row_2, row_3]
+   col_label: [col_1, col_2, col_3]
+   value: [[1, 2, 3], [4, 5, 6], [7,8,9]]
+ - row_label: [row_1, row_2, row_3]
+   col_label: [col_1, col_2, col_3]
+   value: [[1, 2, 3], [4, 5, 6], [7,8,9]]
+----
+
+Again, labels are optional.
+
+==== string
 
 [source, yaml]
 ----
 type: 'string'
 value: 'hip'
 ----
+
+==== General considerations
 
 NOTE: The type of the output file is defined in the <<template.adoc#output type field, PI spec>>, set in the general template sheet.
 
