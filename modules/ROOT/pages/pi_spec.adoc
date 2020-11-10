@@ -139,12 +139,12 @@ NOTE: The expected launch command is the information required in the PI Algo tem
 
 === Output data
 
-To be again generic, we are proposing the following output format:
+To be again generic, we are proposing the following strategy:
 
 * One file per PI score.
 * That file would have a https://fr.wikipedia.org/wiki/YAML[YAML] structure indicating the content type.
 
-The accepted format are now listed.
+The accepted formats are now listed.
 
 ==== scalar
 
@@ -231,7 +231,7 @@ value: 'hip'
 
 ==== General considerations
 
-NOTE: The type of the output file is defined in the <<template.adoc#pi_output_type, PI spec>>, set in the general template sheet.
+NOTE: The type of the output file of a given Performance Indicator is defined in the <<template.adoc#pi_output_type, PI spec>>, set in the template sheet.
 
 NOTE: Providing several PI outputs through a unique source code or algorithm is an option provided to the developer.
       But in any case, we should have as many files generated as PI computed.
