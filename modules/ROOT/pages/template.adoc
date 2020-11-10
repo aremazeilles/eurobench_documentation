@@ -153,6 +153,7 @@ First we start reminding two concepts (this should be brought to a dedicated pag
 
 Some item deserves more detailed explanation:
 
+[pi_output_type]
 === output type field
 
 The output type field refers to the type of output file used to describe the Performance Indicators.

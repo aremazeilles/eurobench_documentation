@@ -231,7 +231,7 @@ value: 'hip'
 
 ==== General considerations
 
-NOTE: The type of the output file is defined in the <<template.adoc#output-type-field, PI spec>>, set in the general template sheet.
+NOTE: The type of the output file is defined in the <<template.adoc#pi_output_type, PI spec>>, set in the general template sheet.
 
 NOTE: Providing several PI outputs through a unique source code or algorithm is an option provided to the developer.
 But in any case, we should have as many files generated as PI computed.
