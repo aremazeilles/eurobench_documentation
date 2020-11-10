@@ -119,7 +119,9 @@ The field _General description_ should provide a short (e.g. one sentence) overv
 This table may not contain enough information to detail all the steps (like how and where to place markers on human bodies).
 We assume more exhaustive description will be provided with the documentation associated to the protocol, aside that excel sheet.
 
+[[pi_sheet]]
 == PI Sheet
+
 First we start reminding two concepts (this should be brought to a dedicated page):
 
 * A `Performance Indicator` (PI) can be associated to an outcome parameter obtained used to score an experimentation.
@@ -153,12 +155,14 @@ First we start reminding two concepts (this should be brought to a dedicated pag
 
 Some item deserves more detailed explanation:
 
-=== output type field
 [[pi_output_type]]
+=== output type field
+
 The output type field refers to the type of output file used to describe the Performance Indicators.
 The type provided must refer to one of the output types described in <<pi_spec.adoc#Output data, the PI specification file>>.
 For now, format accepted are: `scalar`, `vector`, `matrix`, `vector_of_vector`, `vector_of_mtrix` and `string`.
 
+[[intra_run_aggregation]]
 === intra-run aggregation
 
 In the previous example, we see that the output is represented by a possibly long vector.
@@ -186,6 +190,7 @@ Note that we can define various operators for one PI (like mean and standard dev
 The intra-run aggregation is thus using the following pattern: `[ [number, operator] ]`.
 Obviously it does not need to be filled for scalar output.
 
+[[inter_run_aggregation]]
 === inter-run aggregation
 
 A similar operation is needed for combining the scores obtained for each run, to generate a PI for the whole experiment.
