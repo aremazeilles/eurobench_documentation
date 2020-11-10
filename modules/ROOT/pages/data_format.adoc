@@ -369,8 +369,7 @@ Joint labels should refer to the names provided within the <<model.adoc#fig_join
 === Body Center of Mass 3D trajectory
 
 The body Center of Mass (COM) is frequently considered in biomechanics, as it reflects the motion of the whole body.
-It is usually defined as _the unique point where the weighted relative position of the distributed mass sums to zero_ (https://en.wikipedia.org/wiki/Center_of_mass[wikipedia])
-
+It is usually defined as _the unique point where the weighted relative position of the distributed mass sums to zero_ (https://en.wikipedia.org/wiki/Center_of_mass[wikipedia]).
 
 **Description**: This file shall contain the estimated COM position along time.
 
@@ -380,16 +379,18 @@ It is usually defined as _the unique point where the weighted relative position 
 
 **File structure**:
 
-.COM position file structure and unit
+.COM position file structure and unit (velocity and acceleration are only added if measured)
 [options="header"]
 |================
-| time | x | y | z
-| `sec` | `m` | `m` | `m`
+| time | `x` | `y` | `z` | `vel_x` | `vel_y` | `vel_z` | `acc_x` | `acc_y` | `acc_z`
+| `sec` | `m` | `m` | `m` | `ms^-1^` | `ms^-1^` | `ms^-1^` | `ms^-2^` | `ms^-2^` | `ms^-2^`
 |================
 
 === Angular Momentum around the Center of Mass
 
 The angular momentum of a body is a vector quantity that represents the magnitude and the direction in which the body rotates about a reference point <<Bennett2010>>.
+We refer here to the total body angular momentum, around the total body Center of Mass (`CoM`), expressed in global coordinates.
+That is, the sum of the angular momenta of different segments around the total body `CoM` (see eq. (16) in <<Herr2008>> or the methods section in <<Bennett2010>>).
 
 **Description**: This file shall contain the estimated angular momentum around the COM along time.
 
@@ -405,11 +406,12 @@ The angular momentum of a body is a vector quantity that represents the magnitud
 | time | x | y | z
 | `sec` | `Js` | `Js` | `Js`
 |================
-where `Js` stands for Joule second (equivalent to $$kgm²s^{⁻1}$$).
+where `Js` stands for Joule second (equivalent to `kgm^2^s^⁻1^`).
 
 **bibliography**:
 
-[[Bennett2010]] [Bennett2010]: B.C Bennett, S.D. Russell, P. Sheth, M. F. Abel. Angular momentum of walking at different speeds. Human Movement Science, 2010 (https://kin.sfsu.edu/sites/default/files/Angular%20momentum%20of%20walking%20at%20different%20speeds.pdf[link])
+- [[[Bennett2010]]]: B.C Bennett, S.D. Russell, P. Sheth, M. F. Abel. Angular momentum of walking at different speeds. Human Movement Science, Colume 29, Issue 1, 2010 (https://kin.sfsu.edu/sites/default/files/Angular%20momentum%20of%20walking%20at%20different%20speeds.pdf[link])
+- [[[Herr2008]]] H. Herr, M. Popovic. Angular momentum in human walking. Journal of Experimental Biology, Volume 211, Issue 4, (2008) - (https://jeb.biologists.org/content/jexbio/211/4/467.full.pdf)[link]
 
 === Inertia Tensor
 
@@ -479,10 +481,10 @@ where `f` stands for force, `p` for the center of pressure, and `t` for torques.
 | `s` | `mV` | `mV` | `mV` | `mV`
 |================
 
-where `label_i` is to be a tag described in table <<tab:emg_tags>>.
+where `label_i` is to be a tag described in <<tab:emg_tags>>.
 
 [[tab:emg_tags]]
-.List of EMG muscles and labels considered.
+.List of EMG muscles and labels considered. Suffixes `_l` and `_r` may be added to differentiate left and right limb, when needed.
 [options="header"]
 |================
 | Muscle | Label
@@ -507,8 +509,6 @@ where `label_i` is to be a tag described in table <<tab:emg_tags>>.
 | Vastus Medialis  |  VaMe
 |================
 
-Units: Millivolts.
-
 === Gait events file
 
 **Description**: This file shall include all detected (or calculated) heel strike and toe off gait events.
@@ -517,10 +517,11 @@ Units: Millivolts.
 
 **File format**: `.yaml`
 
-**File structure**:Set of lines containing key: vector of values. Where the key is provided on the last column of Table 3.
+**File structure**:Set of lines containing key: vector of values. Where the key is provided on the last column of <<tab:gait_tags>>.
 
 **File content**: See Table 3
 
+[[tab:gait_tags]]
 .List of gait events and its considered labelling
 [options="header"]
 |====================
