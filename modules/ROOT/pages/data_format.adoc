@@ -405,7 +405,7 @@ It is usually defined as _the unique point where the weighted relative position 
 
 where `label_i` should be replaced by the name of the joint, as specified in the protocol documentation.
 
-NOTE: A jointState file can refer to joint(s) of a robotic device, or to joint(s) of an element of the test-bed.
+NOTE: A jointState file can refer to joint(s) of a robotic device, or to joint(s) of an element of the testbed.
 
 === Angular Momentum around the Center of Mass
 
