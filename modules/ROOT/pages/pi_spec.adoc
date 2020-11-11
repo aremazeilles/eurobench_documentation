@@ -238,7 +238,7 @@ NOTE: Providing several PI outputs through a unique source code or algorithm is 
 
 WARNING: The name of each PI file has to be the same as the name of the PI, as specified in the PI table in the <<template.adoc#pi_sheet, name>> entry.
 
-NOTE: for non-scalar metrics, we suggest the definition of a metric to _compress_ or aggregate the score (like using `mean` for providing a unique value from a vector result for a given run).
+NOTE: For non-scalar metrics, we suggest the definition of a metric to _compress_ or aggregate the score (like using `mean` for providing a unique value from a vector result for a given run).
       See the <<template.adoc#intra_run_aggregation, intra-run aggregation definition>>.
 
 WARNING: The scoring is _ideally_ performed **per run**.
