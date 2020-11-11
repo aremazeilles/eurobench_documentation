@@ -386,6 +386,27 @@ It is usually defined as _the unique point where the weighted relative position 
 | `sec` | `m` | `m` | `m` | `ms^-1^` | `ms^-1^` | `ms^-1^` | `ms^-2^` | `ms^-2^` | `ms^-2^`
 |================
 
+=== Joint States
+
+**Description**: contains the state of a set of joints along time.
+
+**Filename root** : `jointStates`
+
+**File format**: `.csv`
+
+**File structure**:
+
+.Joint states file structure and unit (velocity and acceleration are only used if measured)
+[options="header"]
+|================
+| time | `label_1_pos` | `label_1_vel` | `label_1_acc` | `label_2_pos` | ...
+| `sec` | `rad` | `rad.s^-1^` | `rad. s^-2^` | `rad` | ...
+|================
+
+where `label_i` should be replaced by the name of the joint, as specified in the protocol documentation.
+
+NOTE: A jointState file can refer to joint(s) of a robotic device, or to joint(s) of an element of the testbed.
+
 === Angular Momentum around the Center of Mass
 
 The angular momentum of a body is a vector quantity that represents the magnitude and the direction in which the body rotates about a reference point <<Bennett2010>>.
