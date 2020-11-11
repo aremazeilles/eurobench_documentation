@@ -347,7 +347,7 @@ Joint labels should refer to the names provided within the <<model.adoc#fig_join
 
 Joint labels should refer to the names provided within the <<model.adoc#fig_joint_center_label, human model document>>.
 
-=== Joint center 3D trajectories file
+=== Joint center 3D trajectory
 
 **Description**: This file shall contain all the measured trajectories of the joints.
 
@@ -365,6 +365,29 @@ Joint labels should refer to the names provided within the <<model.adoc#fig_join
 |================
 
 Joint labels should refer to the names provided within the <<model.adoc#fig_joint_center_label, human model document>>.
+
+=== Landmark 3D trajectory
+
+**Description**: Contain the 3D position of particular landmarks that are tracked during the experimentation.
+
+**Filename root**: `landmarkTrajectories`.
+
+**File format**: `.csv`
+
+**File structure**:
+
+.3D landmark file structure and unit
+[options="header"]
+|================
+| time | `landmark_1_x` | `landmark_1_y` | `landmark_1_z` | `landmark_2_x` | `landmark_2_y` | `landmark_2_z` | ...
+| `sec` | `m` | `m` | `m` | `m` | `m` | `m` | ...
+|================
+
+`landmark_1, landmark_2, ..., landmark_N` should be the name of the landmark tracked.
+
+NOTE:
+      In the particular case where the experiment tracks both landmarks **and** specific joint positions as described in <<Joint center 3D trajectory>>, it is accepted to place these landmarks positions within the `jointTrajectories` file.
+      It is assumed that the protocol documentation provides the landmark label, and a clear description of the landmark position on the subject body.
 
 === Body Center of Mass 3D trajectory
 
