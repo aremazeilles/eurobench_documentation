@@ -379,11 +379,11 @@ Joint labels should refer to the names provided within the <<model.adoc#fig_join
 .3D landmark file structure and unit
 [options="header"]
 |================
-| time | `landmark_i_x` | `landmark_i_y` | `landmark_i_z` | `landmark_i_x` | `landmark_i_y` | `landmark_i_z` | ...
+| time | `landmark_1_x` | `landmark_1_y` | `landmark_1_z` | `landmark_2_x` | `landmark_2_y` | `landmark_2_z` | ...
 | `sec` | `m` | `m` | `m` | `m` | `m` | `m` | ...
 |================
 
-`landmark_i` should be the name of the landmark tracked.
+`landmark_1, landmark_2, ..., landmark_N` should be the name of the landmark tracked.
 
 NOTE:
       In the particular case where the experiment tracks both landmarks **and** specific joint positions as described in <<Joint center 3D trajectory>>, it is accepted to place these landmarks positions within the `jointTrajectories` file.
