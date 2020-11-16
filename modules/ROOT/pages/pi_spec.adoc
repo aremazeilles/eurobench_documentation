@@ -245,3 +245,48 @@ WARNING: The scoring is _ideally_ performed **per run**.
          The score aggregation across the N runs (like how to extract an experiment `step_time` score given all the `step_time` vectors obtained in the successive runs) is specified in the template.
          See the <<template.adoc#inter_run_aggregation, inter-run aggregation definition>>.
          It will be automatically computed by the PI Manager
+
+
+## Code deployment methodology
+
+### Generalities
+
+As mentioned in X, the benchmarking process is handled by the `PI manager`, that is in charge of launching the computation of the metrics, given the data collected in an experimentation.
+
+Based on the protocol the experiment is associated to, the `PI Manager` can deduce the algorithm(s) to be executed.
+
+For encapsulation matters, it has been decided to deploy the processing algorithm using Docker.
+
+As described in Y, each metric code repository contains a `Dockerfile` that defines how to generate the Docker image.
+This file is used in the CI process to generate automatically the Docker image.
+
+Now the PI manager needs to know where to find that image.
+We propose using a common environment for hosting the generated images, currently named the https://hub.docker.com/orgs/eurobenchtest[Eurobenchtest hub].
+
+NOTE:
+    The Docker location associated to an algorithm is supposed to be indicated in the Protocol Definition sheet, in the page related to Z.
+
+### Docker hub update methodology
+
+We propose the following methodology:
+
+1. A PI code repository ready to be uploaded will be either migrated or forked within the https://github.com/eurobench[Eurobench Github organization].
+It is named Eurobench PI repository in the rest of the text.
+2. Even if public code is encouraged, the Eurobench PI repository may be set as private on explicit request of the code owner.
+3. The Eurobench PI repository will at least contain two branches:
+   * a development branch into which some developments may be included
+   * a release branch in which only validated evolution from the development branch can be inserted.
+4. The deployment of the docker image will be manually triggered by defining a tag, that should be associated to a commit on the release branch.
+5. The deployment to the docker hub is done then automatically through the CI/CD process.
+
+In the particular case that the code requires an update, and / or the code owner suggests a code evolution:
+
+1. The update request can be triggered through a merge request, or a direct communication with the Eurobench maintainers.
+2. It has to be shown that the code update goes through the regression tests associated to the code.
+3. The update is brought to the development branch and tested.
+4. Once validated, the commit can be merged to the release branch, and a tag is created to trigger the docker image deployment to the Eurobench Docker Hub.
+
+Note that the code evolution may require some discussion, as such update may also require an update of the experiments already scored with the previous version of the docker image.
+This could be automatically checked whether the input/output data used for the regression testing has changed in between the previous and the current version.
+
+Only the Eurobench team should be authorized to enable the deployment of an updated docker image (step 4).
