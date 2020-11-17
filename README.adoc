@@ -1,5 +1,6 @@
 = Eurobench Software documentation
 :imagesdir: modules/ROOT/images
+:sourcedir: modules/ROOT/pages
 :source-highlighter: highlightjs
 :icons: font
 :linkattrs:
