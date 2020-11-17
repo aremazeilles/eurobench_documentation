@@ -14,7 +14,7 @@ All material is automatically deployed to this https://eurobench.github.io/[gith
 
 The principle documentation pages are the following:
 
-* <<model.adoc#Human model, Human model>>
+* <<modules/ROOT/pages/model.adoc#Human model, Human model>>
 * <<data_format.adoc#Eurobench Data Format, Eurobench Data Format>>
 * <<template.adoc#Eurobench template, Eurobench protocol templates>>
 * <<pi_spec.adoc#Performance Indicator Specification, Performance Indicator Algorithm specification>>
