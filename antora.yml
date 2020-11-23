@@ -1,0 +1,6 @@
+name: sofware_documentation
+title: Software documentation
+version: latest
+start_page: ROOT:index.adoc
+nav:
+    - modules/ROOT/nav.adoc

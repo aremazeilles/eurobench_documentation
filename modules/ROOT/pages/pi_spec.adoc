@@ -1,10 +1,11 @@
 = Performance Indicator Specification
-:source-highlighter: pygments
-:pygments-style: emacs
-:icons: font
-:toc: right
-:linkattrs:
+:imagesdir: ../images
 :sectnums:
+:sectnumlevels: 4
+:experimental:
+:keywords: AsciiDoc
+:source-highlighter: highlight.js
+:icons: font
 
 == Introduction
 
@@ -34,7 +35,7 @@ The objective of the `PI Manager` is to orchestrate the computation of the perfo
 The overall interaction scheme is described on the following figure.
 We assume here that an experiment has just been uploaded to the Benchmarking Software, i.e. all experimental data are already uploaded and stored into the database.
 
-The remaining operation is the scoring of the experiment, which is for what is triggered the PI Mananger.
+The remaining operation is the scoring of the experiment, which is for what is triggered the PI Manager.
 The successive operations conducted by the PI Manager are the followings:
 
 1. From the Experiment ID, the PI Manager gets access from the database to the Protocol this experiment is related to.
@@ -46,7 +47,7 @@ The successive operations conducted by the PI Manager are the followings:
 
 [[fig:pim_interact]]
 .Global interaction of the PI Manager with the database to collect the experimental data
-image::img/pi_manager_interaction.png[align=center, title-align=center]
+image::pi_manager_interaction.png[align=center, title-align=center]
 
 NOTE: As mentioned, each of the PI routines are encapsulated within a docker image.
       It avoids any dependency conflicts in between the different PI code implementation, and isolates the PI Manager machine from the PI computation effort.
@@ -55,11 +56,11 @@ The PI Manager has somehow (to be clarified) a local copy of the experiment file
 
 [[fig:pim_loop]]
 .Overall PI Manager processing loop
-image::img/pi_manager_loop.png[align=center, title-align=center]
+image::pi_manager_loop.png[align=center, title-align=center]
 
 We assume that each run (iteration of the experiment with similar conditions or independent variables), is described by a set of _Pre-processed files_.
 
-Then The PI Manager loops on each run and docker:
+Then The PI Manager loops on each run as follows:
 
 * For each run
 ** gather all pre-processed files associated to that run, together to any condition files describing the experimental condition.
@@ -74,7 +75,7 @@ That way, a future comparison of this experiment with another only consists in c
 
 **Message to take away**:
 
-* All PI algorithms have to be encapsulated into a docker image
+* All PI algorithms have to be encapsulated into a Docker image
 * All PI algorithm should be able to launch computation given the _Pre-Processed files_ associated to a single run.
 
 The preparation of the Docker image containing the processing algorithm will be more extensively detailed later on.
@@ -102,17 +103,17 @@ with:
 - `test_data`: folder containing reference input data and associated expected output result that can be used for making code testing.
 - `compile.sh`: shell script containing the command to build the program
 - `DockerFile`: file indicating how to create the Docker image for that code.
-- `install.sh`: shell program indicating how to install all dependencies on a fresh ubuntu machine.
-- `run_pi`: script that will be the docker container entry point, and that should launch the PI computation, given an input folder (with all input processing files) and an output folder (to store result files).
+- `install.sh`: shell program indicating how to install all dependencies on a fresh Ubuntu machine.
+- `run_pi`: script that will be the Docker container entry point, and that should launch the PI computation, given an input folder (with all input processing files) and an output folder (to store result files).
 
 We are aiming at such generic repository structure to have a common management scheme for all PI code.
 
-Most of the mentioned files are related to the preparation of the docker image, which will be described in a second phase.
+Most of the mentioned files are related to the preparation of the Docker image, which will be described in a second phase.
 We will now focus on the expected interface of the benchmarking algorithm.
 
 == PI algorithm interface
 
-Independentely of the programming language, we request the entry point (being an executable or a script) to have the interface illustrated on Figure named <<fig:pim_loop>>:
+Independently of the programming language, we request the entry point (being an executable or a script) to have the interface illustrated on Figure named <<fig:pim_loop>>:
 
 * Input: all preprocessed data file of a single run
 * Output: one file per Performance Indicator computed.
@@ -127,7 +128,7 @@ The input data of an experiment can be composed of:
 * datafile collected from sensors during the experimentation
 * datafile corresponding to benchmarking condition, like robot specification, human specification, testbed configuration, ...
 
-We assume the processing algorithm entry point expects all input files to be explicitely detailed:
+We assume the processing algorithm entry point expects all input files to be explicitly detailed:
 
 [source, sh]
 ----
@@ -138,13 +139,14 @@ NOTE: The expected launch command is the information required in the PI Algo tem
 
 === Output data
 
-To be again generic, we are proposing the following output format:
+To be again generic, we are proposing the following strategy:
 
 * One file per PI score.
 * That file would have a https://fr.wikipedia.org/wiki/YAML[YAML] structure indicating the content type.
 
-The YAML file should contains keys `type` and `value`.
-We consider the following options:
+The accepted formats are now listed.
+
+==== scalar
 
 For a `scalar` output:
 
@@ -154,31 +156,72 @@ type: 'scalar'
 value: 42
 ----
 
+==== vector
+
 For a `vector` output:
 
 [source, yaml]
 ----
 type: 'vector'
+# label is optional
+label: [lab1, lab2, lab3, lab4, lab5, lab6, lab7, lab8, lab9, lab10]
 value: [0.96867, 1.01667, 0.98843, 0.95168, 0.87936, 0.94576, 0.87802, 0.87571, 0.81802, 0.82336]
 ----
 
-For a `matrix` output:
+The key `label` is optional.
+If used, there should be as many labels as entries in the `value` vector.
+
+As a rule of thumb:
+
+* using label makes sense if each entry of the vector refers to some different aspects (like a vector containing the step length, the step time, and the stride time)
+* without label, the vector may be referring to the same measure repeated along the actions (like all step length measured).
+
+==== matrix
 
 [source, yaml]
 ----
 type: 'matrix'
+# labels are optional
+row_label: [row_1, row_2, row_3]
+col_label: [col_1, col_2, col_3]
 value: [[1.0, 0, 0], [0, 1.0, 0], [0, 0, 1.0]]
 ----
 
-For a vector including labels, a matrix is used, with the first row being the labels:
+Labels can be used to enhance the visualisation of the matrix.
+
+==== vector of vectors
+
+The difference with a matrix is that each vector may have different lengths
 
 [source, yaml]
 ----
-type: 'labelled_matrix'
-value: [['step_length', 'step_time', 'stride_time'], [0.5, 0.8, 0.4]]
+type: 'vector_of_vector'
+values:
+ - label: [label_1, label_2]
+   value: [val_1, val_2]
+ - label: [label_1, label_2, label_3]
+   value: [val_1, val_2, val_3]
 ----
 
-For a string output:
+Again, labels are optionals, but can be used to ease the display of the PI content.
+
+==== vector of matrices
+
+[source, yaml]
+----
+type: vector_of_matrix
+value:
+ - row_label: [row_1, row_2, row_3]
+   col_label: [col_1, col_2, col_3]
+   value: [[1, 2, 3], [4, 5, 6], [7,8,9]]
+ - row_label: [row_1, row_2, row_3]
+   col_label: [col_1, col_2, col_3]
+   value: [[1, 2, 3], [4, 5, 6], [7,8,9]]
+----
+
+Again, labels are optional.
+
+==== string
 
 [source, yaml]
 ----
@@ -186,17 +229,19 @@ type: 'string'
 value: 'hip'
 ----
 
-NOTE: The type of the output file is defined in the <<template.adoc#output type field, PI spec>>, set in the general template sheet.
+==== General considerations
 
-Note that providing several PI output through a unique source code or algorithm is an option provided to the developer.
-But in any case, we should have as many files generated as PI computed.
+NOTE: The type of the output file of a given Performance Indicator is defined in the <<template.adoc#pi_output_type, PI spec>>, set in the template sheet.
 
-The name of each PI file has to be the same as the name of the PI, as specified in the PI table in the <<template.adoc#PI Sheet, name>> entry.
+NOTE: Providing several PI outputs through a unique source code or algorithm is an option provided to the developer.
+      But in any case, we should have as many files generated as PI computed.
 
-NOTE: for non-scalar metrics, we suggest the definition of a metric to _compress_ or aggregare the score (like using `mean` for providing a unique value from a vectir result for a given run).
-      See the <<template.adoc#intra-run aggregation, intra-run aggregation definition>>.
+WARNING: The name of each PI file has to be the same as the name of the PI, as specified in the PI table in the <<template.adoc#pi_sheet, name>> entry.
+
+NOTE: For non-scalar metrics, we suggest the definition of a metric to _compress_ or aggregate the score (like using `mean` for providing a unique value from a vector result for a given run).
+      See the <<template.adoc#intra_run_aggregation, intra-run aggregation definition>>.
 
 WARNING: The scoring is _ideally_ performed **per run**.
          The score aggregation across the N runs (like how to extract an experiment `step_time` score given all the `step_time` vectors obtained in the successive runs) is specified in the template.
-         See the <<template.adoc#inter-run aggregation, inter-run aggregation definition>>.
+         See the <<template.adoc#inter_run_aggregation, inter-run aggregation definition>>.
          It will be automatically computed by the PI Manager
