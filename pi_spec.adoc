@@ -69,7 +69,7 @@ Then The PI Manager loops on each run and docker:
 ** Once each run has been evaluated, the PI Manager compute the global PI score, given the computed PI per run.
 ** All results are uploaded to the database
 
-Once this loop is achived, the PI scores of that experiment are uploaded into the database.
+Once this loop is achieved, the PI scores of that experiment are uploaded into the database.
 That way, a future comparison of this experiment with another only consists in consulting the data stored into the database.
 
 **Message to take away**:
