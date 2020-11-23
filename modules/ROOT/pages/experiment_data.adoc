@@ -11,15 +11,15 @@
 
 After the execution of an experiment, the experimented should have collected a set of information:
 
-* raw data, as provided by the sensors used in the experiment
-* pre-processed data, according to the format mentioned in X
+* raw data, as provided by the sensors used in the experiment;
+* pre-processed data, according to the format mentioned in <<data_format.adoc, the Eurobench data format>>;
 * a report document, providing informal description of the test conducted.
 
-We focus here on the structure and organization of the pre-processed data, as they are the input information that will e used to compute _automatically_ the Performance Indicator metrics.
+We focus here on the structure and organization of the pre-processed data, as they are the input information that will be used to compute _automatically_ the Performance Indicator metrics.
 
 ## Datafile naming
 
-Although each centre may have a well-defined data organization, we are required to define a _Eurobench-compatible_ structure, to make sure the automatic scoring mechanism can handle the data submitted to trigger the benchmarking.
+Although each centre may have a well-defined data organization, we are required to define a _Eurobench-compatible_ structure, to make sure the automatic scoring mechanism can handle the data submitted for benchmarking.
 
 The structure proposed only constraints the **pre-processed data**, as the other ones (raw data, report document) are not used within the benchmarking process.
 
@@ -28,19 +28,20 @@ Generally speaking pre-processed data should follow the following pattern:
 ```
 subject_X_cond_Y_run_Z_[type].csv
 ```
-where:
+
+Such contextualized format provides the following information:
 
 * `[type]` is a string related to the type of information stored in the file.
   This is the root name of the file.
-  All possible type are described in X.
+  All possible types are described in <<data_format.adoc#sec:pre_processed_data, the Eurobench data format>>.
 * `X`, `Y`, `Z` are integer respectively associated to the number of subjects involved, the number of different conditions being tested, and the number of repetitions per condition.
 * The `subject` / `cond` / `run` namespaces are only used when it makes sense:
-** An experiment involving a unique subject would have have pre-processed files following the pattern: `cond_Y_run_Z_[type].csv`.
+** An experiment involving a unique subject (or only an humanoid) would have have pre-processed files following the pattern: `cond_Y_run_Z_[type].csv`.
 ** An experiment with various subjects but unique condition would follow the pattern `subject_X_run_Z_[type].csv`.
 ** An experiment in which there is a single repetition of a trial would have datafiles following the pattern : `subject_X_cond_Y_[type].csv`.
 ** At the extreme, an experiment involving a unique subject (or an humanoid), with single condition and no repetition will be described by files with pattern: `[type].csv`.
 
-Unless specified if different, all datafile recorded will have a name using this pattern.
+Unless if specified different, all datafile submitted for benchmarking will have a name using this pattern.
 
 Aside the pre-processed data file, we can foresee the following additional required files:
 
@@ -55,11 +56,11 @@ These files can be repeated using the following patterns:
 * robot device information: we assume only one robotic device is used per experiments, so that the file can be directly named `robot_info.yaml`.
   Any change of the control setting of the robot should be mentioned in the condition file.
 * Condition setting file: we identified three cases:
-  * if no parameter is set, no file is required.
-  * if the condition setting contains information specific to the user (like an adjustment of a pushing force that may differ per subject), then we should get the : `subject_i_condition_j.yaml`, where `j` should be an integer referring to the `Y` different condition setting being considered.
-  * if the conditional settings are common for all subjects, then we should get only `Y` different files, named `condition_j.yaml`.
+** if no parameter is set, no file is required.
+** if the condition setting contains information specific to the user (like an adjustment of a pushing force that may differ per subject), then we should get the : `subject_i_condition_j.yaml`, where `j` should be an integer referring to the `Y` different condition setting being considered.
+** if the conditional settings are common for all subjects, then we should get only `Y` different files, named `condition_j.yaml`.
 
-Such model gives us a _contextualized_ file name: based on the filename, we can deduce all the context of a data file: its content, the subject involved, the condition setting used, the repetition id.
+Such model gives us a _contextualized_ filename approach: based on the filename, we can deduce all the context of a data file: its content, the subject involved, the condition setting used, the repetition id.
 A contextualized filename is unique in the complete experiment.
 
 
@@ -78,7 +79,7 @@ The files expected are the following:
 
 In the two last groups of files, the `[type]` string should refer to one of the pre-processed format described in X.
 
-**Case 2**: Another experiment involves 2 subjects and a robotic devices.
+**Case 2**: Another experiment involves 2 subjects and a robotic device.
 The experiment contains 3 different condition settings.
 One of the configuration parameters has to be adjusted to the subject involved.
 Each condition is only repeated once.
@@ -88,9 +89,16 @@ Each condition is only repeated once.
 * `subject_{1,2}_condition_{1,2,3}.yaml`
 * `subject_{1,2}_cond_{1,2,3}_[type].csv`
 
+**Case 3**: an experiment compares two different parameter settings of an humanoid.
+The robot has been _asked_ to repeat three times each configuration.
+
+* `robot_info.urdf`
+* `condition_{1,2}.yaml`
+* `cond_{1,2}_run_{1,2,3}_[type].csv`
+
 ## Data file organization
 
-Given the previous filename pattern, the simplest is to place all the datafiles into a single folder.
+Given the previous filename pattern, the simplest file organization is to place all the data-files into a single folder.
 
 For personal matters the experimenter can prefer organizing the data into folders.
 We envision two possibilities:
@@ -101,21 +109,4 @@ This means the folder organization does not affect the naming of the file, and t
 * The **filename is simplified according to the folder organisation**.
   In that case, the contextualized filename could be obtained using the folder hierarchy.
 
-### Illustration
-
-The first possibility has already described in the previous section X: the files may be organized in folder, but files within the folder hierarchy will follow the complete filename pattern previously mentioned.
-
-For the second possibility (where the folder name matters), we can get the following:
-
-**Case1**:
-
-Using a yaml structure, where a key refers to a folder:
-
-
-* `subject_{1,2,3,4}_info.yaml`
-* `robot_info.urdf`
-* `condition_{1,2,3}.yaml`
-* `subject_{1,3,4}_cond_{1,2,3}_run_{1,2,3,4}_[type].csv`
-* `subject_{1,3,4}_cond_{1,2,3}_run_{1,2}_[type].csv`
-
-
+We propose focusing on the first approach for now.
