@@ -549,25 +549,24 @@ Possible keys are provided on the last column of <<tab:gait_events>>.
 [options="header"]
 |====================
 | Gait Event  | Label | type | unit
-| Left Cadence | `cadence_left` | tobedef|
-| Left Walking Speed | `walking_speed_left`| scalar?|
-| Left Stride Time | `stride_time_left`| |
-| Left Step Time | `step_time_left`| |
-| Left Stride Length | `stride_length_left`| |
-| Left Step Length | `step_length_left`| |
-| Left Step Width | `step_width_left`| |
-| Left Single Support | `single_suport_left`| |
-| Right Cadence | `cadence_right` | tobedef|
-| Right Walking Speed | `walking_speed_right`| scalar?|
-| Right Stride Time | `stride_time_right`| |
-| Right Step Time | `step_time_right`| |
-| Right Stride Length | `stride_length_right`| |
-| Right Step Length | `step_length_right`| |
-| Right Step Width | `step_width_right`| |
-| Right Single Support | `single_suport_right`| |
-| Double Support | `double_support`| |
+| Left Cadence | `cadence_left` | scalar| step/min
+| Left Walking Speed | `walking_speed_left`| scalar| m/s
+| Left Stride Time | `stride_time_left`| scalar | s
+| Left Step Time | `step_time_left`| scalar | s
+| Left Stride Length | `stride_length_left`| scalar | m
+| Left Step Length | `step_length_left`| scalar | m
+| Left Step Width | `step_width_left`| scalar | m
+| Left Single Support | `single_suport_left`| scalar | s
+| Right Cadence | `cadence_right` | scalar | step/min
+| Right Walking Speed | `walking_speed_right`| scalar| m/s
+| Right Stride Time | `stride_time_right`| scalar | s
+| Right Step Time | `step_time_right`| scalar | s
+| Right Stride Length | `stride_length_right`| scalar | m
+| Right Step Length | `step_length_right`| scalar | m
+| Right Step Width | `step_width_right`| scalar | m
+| Right Single Support | `single_suport_right`| scalar | s
+| Double Support | `double_support`| scalar | s
 |====================
-
 
 === Physiological data
 
