@@ -213,6 +213,7 @@ That score could be presented to the user on the front-end, to summarize the sco
 The inter-run aggregation is thus using the following pattern: `[ [number, operator] ]`.
 It has to be filled for all output format, even scalar (since we still have to aggregate the scalar value of each run).
 
+[[sec:template_pi_algo]]
 == PI Algo Sheet
 
 .Performance Indicator sheet
@@ -241,7 +242,7 @@ It has to be filled for all output format, even scalar (since we still have to a
 
 === Input command
 
-At this moment it contains the entry point and the parameters the entry point is expecting. 
+At this moment it contains the entry point and the parameters the entry point is expecting.
 The format for the string is the following one.
 
 ```

@@ -26,6 +26,7 @@ There exists:
 ** Scenario _Overcoming obstacles_: maximum height of an obstacle the subject can walk over, ...
 ** Scenario _Picking and carrying objects_: Weight of the object which can be picked up and carried, Walking speed while carrying an object, ...
 
+[[sec:pi_algo_general]]
 === A bit of context: the PI Manager
 
 A key component of the Benchmarking Software is the `PI Manager`.
@@ -80,6 +81,7 @@ That way, a future comparison of this experiment with another only consists in c
 
 The preparation of the Docker image containing the processing algorithm will be more extensively detailed later on.
 
+[[sec:pi_repo_structure]]
 == PI repository structure
 
 To reach that structure, a PI code repository must have the following structure:
@@ -251,20 +253,20 @@ WARNING: The scoring is _ideally_ performed **per run**.
 
 ### Generalities
 
-As mentioned in X, the benchmarking process is handled by the `PI manager`, that is in charge of launching the computation of the metrics, given the data collected in an experimentation.
+As mentioned <<pi_algo_general, previously>>, the benchmarking process is handled by the `PI manager`, that is in charge of launching the computation of the metrics, given the data collected in an experimentation.
 
 Based on the protocol the experiment is associated to, the `PI Manager` can deduce the algorithm(s) to be executed.
 
 For encapsulation matters, it has been decided to deploy the processing algorithm using Docker.
+This way, the `PI manager only handle a set of docker images`, independently of the language used for implementing the metric.
 
-As described in Y, each metric code repository contains a `Dockerfile` that defines how to generate the Docker image.
+As described in <<sec:pi_repo_structure, PI Algo repository structure >>, each metric code repository contains a `Dockerfile` that defines how to generate the Docker image.
 This file is used in the CI process to generate automatically the Docker image.
 
-Now the PI manager needs to know where to find that image.
+Now the `PI manager` needs to know where to find that image.
 We propose using a common environment for hosting the generated images, currently named the https://hub.docker.com/orgs/eurobenchtest[Eurobenchtest hub].
 
-NOTE:
-    The Docker location associated to an algorithm is supposed to be indicated in the Protocol Definition sheet, in the page related to Z.
+NOTE: The Docker location associated to an algorithm is supposed to be indicated in the Protocol Definition sheet, in the page related to <<template.adoc#sec:template_pi_algo, PI Algo specification>>.
 
 ### Docker hub update methodology
 
@@ -286,7 +288,7 @@ In the particular case that the code requires an update, and / or the code owner
 3. The update is brought to the development branch and tested.
 4. Once validated, the commit can be merged to the release branch, and a tag is created to trigger the docker image deployment to the Eurobench Docker Hub.
 
-Note that the code evolution may require some discussion, as such update may also require an update of the experiments already scored with the previous version of the docker image.
-This could be automatically checked whether the input/output data used for the regression testing has changed in between the previous and the current version.
+NOTE: The code evolution may require some discussion, as such update may also require an update of the experiments already scored with the previous version of the docker image.
+      It could be automatically checked whether the input/output data used for the regression testing has changed in between the previous and the current version.
 
-Only the Eurobench team should be authorized to enable the deployment of an updated docker image (step 4).
+WARNING: Only the Eurobench team should be authorized to enable the deployment of an updated docker image (step 4).
