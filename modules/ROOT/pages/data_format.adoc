@@ -561,11 +561,12 @@ where `label_i` is to be a tag described in <<tab:emg_tags>>.
 
 **File format**: `.yaml`
 
-**File structure**:Set of lines containing key: vector of values. Where the key is provided on the last column of <<tab:gait_tags>>.
+**File structure**:Set of lines containing `key: [vector, of, values]`.
+Possible keys are provided on the last column of <<tab:gait_events>>.
 
-**File content**: See Table 3
+**File content**: See <<tab:gait_events>>.
 
-[[tab:gait_tags]]
+[[tab:gait_events]]
 .List of gait events and its considered labelling
 [options="header"]
 |====================
@@ -577,6 +578,42 @@ where `label_i` is to be a tag described in <<tab:emg_tags>>.
 |====================
 
 **Units**: Seconds
+
+=== Gait Parameter file
+
+**Description**: This file shall include characteristics of the gait, if it is considered as input parameters detected (or calculated).
+
+**Filename root**: `gaitParameters`
+
+**File format**: `.yaml`
+
+**File structure**: Set of lines containing `label: [vector, of, values]`. Possible labels are provided on the last column of <<tab:gait_param>>, together with the units.
+
+**File content**: See <<tab:gait_param>>.
+
+[[tab:gait_param]]
+.List of gait events and its considered labelling and units
+[options="header"]
+|====================
+| Gait Event  | Label | type | unit
+| Left Cadence | `cadence_left` | scalar| step/min
+| Left Walking Speed | `walking_speed_left`| scalar| m/s
+| Left Stride Time | `stride_time_left`| scalar | s
+| Left Step Time | `step_time_left`| scalar | s
+| Left Stride Length | `stride_length_left`| scalar | m
+| Left Step Length | `step_length_left`| scalar | m
+| Left Step Width | `step_width_left`| scalar | m
+| Left Single Support | `single_suport_left`| scalar | s
+| Right Cadence | `cadence_right` | scalar | step/min
+| Right Walking Speed | `walking_speed_right`| scalar| m/s
+| Right Stride Time | `stride_time_right`| scalar | s
+| Right Step Time | `step_time_right`| scalar | s
+| Right Stride Length | `stride_length_right`| scalar | m
+| Right Step Length | `step_length_right`| scalar | m
+| Right Step Width | `step_width_right`| scalar | m
+| Right Single Support | `single_suport_right`| scalar | s
+| Double Support | `double_support`| scalar | s
+|====================
 
 === Physiological data
 
