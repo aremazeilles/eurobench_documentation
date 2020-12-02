@@ -51,25 +51,18 @@ The activity can be repeated as follows:
   It can be a configuration of the testbed or environmental settings (augment the slope angle), a configuration of the robotic system (support level of the exoskeleton), or an indication to the user (redo the operation with eyes closed).
   The parameter being changed must be mentioned as a <<template.adoc#table_controlled_variables, controlled variable>>, and must be listed in the <<Testbed configuration file, testbed configuration file>>.
   For each condition, we can have a set of runs.
-* to involved several **subjects**: this is particularly relevant for experiments involving humans.
+* to involve several **subjects**: this is particularly relevant for experiments involving humans.
   In that case, we can considering having for each subject the execution of the same protocol, i.e involving potentially several conditions, and for each condition several repetitions or runs.
 
 === Filename format, and generalities
 
-Generally speaking pre-processed data should follow the following pattern:
+Generally speaking pre-processed data should follow the following contextualized pattern:
 
 ```
 subject_X_cond_Y_run_Z_[type].csv
 ```
-where:
 
-* `[type]` is a string related to the type of information stored in the file.
-  This is the root name of the file.
-* X, Y, Z are integer respectively associated the to the number of subjects involved, the number of different conditions being tested, and the number of repetitions per condition.
-* The `subject` / `cond` / `run` namespaces are only used when it makes sense.
-  An experiment involving a unique subject would have have pre-processed files following the pattern: `cond_Y_run_Z_[type].csv`.
-  An experiment with various subject but unique condition would follow the pattern `subject_X_run_Z_[type].csv`.
-  At the extreme, an experiment involving a unique subject (or an humanoid), with single condition and no repetition will be described by files with pattern: `[type].csv`.
+The rationale behind this filename format is described in <<experiment.adoc, The Experimental data page>>.
 
 Unless specified if different, all datafile recorded will have a name using this pattern.
 Each data file is now described, focusing on the type of information stored (extensions subject, cond and run are skipped for now).
@@ -84,8 +77,8 @@ Each data file is now described, focusing on the type of information stored (ext
 | grf | csv | Ground reaction Forces
 | emg | csv | Electromyography
 | wr_N_config_M_segments (unclear)| yaml | Segments descriptions files
-| subject_N_anthropometry | yaml | Anthropometry description
-| humanoid_N_anthropometry | yaml | Humanoid description
+| subject_N_info | yaml | subject description (metric and/or other)
+| humanoid_N_info | yaml | Humanoid description
 | gaitEvents | yaml | Gait Events
 | subject_N_run_R_testbedLabel | yaml | testbed specifics
 |================
@@ -156,7 +149,7 @@ In that case two options are proposed:
 
 WARNING: The protocol should indicate the appropriate option to use.
 
-**Option 1: one file per device**
+__Option 1: one file per device__
 
 The two files will share the same structure (based on the information stored in it), but will only differ by their name:
 
@@ -176,7 +169,7 @@ Both files will contain data following the regular wrench file pattern, i.e.:
 | ... | ... | ...
 |=================
 
-**Option 2: one file gathering the two devices**
+__Option 2: one file gathering the two devices__
 
 A single file is provided, and use the generic format `subject_N_run_R_wrench.csv`.
 The file content is a concatenation of the two readings, with the labels adjusted to distinguish the two devices:
@@ -207,7 +200,7 @@ From this file, the number of joints, its labels and the degrees of freedom can 
 
 **Number of files**: all necessary files to describe the complete robotic structure.
 
-**Name of the file**: The main urdf file which includes the rest of urdf files should be named as `humanoid_N_anthropometry`, where `N` is the humanoid number.
+**Name of the file**: The main urdf file which includes the rest of urdf files should be named as `robot_N_info`, where `N` is the humanoid number.
 
 **File format**: `.urdf`.
 The use of `.urdf` files also has shortcomings such as the lack of friction (important for e.g. walking steeper slope angles).
@@ -228,26 +221,29 @@ Moreover, it allows to use a wide variety of simulators commonly used in robotic
 This file shall contain the dimensions and inertial properties of each segment of the worn robot with respect to the reference system of the human body segment connected to it.
 This is needed to enable dynamic simulators to model the human-WR system.
 
-=== Human anthropometric measures file
+=== Human information file
 
-**Description**: This file shall contain all the anthropometric measurements of the human body segment, as detailed in the <<model.adoc#sec_hbs, model document>>.
+**Description**: This file shall contain all information related to the subject, such as the anthropometric measurements of the human body segment (as detailed in the <<model.adoc#sec_hbs, model document>>), gender, age, ... .
 
-**Name of the file**: subject_N_anthropometry, where N = subject’s number.
+
+**Name of the file**: `subject_N_info`, where N = subject’s number.
 Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
-**File format**: .yaml
+**File format**: `.yaml`
 
-**File structure**: Set of lines containing key: value where the key is provided in the <<model.adoc#table_body_segment, body segment table>>.
+**File structure**: Set of lines containing key: value.
+For anthropometric measures, the keys should be the ones presented in <<model.adoc#table_body_segment, body segment table>>.
+In any case, the entries provided should follow the protocol requirement.
 
-**Units**: Meters
+**Units**: Various
 
 === Humanoid anthropometric measures file
 
 **Description**: This file shall contain all the anthropometric measurements from the humanoid robot mapped to the above proposed human segments (see Table 2 and Figure 3).
 
-**Name of the file**: humanoid_N_anthropometry, where N = humanoid’s identifier.
+**Name of the file**: `robot_N_info`, where N = humanoid’s identifier.
 
-**File format**: .yaml
+**File format**: `.yaml`
 
 **File structure**: Set of lines containing key: value where the key must contain the corresponding robot segment name.
 
@@ -262,7 +258,7 @@ It can also contain subject behavior constraints set by the experimenter (ask th
 
 **File format**: .yaml
 
-**File name**: `testbed.yaml`.
+**File name**: `condition.yaml`
 
 **File structure**: Set of lines containing key: values.
 Where each key is one testbed-related data.
@@ -297,6 +293,7 @@ All controlled variables, as defined in the <<template.adoc#table_controlled_var
 **File format**: These files are not supposed to be processed automatically by the EUROBENCH Benchmarking routines, so that a specific format is not defined.
 Data can be provided as the device drivers provide them  (e.g. `c3d`, `rosbag`, `.txt`, `.csv`, ...). However, a description of the file content and acquisition frequency should be provided (like `Readme.md` or `Readme.txt`) to help the user opening and understanding these files.
 
+[[sec:pre_processed_data]]
 == Pre-Processed Data Files
 
 This set of files should contain all the data processed from the raw data and needed for running a specific benchmarking routine.
@@ -773,14 +770,14 @@ These are the files that they have produced to be compatible with the EUROBENCH 
 ** `raw_data.txt`
 ** `subject_{01-02}_run_{01-03}_imu_raw.cappa`
 * Anthropometric Files
-** `subject_01_anthropometry.yaml`
-** `subject_02_anthropometry.yaml`
+** `subject_01_info.yaml`
+** `subject_02_info.yaml`
 * Electromyography Files
 ** `subject_{01-02}_run_{01-03}_emg.csv`
 * Gait Events Files
 ** `subject_{01-03}_run_{01-03}_gaitEvents.csv`
 * Testbed configuration related data file
-** `testbed.yaml`
+** `condition.yaml`
 
 There is only a unique testbed configuration file, as all runs are repetitions of the same experimental conditions.
 
@@ -794,14 +791,14 @@ The experiment was then repeated changing the support level of the exoskeleton
 ** `raw_data.txt`
 ** `cond_{01-02}_run_{01-03}_markers_raw.cappa`
 * Anthropometric Files
-** `anthropometry.yaml`
+** `info.yaml`
 * Gait Events Files
 ** `cond_{01-02}_run_{01-03}_gaitEvents.csv`
 * Testbed related data file
-** `cond_{01-02}_testbed.yaml`
+** `condition_{01-02}.yaml`
 
 label `subject` is discarded as a unique subject is considered.
-The level of exoskeleton support is specified through a variable in `cond_01_testbed.yaml` and `cond_02_testbed.yaml` files.
+The level of exoskeleton support is specified through a variable in `condition_01.yaml` and `condition_02.yaml` files.
 
 === Example 3
 
@@ -811,12 +808,12 @@ The Laboratory HumanoidLab has done a study on the new walking pattern generator
 ** `rosbag_{01-02}.bag` (containing /tf topic)
 ** `humanoid_markers_raw_{01-02}.cappa`
 * .urdf File
-** `humanoid.urdf`
+** `robot_info.urdf`
 * Gait Events Files
 ** `run_01_gaitEvents.csv`
 ** `run_02_gaitEvents.csv`
 * Testbed related data file
-** `testbed.yaml`
+** `condition.yaml`
 
 === Example 4
 
@@ -833,9 +830,9 @@ An instrumented chair was used, which is collecting a set of measures, in a form
 * Chair sensors data
 ** `subject_{01-02}_cond_{01-02}_run_{01-05}_platformData.csv`
 * Testbed related data file
-** `cond_{01-02}_testbed.yaml`
+** `condition_{01-02}.yaml`
 
-The eyes status (open/closed) is set through a parameter in files `cond_01_testbed.yaml` and `cond_02_testbed.yaml`.
+The eyes status (open/closed) is set through a parameter in files `condition_01.yaml` and `condition_02.yaml`.
 
 == References
 
