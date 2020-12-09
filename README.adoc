@@ -18,6 +18,7 @@ The principle documentation pages are the following:
 * <<modules/ROOT/pages/data_format.adoc#Eurobench Data Format, Eurobench Data Format>>
 * <<modules/ROOT/pages/template.adoc#Eurobench template, Eurobench protocol templates>>
 * <<modules/ROOT/pages/pi_spec.adoc#Performance Indicator Specification, Performance Indicator Algorithm specification>>
+* <<modules/ROOT/pages/experiment_data.adoc#Experimental data, Expected structure of the data collected during an experimentation>>
 
 == Modification Instructions
 

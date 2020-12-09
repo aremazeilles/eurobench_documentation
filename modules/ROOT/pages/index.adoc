@@ -12,7 +12,7 @@ This document gathers documentation on software aspects related to the http://eu
 * <<data_format.adoc#Eurobench Data Format, Eurobench Data Format>>
 * <<template.adoc#Eurobench template, Eurobench protocol templates>>
 * <<pi_spec.adoc#Performance Indicator Specification, Performance Indicator Algorithm specification>>
-* << experiment_data.adoc#Experimental data, Organisation of experimental dataset>>
+* <<experiment_data.adoc#Experimental data, Organisation of experimental dataset>>
 
 == Modification Instructions
 
