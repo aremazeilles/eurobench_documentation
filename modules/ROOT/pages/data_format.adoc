@@ -133,15 +133,6 @@ time; force_x
 
 WARNING: Note that, depending on the benchmarking algorithm requirements, this may prevent the Performance Indicator computation, if a column is expected by the algorithm, but not present in the data file.
 
-=== Global reference frame
-
-Even though data collected should always be aligned with the specification of the protocol that could supersede the general description provided here, in any measurement involving a global Cartesian reference frame, such reference frame should be placed as proposed in the ISB recommendations, with <<Wu1995>>:
-
-* `x` axis aligned with the gait direction
-* `y` axis vertical and pointing upwards
-
-[[Wu1995]] [Wu1995]: G. Wu and P. R. Cavanagh. ISB recommendations for standardization in the reporting of kinematic data. Journal of Biomechanics, 28(10), 1995. https://www.ece.uvic.ca/~bctill/papers/mocap/Wu_Cavanagh_1995.pdf[pdf].
-
 ==== Protocol with multiple but similar sensors
 
 Some protocols can require the use of various but similar sensors (like a force sensor on each of the crutches).
@@ -184,6 +175,15 @@ The file content is a concatenation of the two readings, with the labels adjuste
 |=================
 
 WARNING: This option is only accepted if the data logged is using the same timestamp.
+
+=== Global reference frame
+
+Even though data collected should always be aligned with the specification of the protocol that could supersede the general description provided here, in any measurement involving a global Cartesian reference frame, such reference frame should be placed as proposed in the ISB recommendations, with <<Wu1995>>:
+
+* `x` axis aligned with the gait direction
+* `y` axis vertical and pointing upwards
+
+[[Wu1995]] [Wu1995]: G. Wu and P. R. Cavanagh. ISB recommendations for standardization in the reporting of kinematic data. Journal of Biomechanics, 28(10), 1995. https://www.ece.uvic.ca/~bctill/papers/mocap/Wu_Cavanagh_1995.pdf[pdf].
 
 == Bipedal system specification files
 
