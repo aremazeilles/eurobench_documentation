@@ -198,11 +198,14 @@ The difference with a matrix is that each vector may have different lengths
 [source, yaml]
 ----
 type: 'vector_of_vector'
-values:
+label: [label_1, label_2, label_3]
+value:
  - label: [label_1, label_2]
    value: [val_1, val_2]
  - label: [label_1, label_2, label_3]
    value: [val_1, val_2, val_3]
+ - label: [label_1, label_2, label_3, label_4]
+   value: [val_1, val_2, val_3, val_4]
 ----
 
 Again, labels are optionals, but can be used to ease the display of the PI content.
@@ -212,13 +215,14 @@ Again, labels are optionals, but can be used to ease the display of the PI conte
 [source, yaml]
 ----
 type: vector_of_matrix
+label: [label_1, label_2]
 value:
  - row_label: [row_1, row_2, row_3]
    col_label: [col_1, col_2, col_3]
-   value: [[1, 2, 3], [4, 5, 6], [7,8,9]]
+   value: [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
  - row_label: [row_1, row_2, row_3]
-   col_label: [col_1, col_2, col_3]
-   value: [[1, 2, 3], [4, 5, 6], [7,8,9]]
+   col_label: [col_1, col_2]
+   value: [[1, 2], [4, 5], [7, 8]]
 ----
 
 Again, labels are optional.
