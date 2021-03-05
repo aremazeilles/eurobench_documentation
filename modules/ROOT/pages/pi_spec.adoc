@@ -272,23 +272,26 @@ NOTE: The Docker location associated to an algorithm is supposed to be indicated
 
 We propose the following methodology:
 
-1. A PI code repository ready to be uploaded will be either migrated or forked within the https://github.com/eurobench[Eurobench Github organization].
+1. A PI code repository ready to be uploaded to the Eurobench server is forked within the https://github.com/eurobench[Eurobench Github organization].
 It is named Eurobench PI repository in the rest of the text.
 2. Even if public code is encouraged, the Eurobench PI repository may be set as private on explicit request of the code owner.
-3. The Eurobench PI repository will at least contain two branches:
-   * a development branch into which some developments may be included
-   * a release branch in which only validated evolution from the development branch can be inserted.
-4. The deployment of the docker image will be manually triggered by defining a tag, that should be associated to a commit on the release branch.
-5. The deployment to the docker hub is done then automatically through the CI/CD process.
+3. Before going further, the CI process installed in the main repository must be successful.
+   The CI process handle several check such as `csv` and `yaml` format checking, and regression tests using reference data placed into the repository.
+4. The branch `master` (as an example) is pushed to the forked repository.
+  As an indication, the forked repo should indicate that `This branch is even with aremazeilles:master.` (if the base repo is hosted by `aremazeilles`).
+5. Manually, a release is created on the forked repository, from the Github interface.
+   The tag that is created should use https://semver.org/[semantic versioning], like `vMAJOR.MINOR.PATCH`.
+6. The deployment to the docker hub is done then automatically through the CI/CD process.
 
 In the particular case that the code requires an update, and / or the code owner suggests a code evolution:
 
 1. The update request can be triggered through a merge request, or a direct communication with the Eurobench maintainers.
 2. It has to be shown that the code update goes through the regression tests associated to the code.
-3. The update is brought to the development branch and tested.
-4. Once validated, the commit can be merged to the release branch, and a tag is created to trigger the docker image deployment to the Eurobench Docker Hub.
+3. The update is brought to the fork and tested.
+4. Once validated, a new release and tag is created to trigger the docker image deployment to the Eurobench Docker Hub.
 
 NOTE: The code evolution may require some discussion, as such update may also require an update of the experiments already scored with the previous version of the docker image.
       It could be automatically checked whether the input/output data used for the regression testing has changed in between the previous and the current version.
 
 WARNING: Only the Eurobench team should be authorized to enable the deployment of an updated docker image (step 4).
+This is why we decided to fork all developments into the Eurobench namespace.
