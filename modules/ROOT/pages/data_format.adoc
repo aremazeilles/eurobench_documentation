@@ -507,6 +507,26 @@ where `Js` stands for Joule second (equivalent to `kgm^2^s^⁻1^`).
 
 where `f` stands for force, `p` for the center of pressure, and `t` for torques.
 
+=== Distance file
+
+**Description**: contains distance information in between two elements, whatever they have.
+
+**Filename root**: `distance`
+
+**File format**: `.csv`
+
+.distance file structure and unit
+[options="header"]
+|================
+| time | distance_label1 | ... | distance_labeli | ...
+| `s` | `m` | `m` | `m` | `m`
+|================
+
+For each distance measure, the column header should start with `distance`.
+If an unique measure is stored, this label is enough (documentation should provide its exact meaning).
+If more than one measure is done, the column headers should be of the format indicated above, with the `labeli` term replaced with any descriptive name.
+Again protocol documentation should describe the meaning of each item.
+
 === Electromyography file
 
 **Description**: This file shall contain all the recorded EMG signals from the human subject.
