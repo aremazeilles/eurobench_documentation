@@ -233,6 +233,40 @@ Use appropriate leading zeros for R and N to ensure proper ordering of files.
 
 **File structure**: Set of lines containing key: value.
 For anthropometric measures, the keys should be the ones presented in <<model.adoc#table_body_segment, body segment table>>.
+Each body segment is characterized by its name, mass, length, center of mass and inertia matrix.
+To specify the components of every segment the following structure is useds:
+
+[source]
+----
+segment_label:
+  Name: segment name including side prefix (string, equal to the segment label, can be omitted)
+  COM:  coordinates of the center of mass (in meters, with the reference system translated on the proximal joint)
+  Length: length of the segment along the principal direction of the segment
+  Volume: volume in dm³ of the segment
+  Density:  density in kg/m³ of the segment used for mass estimation
+  Mass: segment's mass (in kg)
+  InertiaMatrix:  Inertia matrix of the segment (in kg m², with the reference system centered on the COM)
+----
+
+if the segment_label is not associated to a structure but a single number, then the length is assumed as the relevant property. See the following example:    
+
+[source]
+----
+pelvis:
+  Name: pelvis
+  COM:  [0.00, -0.15, 0.30]
+  Length: 21.2
+  Volume: 3.1
+  Density: 1110
+  Mass: 3.44
+  InertiaMatrix:
+    - [1, 0, 0]
+    - [0, 1, 0]
+    - [0, 0, 1]
+
+pelvis_w: 43.2
+----
+
 In any case, the entries provided should follow the protocol requirement.
 
 **Units**: Various
