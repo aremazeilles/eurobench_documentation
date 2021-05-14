@@ -6,7 +6,64 @@
 :linkattrs:
 
 
-This document gathers documentation on software aspects related to the http://eurobench2020.eu/[Eurobench] project:
+This document gathers documentation on software aspects related to the http://eurobench2020.eu/[Eurobench] project.
+
+The Eurobench website containing all protocols is accessible http://15.237.22.1/home[here].
+
+== How to
+
+=== Define a new protocol
+
+A protocol definition should contain:
+
+* general information of the protocol
+** used to fill the Eurobench database and to configure the automation tools
+** template provided and commented in <<template.adoc#Eurobench template, Eurobench protocol templates>>.
+* extended documentation to prepare the testbed and / or to conduct the experimentation
+** that information would be uploaded on the Eurobench website, and made available at the protocol webpage
+* Algorithms implementing the performance indicators, following the Eurobench policy
+** more information can be found in <<pi_spec.adoc#Performance Indicator Specification, Performance Indicator Algorithm specification>>.
+** example of algorithms implemented can be found on the https://github.com/eurobench[Eurobench GitHub repository].
+
+For now, there is no methodology to upload automatically a protocol.
+Needed information is to be transmitted to the Eurobench team.
+
+=== Search a protocol and conduct an experiment
+
+_1. Search for an adequate protocol_
+
+The http://15.237.22.1/home[Eurobench software website] protocol section enables accessing to all registered protocols.
+The filtering mechanism provide a key-words based search of protocol.
+
+_2. Read the protocol documentation_
+
+Once selected, the protocol description should provide a general overview of the purpose, objectives, metrics and execution methodology of the protocol.
+When required, additional documentation is provided on the left area.
+
+From this information, the reader should be able to prepare and execute experimentations.
+
+_3. Do the experimentation and prepare experimental data for upload_
+
+The documentation should provide indications, if needed, on how to adjust the data collected during an experimentation.
+We are encouraging the use of standard data format.
+It is described in the <<data_format.adoc#Eurobench Data Format, Eurobench Data Format>>.
+If not directly provided by the testbed, the protocol documentation should explain you how to convert the Raw data into such format.
+
+Also, as the metric computation is handled automatically through the Eurobench website, we also provide some guidelines on how to name the collected datafiles.
+See <<experiment_data.adoc#Experimental data, Organisation of experimental dataset>>.
+But, once more, this is the protocol description that should guide you in that process.
+
+_4. Upload the experimental data and benchmark_
+
+Through the website, a user can log an experiment conducted.
+Given the protocol used, and after datafile upload is able to compute the related metrics automatically, and make them available to the experimenter.
+Comparison with other similar experiments will be provided soon.
+
+WARNING: The Eurobench website is a tool under development, and actively updated.
+    If any description is unclear or missing, please let us know so that we can work on improving it.
+    Thx!
+
+== Site content
 
 * <<model.adoc#Human model, Human model>>
 * <<data_format.adoc#Eurobench Data Format, Eurobench Data Format>>
