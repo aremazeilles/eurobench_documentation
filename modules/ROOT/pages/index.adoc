@@ -63,7 +63,7 @@ WARNING: The Eurobench website is a tool under development, and actively updated
     If any description is unclear or missing, please let us know so that we can work on improving it.
     Thx!
 
-=== Site content
+== Site content
 
 * <<model.adoc#Human model, Human model>>
 * <<data_format.adoc#Eurobench Data Format, Eurobench Data Format>>
