@@ -16,10 +16,10 @@ The Eurobench website containing all protocols is accessible http://15.237.22.1/
 
 A protocol definition should contain:
 
-* General information of the protocol
+* general information of the protocol
 ** used to fill the Eurobench database and to configure the automation tools
-** Template provided and commented in <<template.adoc#Eurobench template, Eurobench protocol templates>>.
-* Extended documentation to prepare the testbed and / or to conduct the experimentation
+** template provided and commented in <<template.adoc#Eurobench template, Eurobench protocol templates>>.
+* extended documentation to prepare the testbed and / or to conduct the experimentation
 ** that information would be uploaded on the Eurobench website, and made available at the protocol webpage
 * Algorithms implementing the performance indicators, following the Eurobench policy
 ** more information can be found in <<pi_spec.adoc#Performance Indicator Specification, Performance Indicator Algorithm specification>>.
@@ -62,8 +62,6 @@ Comparison with other similar experiments will be provided soon.
 WARNING: The Eurobench website is a tool under development, and actively updated.
     If any description is unclear or missing, please let us know so that we can work on improving it.
     Thx!
-
-
 
 === Site content
 
