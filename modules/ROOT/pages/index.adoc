@@ -12,6 +12,11 @@ The Eurobench website containing all protocols is accessible http://15.237.22.1/
 
 == How to
 
+* <<Define a new protocol>>
+* <<Search a protocol and conduct an experiment>>
+* <<Handle incomplete or unclear protocol>>
+
+
 === Define a new protocol
 
 A protocol definition should contain:
@@ -58,6 +63,12 @@ _4. Upload the experimental data and benchmark_
 Through the website, a user can log an experiment conducted.
 Given the protocol used, and after datafile upload is able to compute the related metrics automatically, and make them available to the experimenter.
 Comparison with other similar experiments will be provided soon.
+
+=== Handle incomplete or unclear protocol
+
+The integration status of the different protocols and related algorithms can be checked in the following https://github.com/eurobench/eurobench_protocol/[GitHub repository].
+We also created a service desk on the following https://gitlab.com/aremazeilles/eurobench_service_desk[address].
+You can add there issues, or even send remarks or complains to the following mailto:contact-project+aremazeilles-eurobench-service-desk-eurobench@incoming.gitlab.com[email].
 
 WARNING: The Eurobench website is a tool under development, and actively updated.
     If any description is unclear or missing, please let us know so that we can work on improving it.
