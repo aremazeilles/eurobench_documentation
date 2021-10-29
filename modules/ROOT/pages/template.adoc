@@ -11,9 +11,14 @@
 
 The addition of new protocol to the Eurobench Benchmarking Software requires providing a set of information for filling the database.
 
-An link:{attachmentsdir}/protocol_template.xlsx[excel sheet] is provided to gather that information.
+A link:{attachmentsdir}/protocol_template.xlsx[excel sheet] is provided to gather that information.
 
 All tables are followed by an explanation of each of the fields that deserves it.
+
+TIP: The excel sheet may not be sufficient to explain to a potential experimenter all the item of the protocol, such as sensor placement, testbed preparation, data collection software used, ...
+  It is strongly recommended to gather all that information into a standard Word-like document.
+  A template is proposed link:{attachmentsdir}/protocol_template.docx[here].
+  Ideally, the information from these 2 files should be enough to conduct an experiment following that protocol.
 
 == Scenario sheet
 

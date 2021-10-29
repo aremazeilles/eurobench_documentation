@@ -26,6 +26,7 @@ A protocol definition should contain:
 ** template provided and commented in <<template.adoc#Eurobench template, Eurobench protocol templates>>.
 * extended documentation to prepare the testbed and / or to conduct the experimentation
 ** that information would be uploaded on the Eurobench website, and made available at the protocol webpage
+** a simple manual template is proposed link:{attachmentsdir}/protocol_template.docx[here]
 * Algorithms implementing the performance indicators, following the Eurobench policy
 ** more information can be found in <<pi_spec.adoc#Performance Indicator Specification, Performance Indicator Algorithm specification>>.
 ** example of algorithms implemented can be found on the https://github.com/eurobench[Eurobench GitHub repository].
