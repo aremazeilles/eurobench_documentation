@@ -8,7 +8,7 @@
 
 This document gathers documentation on software aspects related to the http://eurobench2020.eu/[Eurobench] project.
 
-The Eurobench website containing all protocols is accessible http://15.237.22.1/home[here].
+The Eurobench website containing all protocols is accessible https://platform.eurobench2020.eu/[here].
 
 == How to
 
@@ -38,7 +38,7 @@ Needed information is to be transmitted to the Eurobench team.
 
 _1. Search for an adequate protocol_
 
-The http://15.237.22.1/home[Eurobench software website] protocol section enables accessing to all registered protocols.
+The https://platform.eurobench2020.eu/[Eurobench software website] protocol section enables accessing to all registered protocols.
 The filtering mechanism provide a key-words based search of protocol.
 
 _2. Read the protocol documentation_
